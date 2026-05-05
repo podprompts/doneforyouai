@@ -2,12 +2,12 @@
 
 const testimonials = [
   {
-    quote: 'They built an AI system that handles our entire customer intake process. What used to take my team 3 hours a day now happens automatically â€” and better than before.',
+    quote: 'They built an AI system that handles our entire customer intake process. What used to take my team 3 hours a day now happens automatically — and better than before.',
     name: 'Sarah M.',
     role: 'Founder, boutique marketing agency',
   },
   {
-    quote: 'I kept delaying AI because I didn\'t know where to start. Two weeks in, they had a full content engine running. The ROI was immediate and hasn\'t stopped.',
+    quote: "I kept delaying AI because I didn't know where to start. Two weeks in, they had a full content engine running. The ROI was immediate and hasn't stopped.",
     name: 'James T.',
     role: 'E-commerce brand owner',
   },
@@ -36,8 +36,8 @@ export default function Testimonials() {
         <span style={{ flex: 1, height: 1, background: 'var(--border-light)', display: 'block' }} />
       </div>
 
-      {/* Grid */}
-      <div style={{
+      {/* Desktop grid */}
+      <div className="testimonials-desktop" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
         border: '1px solid var(--border-light)',
@@ -48,24 +48,17 @@ export default function Testimonials() {
             borderRight: i < testimonials.length - 1 ? '1px solid var(--border-light)' : 'none',
             position: 'relative',
           }}>
-            {/* Quote mark */}
             <span style={{
               position: 'absolute', top: '1rem', right: '1.5rem',
               fontFamily: 'var(--serif)', fontSize: '3.5rem',
               color: 'var(--coral)', opacity: 0.2, lineHeight: 1,
               pointerEvents: 'none',
             }}>&ldquo;</span>
-
             <p style={{
               fontFamily: 'var(--serif)', fontSize: '1.05rem',
               lineHeight: 1.65, color: 'var(--ink)', marginBottom: '2rem',
             }}>{t.quote}</p>
-
-            <div style={{
-              width: '2rem', height: '2px',
-              background: 'var(--coral)', marginBottom: '1rem',
-            }} />
-
+            <div style={{ width: '2rem', height: '2px', background: 'var(--coral)', marginBottom: '1rem' }} />
             <div style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               <strong style={{
                 display: 'block', fontFamily: 'var(--sans)', fontWeight: 500,
@@ -78,15 +71,101 @@ export default function Testimonials() {
         ))}
       </div>
 
+      {/* Mobile carousel */}
+      <div className="testimonials-mobile">
+        {testimonials.map((t, i) => (
+          <div key={i} className="testimonial-card">
+            <span className="testimonial-quote">&ldquo;</span>
+            <p className="testimonial-text">{t.quote}</p>
+            <div className="testimonial-rule" />
+            <strong className="testimonial-name">{t.name}</strong>
+            <span className="testimonial-role">{t.role}</span>
+          </div>
+        ))}
+      </div>
+
       <style>{`
+        .testimonials-mobile { display: none; }
+
         @media (max-width: 680px) {
-          #results { padding: 4rem 1.25rem !important; }
-          #results > div:last-child { grid-template-columns: 1fr !important; }
-          #results > div:last-child > div { border-right: none !important; border-bottom: 1px solid var(--border-light); }
-          #results > div:last-child > div:last-child { border-bottom: none; }
+          #results { padding: 4rem 0 !important; }
+
+          #results > div:first-child {
+            padding: 0 1.25rem !important;
+            margin-bottom: 2rem !important;
+          }
+
+          .testimonials-desktop { display: none !important; }
+
+          .testimonials-mobile {
+            display: flex;
+            overflow-x: scroll;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            gap: 0.75rem;
+            padding: 0.5rem 1.25rem 1.5rem;
+            scrollbar-width: none;
+          }
+          .testimonials-mobile::-webkit-scrollbar { display: none; }
+
+          .testimonial-card {
+            flex: 0 0 82vw;
+            scroll-snap-align: start;
+            border: 1px solid var(--border-light);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--page);
+          }
+
+          .testimonial-quote {
+            position: absolute;
+            top: 0.75rem;
+            right: 1.25rem;
+            font-family: var(--serif);
+            font-size: 3rem;
+            color: var(--coral);
+            opacity: 0.2;
+            line-height: 1;
+            pointer-events: none;
+          }
+
+          .testimonial-text {
+            font-family: var(--serif);
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--ink);
+            margin-bottom: 1.5rem;
+            flex: 1;
+          }
+
+          .testimonial-rule {
+            width: 2rem;
+            height: 2px;
+            background: var(--coral);
+            margin-bottom: 1rem;
+          }
+
+          .testimonial-name {
+            display: block;
+            font-family: var(--sans);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 0.2rem;
+          }
+
+          .testimonial-role {
+            font-family: var(--mono);
+            font-size: 0.62rem;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted-light);
+          }
         }
       `}</style>
     </section>
   )
 }
-
