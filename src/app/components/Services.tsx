@@ -39,155 +39,134 @@ export default function Services() {
   const [hovered, setHovered] = useState<number | null>(null)
 
   return (
-    <section id="services" style={{
-      background: 'var(--page)',
-      color: 'var(--ink)',
-      padding: '0 2.5rem 7rem',
-    }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
-        padding: '5rem 0 3rem',
-        borderBottom: '1px solid var(--border-light)',
-        flexWrap: 'wrap', gap: '0.5rem',
+    <>
+      <section id="services" style={{
+        background: 'var(--page)',
+        color: 'var(--ink)',
+        padding: '0 2.5rem 7rem',
       }}>
-        <h2 style={{
-          fontFamily: 'var(--serif)',
-          fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-          fontWeight: 400, lineHeight: 1.1,
+        <div style={{
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
+          padding: '5rem 0 3rem',
+          borderBottom: '1px solid var(--border-light)',
+          flexWrap: 'wrap', gap: '0.5rem',
         }}>
-          Six ways we put<br />
-          AI to work <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>for you</em>
-        </h2>
-        <span style={{
-          fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-          color: 'var(--muted-light)', letterSpacing: '0.1em',
-          paddingBottom: '0.25rem',
-        }}>06 Services</span>
-      </div>
+          <h2 style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+            fontWeight: 400, lineHeight: 1.1,
+          }}>
+            Six ways we put<br />
+            AI to work <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>for you</em>
+          </h2>
+          <span style={{
+            fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
+            color: 'var(--muted-light)', letterSpacing: '0.1em', paddingBottom: '0.25rem',
+          }}>06 Services</span>
+        </div>
 
-      {/* Desktop rows */}
-      <div className="services-desktop">
-        {services.map((s, i) => (
-          <div
-            key={i}
-            onMouseEnter={() => setHovered(i)}
-            onMouseLeave={() => setHovered(null)}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '60px 1fr 1fr 40px',
-              alignItems: 'center',
-              gap: '2rem',
-              padding: '1.75rem 2.5rem',
-              borderBottom: '1px solid var(--border-light)',
-              background: hovered === i ? 'var(--page-2)' : 'transparent',
-              margin: '0 -2.5rem',
-              cursor: 'default',
-              transition: 'background 0.2s',
-            }}
-          >
-            <span style={{
-              fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-              color: 'var(--muted-light)', letterSpacing: '0.05em',
-            }}>{s.num}</span>
-            <span style={{
-              fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.95rem',
-              letterSpacing: '0.01em', color: 'var(--ink)',
-            }}>{s.name}</span>
-            <span style={{
-              fontSize: '0.83rem', color: 'var(--muted-light)', lineHeight: 1.65,
-            }}>{s.desc}</span>
-            <span style={{
-              fontSize: '1rem',
-              color: hovered === i ? 'var(--coral)' : 'rgba(15,15,14,0.18)',
-              transform: hovered === i ? 'translateX(4px)' : 'translateX(0)',
-              transition: 'color 0.2s, transform 0.2s',
-              textAlign: 'right',
-            }}>→</span>
-          </div>
-        ))}
-      </div>
+        <div className="services-desktop">
+          {services.map((s, i) => (
+            <div
+              key={i}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '60px 1fr 1fr 40px',
+                alignItems: 'center',
+                gap: '2rem',
+                padding: '1.75rem 2.5rem',
+                borderBottom: '1px solid var(--border-light)',
+                background: hovered === i ? 'var(--page-2)' : 'transparent',
+                margin: '0 -2.5rem',
+                cursor: 'default',
+                transition: 'background 0.2s',
+              }}
+            >
+              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, color: 'var(--muted-light)', letterSpacing: '0.05em' }}>{s.num}</span>
+              <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--ink)' }}>{s.name}</span>
+              <span style={{ fontSize: '0.83rem', color: 'var(--muted-light)', lineHeight: 1.65 }}>{s.desc}</span>
+              <span style={{
+                fontSize: '1rem',
+                color: hovered === i ? 'var(--coral)' : 'rgba(15,15,14,0.18)',
+                transform: hovered === i ? 'translateX(4px)' : 'translateX(0)',
+                transition: 'color 0.2s, transform 0.2s', textAlign: 'right',
+              }}>→</span>
+            </div>
+          ))}
+        </div>
+      </section>
 
-      {/* Mobile carousel */}
+      {/* Mobile carousel rendered outside section so overflow:hidden can't clip it */}
       <div className="services-mobile">
-        {services.map((s, i) => (
-          <div key={i} className="service-card">
-            <span className="service-card-num">{s.num}</span>
-            <h3 className="service-card-name">{s.name}</h3>
-            <p className="service-card-desc">{s.desc}</p>
-            <span className="service-card-arrow">→</span>
-          </div>
-        ))}
+        <div className="services-track">
+          {services.map((s, i) => (
+            <div key={i} className="svc-card">
+              <span className="svc-num">{s.num}</span>
+              <h3 className="svc-name">{s.name}</h3>
+              <p className="svc-desc">{s.desc}</p>
+              <span className="svc-arrow">→</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <style>{`
         .services-mobile { display: none; }
 
         @media (max-width: 680px) {
-          #services { padding: 0 0 4rem !important; }
-
-          #services > div:first-child {
-            padding: 3rem 1.25rem 2rem !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-          }
-
-          .services-desktop { display: none; }
+          #services { padding: 0 1.25rem 0 !important; }
+          #services > div:first-child { padding: 3rem 0 2rem !important; flex-direction: column !important; align-items: flex-start !important; }
+          .services-desktop { display: none !important; }
 
           .services-mobile {
+            display: block;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            background: var(--page);
+            padding-bottom: 3rem;
+          }
+
+          .services-track {
             display: flex;
             overflow-x: scroll;
+            overflow-y: visible;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            gap: 0.75rem;
-            padding: 1.5rem 1.25rem 1.5rem;
             scrollbar-width: none;
+            padding: 1rem 1.25rem;
+            gap: 0.75rem;
+            touch-action: pan-x;
           }
-          .services-mobile::-webkit-scrollbar { display: none; }
+          .services-track::-webkit-scrollbar { display: none; }
 
-          .service-card {
-            flex: 0 0 82vw;
+          .svc-card {
+            flex: 0 0 78vw;
             scroll-snap-align: start;
             border: 1px solid var(--border-light);
-            padding: 1.75rem;
+            background: var(--page);
+            padding: 1.75rem 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
-            background: var(--page);
-            position: relative;
+            min-height: 220px;
           }
-
-          .service-card-num {
-            font-family: var(--mono);
-            font-size: 0.65rem;
-            font-weight: 300;
-            color: var(--muted-light);
-            letter-spacing: 0.08em;
+          .svc-num {
+            font-family: var(--mono); font-size: 0.65rem;
+            font-weight: 300; color: var(--muted-light); letter-spacing: 0.08em;
           }
-
-          .service-card-name {
-            font-family: var(--sans);
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--ink);
-            line-height: 1.3;
+          .svc-name {
+            font-family: var(--sans); font-size: 1rem;
+            font-weight: 600; color: var(--ink); line-height: 1.3; margin: 0;
           }
-
-          .service-card-desc {
-            font-family: var(--sans);
-            font-size: 0.83rem;
-            color: var(--muted-light);
-            line-height: 1.65;
-            flex: 1;
+          .svc-desc {
+            font-family: var(--sans); font-size: 0.83rem;
+            color: var(--muted-light); line-height: 1.65; flex: 1; margin: 0;
           }
-
-          .service-card-arrow {
-            font-size: 1rem;
-            color: var(--coral);
-            align-self: flex-end;
-          }
+          .svc-arrow { font-size: 1rem; color: var(--coral); align-self: flex-end; }
         }
       `}</style>
-    </section>
+    </>
   )
 }
