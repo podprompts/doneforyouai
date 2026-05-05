@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --ink:         #0f0f0e;
+  --ink-2:       #1c1c1a;
+  --ink-3:       #2a2a27;
+  --page:        #f7f5f0;
+  --page-2:      #efecea;
+  --coral:       #e8521a;
+  --coral-dim:   rgba(232, 82, 26, 0.08);
+  --coral-border:rgba(232, 82, 26, 0.28);
+  --white:       #ffffff;
+  --muted-light: rgba(15, 15, 14, 0.42);
+  --muted-dark:  rgba(247, 245, 240, 0.42);
+  --border-light:rgba(15, 15, 14, 0.1);
+  --border-dark: rgba(255, 255, 255, 0.09);
+  --serif:       'Instrument Serif', Georgia, serif;
+  --sans:        'Syne', system-ui, sans-serif;
+  --mono:        'DM Mono', 'Courier New', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--ink);
+  color: var(--page);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--ink-3); border-radius: 2px; }
+
+/* ── SELECTION ── */
+::selection { background: var(--coral); color: var(--white); }
+
+/* ── ANIMATIONS ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.25; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.animate-fade-in {
+  animation: fade-in 0.6s ease both;
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.35s; }
+.delay-4 { animation-delay: 0.5s; }
+.delay-5 { animation-delay: 0.65s; }
