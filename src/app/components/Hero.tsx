@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 
 const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_HERO_MUX_PLAYBACK_ID || ''
@@ -19,6 +20,8 @@ const featuredOperators = [
     rating: 4.9,
     reviews: 34,
     available: true,
+    bio: 'I build end-to-end automation systems that eliminate manual work. Specialize in connecting AI tools with existing business ops.',
+    deliverables: ['Workflow audit', 'Full build + testing', 'Team handoff doc'],
   },
   {
     id: '2',
@@ -34,6 +37,8 @@ const featuredOperators = [
     rating: 5.0,
     reviews: 19,
     available: true,
+    bio: 'Custom AI assistants trained on your business voice and knowledge base. Built for customers, teams, or both.',
+    deliverables: ['Bot strategy session', 'Full chatbot build', '30-day support'],
   },
   {
     id: '3',
@@ -49,11 +54,14 @@ const featuredOperators = [
     rating: 4.9,
     reviews: 41,
     available: false,
+    bio: 'A custom roadmap: which tools, which workflows, which prompts will compound over time inside your specific business.',
+    deliverables: ['AI audit', 'Tool stack recommendation', 'Implementation roadmap'],
   },
 ]
 
 export default function Hero() {
   const hasVideo = Boolean(MUX_PLAYBACK_ID)
+  const [expanded, setExpanded] = useState<string | null>(null)
 
   return (
     <section style={{
@@ -74,14 +82,14 @@ export default function Hero() {
           <>
             <video autoPlay muted loop playsInline style={{
               position: 'absolute', inset: 0, width: '100%', height: '100%',
-              objectFit: 'cover', opacity: 0.18,
+              objectFit: 'cover', opacity: 0.28,
             }}>
               <source src={`https://stream.mux.com/${MUX_PLAYBACK_ID}.m3u8`} type="application/x-mpegURL" />
               <source src={`https://stream.mux.com/${MUX_PLAYBACK_ID}/high.mp4`} type="video/mp4" />
             </video>
             <div style={{
               position: 'absolute', inset: 0,
-              background: 'linear-gradient(135deg, rgba(15,15,14,0.92) 0%, rgba(15,15,14,0.7) 50%, rgba(15,15,14,0.85) 100%)',
+              background: 'linear-gradient(135deg, rgba(15,15,14,0.88) 0%, rgba(15,15,14,0.65) 50%, rgba(15,15,14,0.82) 100%)',
             }} />
           </>
         ) : (
@@ -95,17 +103,13 @@ export default function Hero() {
           }} />
         )}
         <div style={{
-          position: 'absolute', bottom: 0, right: 0,
-          width: '38vw', height: '38vw',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
-          borderLeft: '1px solid rgba(255,255,255,0.06)',
+          position: 'absolute', bottom: 0, right: 0, width: '38vw', height: '38vw',
+          borderTop: '1px solid rgba(255,255,255,0.06)', borderLeft: '1px solid rgba(255,255,255,0.06)',
           pointerEvents: 'none',
         }} />
         <div style={{
-          position: 'absolute', top: 60, left: 0,
-          width: '22vw', height: '22vw',
-          borderBottom: '1px solid rgba(255,255,255,0.04)',
-          borderRight: '1px solid rgba(255,255,255,0.04)',
+          position: 'absolute', top: 60, left: 0, width: '22vw', height: '22vw',
+          borderBottom: '1px solid rgba(255,255,255,0.04)', borderRight: '1px solid rgba(255,255,255,0.04)',
           pointerEvents: 'none',
         }} />
       </div>
@@ -117,19 +121,14 @@ export default function Hero() {
           fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
           letterSpacing: '0.12em', textTransform: 'uppercase',
           color: 'var(--coral)', marginBottom: '2rem',
-          border: '1px solid var(--coral-border)',
-          padding: '0.4rem 0.9rem', width: 'fit-content',
+          border: '1px solid var(--coral-border)', padding: '0.4rem 0.9rem', width: 'fit-content',
         }}>
-          <span style={{
-            width: 5, height: 5, background: 'var(--coral)',
-            borderRadius: '50%', animation: 'pulse-dot 2s infinite',
-          }} />
+          <span style={{ width: 5, height: 5, background: 'var(--coral)', borderRadius: '50%', animation: 'pulse-dot 2s infinite' }} />
           AI Implementation Partner
         </div>
 
         <h1 className="animate-fade-up delay-2" style={{
-          fontFamily: 'var(--serif)',
-          fontSize: 'clamp(3rem, 5.5vw, 5.2rem)',
+          fontFamily: 'var(--serif)', fontSize: 'clamp(3rem, 5.5vw, 5.2rem)',
           fontWeight: 400, lineHeight: 1.06, letterSpacing: '-0.01em',
         }}>
           Your business.<br />
@@ -147,7 +146,7 @@ export default function Hero() {
         </p>
 
         <div className="animate-fade-up delay-4" style={{
-          marginTop: '2.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem',
+          marginTop: '2.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap',
         }}>
           <button
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
@@ -170,8 +169,7 @@ export default function Hero() {
               letterSpacing: '0.1em', textTransform: 'uppercase',
               background: 'transparent', color: 'rgba(247,245,240,0.48)',
               border: 'none', padding: 0, cursor: 'pointer',
-              display: 'flex', alignItems: 'center', gap: '0.5rem',
-              transition: 'color 0.2s',
+              display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s',
             }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--page)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'rgba(247,245,240,0.48)')}
@@ -184,128 +182,139 @@ export default function Hero() {
       {/* Right — Operator Panel */}
       <div className="animate-fade-in delay-5 hero-panel" style={{
         position: 'relative', zIndex: 1,
-        border: '1px solid var(--border-dark)',
-        overflow: 'hidden',
+        border: '1px solid var(--border-dark)', overflow: 'hidden',
       }}>
         {/* Panel header */}
         <div style={{
-          padding: '1rem 1.5rem',
-          borderBottom: '1px solid var(--border-dark)',
+          padding: '1rem 1.5rem', borderBottom: '1px solid var(--border-dark)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <span style={{
             fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300,
-            letterSpacing: '0.1em', textTransform: 'uppercase',
-            color: 'rgba(247,245,240,0.3)',
+            letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)',
           }}>Featured Operators</span>
           <span style={{
             fontFamily: 'var(--mono)', fontSize: '0.62rem',
             color: '#3ecf8e', display: 'flex', alignItems: 'center', gap: '0.4rem',
           }}>
-            <span style={{
-              width: 5, height: 5, background: '#3ecf8e',
-              borderRadius: '50%', animation: 'pulse-dot 2.2s infinite',
-            }} />
+            <span style={{ width: 5, height: 5, background: '#3ecf8e', borderRadius: '50%', animation: 'pulse-dot 2.2s infinite' }} />
             Available Now
           </span>
         </div>
 
         {/* Operator rows */}
         {featuredOperators.map((op, i) => (
-          <div key={op.id} style={{
-            padding: '1.1rem 1.5rem',
-            borderBottom: i < featuredOperators.length - 1 ? '1px solid var(--border-dark)' : 'none',
-            display: 'flex', alignItems: 'center', gap: '1rem',
-          }}>
-            {/* Avatar */}
-            <div style={{
-              width: 42, height: 42, borderRadius: '50%',
-              background: op.avatarColor,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '0.72rem',
-              color: '#fff', flexShrink: 0, position: 'relative',
-            }}>
-              {op.avatar}
-              {op.available && (
-                <span style={{
-                  position: 'absolute', bottom: 1, right: 1,
-                  width: 8, height: 8, borderRadius: '50%',
-                  background: '#3ecf8e',
-                  border: '1.5px solid var(--ink)',
-                }} />
-              )}
-            </div>
-
-            {/* Info */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.15rem' }}>
-                <span style={{
-                  fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.82rem',
-                  color: 'var(--page)', whiteSpace: 'nowrap',
-                }}>{op.name}</span>
-                <span style={{
-                  fontFamily: 'var(--mono)', fontSize: '0.58rem',
-                  color: 'rgba(247,245,240,0.3)', letterSpacing: '0.04em',
-                }}>@{op.handle}</span>
+          <div key={op.id}>
+            {/* Row — clickable */}
+            <button
+              onClick={() => setExpanded(expanded === op.id ? null : op.id)}
+              style={{
+                width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+                padding: '1.1rem 1.5rem',
+                borderBottom: expanded === op.id ? 'none' : (i < featuredOperators.length - 1 ? '1px solid var(--border-dark)' : 'none'),
+                display: 'flex', alignItems: 'center', gap: '1rem',
+                textAlign: 'left', transition: 'background 0.2s',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+            >
+              {/* Avatar */}
+              <div style={{
+                width: 42, height: 42, borderRadius: '50%', background: op.avatarColor,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '0.72rem',
+                color: '#fff', flexShrink: 0, position: 'relative',
+              }}>
+                {op.avatar}
+                {op.available && (
+                  <span style={{
+                    position: 'absolute', bottom: 1, right: 1,
+                    width: 8, height: 8, borderRadius: '50%',
+                    background: '#3ecf8e', border: '1.5px solid var(--ink)',
+                  }} />
+                )}
               </div>
-              <div style={{
-                fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300,
-                color: 'rgba(247,245,240,0.42)', letterSpacing: '0.04em',
-                marginBottom: '0.5rem',
-              }}>{op.title} · {op.location}</div>
-              <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                {op.tags.map(tag => (
-                  <span key={tag} style={{
-                    fontFamily: 'var(--mono)', fontSize: '0.56rem', fontWeight: 300,
-                    letterSpacing: '0.06em',
-                    padding: '0.2rem 0.5rem',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    color: 'rgba(247,245,240,0.4)',
-                  }}>{tag}</span>
-                ))}
-              </div>
-            </div>
 
-            {/* Rate + rating */}
-            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+              {/* Info */}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.15rem' }}>
+                  <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.82rem', color: 'var(--page)' }}>{op.name}</span>
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.3)' }}>@{op.handle}</span>
+                </div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, color: 'rgba(247,245,240,0.42)', marginBottom: '0.4rem' }}>
+                  {op.title} · {op.location}
+                </div>
+                <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                  {op.tags.map(tag => (
+                    <span key={tag} style={{
+                      fontFamily: 'var(--mono)', fontSize: '0.56rem', fontWeight: 300,
+                      padding: '0.2rem 0.5rem', border: '1px solid rgba(255,255,255,0.1)',
+                      color: 'rgba(247,245,240,0.4)',
+                    }}>{tag}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Rate + rating */}
+              <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: '0.56rem', color: 'rgba(247,245,240,0.3)', marginBottom: '0.3rem' }}>{op.rateType}</div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: '#3ecf8e' }}>★ {op.rating} ({op.reviews})</div>
+              </div>
+
+              {/* Expand chevron */}
+              <span style={{
+                color: 'rgba(247,245,240,0.25)', fontSize: '0.7rem', flexShrink: 0,
+                transform: expanded === op.id ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s',
+              }}>▼</span>
+            </button>
+
+            {/* Expanded detail */}
+            {expanded === op.id && (
               <div style={{
-                fontFamily: 'var(--serif)', fontSize: '1.15rem',
-                color: 'var(--page)', lineHeight: 1,
-              }}>{op.rate}</div>
-              <div style={{
-                fontFamily: 'var(--mono)', fontSize: '0.56rem', fontWeight: 300,
-                color: 'rgba(247,245,240,0.3)', marginBottom: '0.3rem',
-              }}>{op.rateType}</div>
-              <div style={{
-                fontFamily: 'var(--mono)', fontSize: '0.6rem',
-                color: '#3ecf8e',
-              }}>★ {op.rating} ({op.reviews})</div>
-            </div>
+                padding: '0 1.5rem 1.25rem',
+                borderBottom: i < featuredOperators.length - 1 ? '1px solid var(--border-dark)' : 'none',
+                background: 'rgba(255,255,255,0.02)',
+              }}>
+                <p style={{
+                  fontFamily: 'var(--sans)', fontSize: '0.78rem',
+                  color: 'rgba(247,245,240,0.5)', lineHeight: 1.65, marginBottom: '0.85rem',
+                }}>{op.bio}</p>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+                  {op.deliverables.map(d => (
+                    <span key={d} style={{
+                      fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300,
+                      padding: '0.3rem 0.7rem',
+                      border: '1px solid var(--coral-border)',
+                      color: 'var(--coral)',
+                    }}>✓ {d}</span>
+                  ))}
+                </div>
+                <Link href="/marketplace" style={{
+                  display: 'inline-block',
+                  fontFamily: 'var(--sans)', fontSize: '0.7rem', fontWeight: 600,
+                  letterSpacing: '0.08em', textTransform: 'uppercase',
+                  background: 'var(--coral)', color: '#fff',
+                  padding: '0.5rem 1.25rem', textDecoration: 'none',
+                }}>
+                  View Profile →
+                </Link>
+              </div>
+            )}
           </div>
         ))}
 
-        {/* Panel footer — stats moved here */}
+        {/* Panel footer */}
         <div style={{
-          padding: '0.85rem 1.5rem',
-          borderTop: '1px solid var(--border-dark)',
+          padding: '0.85rem 1.5rem', borderTop: '1px solid var(--border-dark)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
-            {[
-              { val: '47+', label: 'Businesses' },
-              { val: '98%', label: 'Satisfaction' },
-              { val: '3wk', label: 'Avg. Delivery' },
-            ].map(s => (
+            {[{ val: '47+', label: 'Businesses' }, { val: '98%', label: 'Satisfaction' }, { val: '3wk', label: 'Avg. Delivery' }].map(s => (
               <div key={s.label}>
-                <span style={{
-                  fontFamily: 'var(--serif)', fontSize: '1rem',
-                  color: 'var(--coral)', display: 'block', lineHeight: 1,
-                }}>{s.val}</span>
-                <span style={{
-                  fontFamily: 'var(--mono)', fontSize: '0.52rem', fontWeight: 300,
-                  letterSpacing: '0.08em', textTransform: 'uppercase',
-                  color: 'rgba(247,245,240,0.25)',
-                }}>{s.label}</span>
+                <span style={{ fontFamily: 'var(--serif)', fontSize: '1rem', color: 'var(--coral)', display: 'block', lineHeight: 1 }}>{s.val}</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.52rem', fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)' }}>{s.label}</span>
               </div>
             ))}
           </div>
@@ -313,21 +322,110 @@ export default function Hero() {
             fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300,
             letterSpacing: '0.1em', textTransform: 'uppercase',
             color: 'var(--coral)', textDecoration: 'none',
-            display: 'flex', alignItems: 'center', gap: '0.35rem',
-            transition: 'opacity 0.2s',
           }}>
             View All →
           </Link>
         </div>
       </div>
 
+      {/* Mobile operator panel — shown below copy */}
+      <div className="hero-panel-mobile" style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{
+          border: '1px solid var(--border-dark)', overflow: 'hidden',
+        }}>
+          <div style={{
+            padding: '0.85rem 1.25rem', borderBottom: '1px solid var(--border-dark)',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)' }}>Featured Operators</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: '#3ecf8e', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span style={{ width: 5, height: 5, background: '#3ecf8e', borderRadius: '50%', animation: 'pulse-dot 2.2s infinite' }} />
+              Available Now
+            </span>
+          </div>
+
+          {featuredOperators.map((op, i) => (
+            <div key={op.id}>
+              <button
+                onClick={() => setExpanded(expanded === op.id + '-m' ? null : op.id + '-m')}
+                style={{
+                  width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+                  padding: '1rem 1.25rem',
+                  borderBottom: expanded === op.id + '-m' ? 'none' : (i < featuredOperators.length - 1 ? '1px solid var(--border-dark)' : 'none'),
+                  display: 'flex', alignItems: 'center', gap: '0.85rem', textAlign: 'left',
+                }}
+              >
+                <div style={{
+                  width: 38, height: 38, borderRadius: '50%', background: op.avatarColor,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '0.68rem',
+                  color: '#fff', flexShrink: 0, position: 'relative',
+                }}>
+                  {op.avatar}
+                  {op.available && (
+                    <span style={{ position: 'absolute', bottom: 0, right: 0, width: 7, height: 7, borderRadius: '50%', background: '#3ecf8e', border: '1.5px solid var(--ink)' }} />
+                  )}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.8rem', color: 'var(--page)', marginBottom: '0.1rem' }}>{op.name}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.38)' }}>{op.title}</div>
+                </div>
+                <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: '1rem', color: 'var(--page)' }}>{op.rate}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', color: '#3ecf8e' }}>★ {op.rating}</div>
+                </div>
+                <span style={{
+                  color: 'rgba(247,245,240,0.25)', fontSize: '0.65rem', flexShrink: 0,
+                  transform: expanded === op.id + '-m' ? 'rotate(180deg)' : 'rotate(0)',
+                  transition: 'transform 0.2s',
+                }}>▼</span>
+              </button>
+
+              {expanded === op.id + '-m' && (
+                <div style={{
+                  padding: '0 1.25rem 1rem',
+                  borderBottom: i < featuredOperators.length - 1 ? '1px solid var(--border-dark)' : 'none',
+                  background: 'rgba(255,255,255,0.02)',
+                }}>
+                  <p style={{ fontFamily: 'var(--sans)', fontSize: '0.76rem', color: 'rgba(247,245,240,0.5)', lineHeight: 1.65, marginBottom: '0.75rem' }}>{op.bio}</p>
+                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '0.85rem' }}>
+                    {op.deliverables.map(d => (
+                      <span key={d} style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', padding: '0.25rem 0.6rem', border: '1px solid var(--coral-border)', color: 'var(--coral)' }}>✓ {d}</span>
+                    ))}
+                  </div>
+                  <Link href="/marketplace" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '0.45rem 1rem', textDecoration: 'none' }}>
+                    View Profile →
+                  </Link>
+                </div>
+              )}
+            </div>
+          ))}
+
+          <div style={{ padding: '0.75rem 1.25rem', borderTop: '1px solid var(--border-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '1.25rem' }}>
+              {[{ val: '47+', label: 'Clients' }, { val: '98%', label: 'Satisfaction' }, { val: '3wk', label: 'Delivery' }].map(s => (
+                <div key={s.label}>
+                  <span style={{ fontFamily: 'var(--serif)', fontSize: '0.9rem', color: 'var(--coral)', display: 'block', lineHeight: 1 }}>{s.val}</span>
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)' }}>{s.label}</span>
+                </div>
+              ))}
+            </div>
+            <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', textDecoration: 'none' }}>View All →</Link>
+          </div>
+        </div>
+      </div>
+
       <style>{`
+        .hero-panel-mobile { display: none; }
+
         @media (max-width: 768px) {
           section {
             grid-template-columns: 1fr !important;
             padding: 100px 1.25rem 60px !important;
+            gap: 2.5rem !important;
           }
-          .hero-panel { display: none; }
+          .hero-panel { display: none !important; }
+          .hero-panel-mobile { display: block !important; }
         }
       `}</style>
     </section>
