@@ -15,7 +15,7 @@ export default function Contact() {
     'AI-Powered Lead Generation',
     'Done-For-You AI Tool Stack',
     'AI Strategy & Prompting Playbook',
-    'Not sure yet — let\'s talk',
+    "Not sure yet — let's talk",
   ]
 
   const handleSubmit = async () => {
@@ -58,7 +58,7 @@ export default function Contact() {
       padding: '7rem 2.5rem',
       borderTop: '1px solid var(--border-light)',
     }}>
-      <div style={{
+      <div id="contact-grid" style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: '6rem',
@@ -87,7 +87,6 @@ export default function Contact() {
             We'll come back within 24 hours with a clear plan — no pressure, no pitch deck.
           </p>
 
-          {/* What to expect */}
           {[
             { label: 'Response time', value: 'Within 24 hours' },
             { label: 'First call', value: '30-min strategy session' },
@@ -141,7 +140,7 @@ export default function Contact() {
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               {/* Name + Company row */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div id="contact-name-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                 <div>
                   <label style={{
                     fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300,
@@ -225,11 +224,7 @@ export default function Contact() {
                   onChange={e => setForm({ ...form, message: e.target.value })}
                   placeholder="What does your business do, and what are you hoping AI can solve for you?"
                   rows={5}
-                  style={{
-                    ...inputStyle,
-                    resize: 'vertical',
-                    minHeight: '120px',
-                  }}
+                  style={{ ...inputStyle, resize: 'vertical', minHeight: '120px' }}
                   onFocus={e => (e.target.style.borderBottomColor = 'var(--coral)')}
                   onBlur={e => (e.target.style.borderBottomColor = 'var(--border-light)')}
                 />
@@ -246,7 +241,6 @@ export default function Contact() {
                   color: 'var(--white)', border: 'none',
                   padding: '1rem 2rem', cursor: status === 'loading' ? 'not-allowed' : 'pointer',
                   width: '100%', transition: 'opacity 0.2s',
-                  alignSelf: 'flex-start',
                 }}
                 onMouseEnter={e => { if (status !== 'loading') e.currentTarget.style.opacity = '0.85' }}
                 onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
@@ -270,9 +264,10 @@ export default function Contact() {
       <style>{`
         @media (max-width: 680px) {
           #contact { padding: 4rem 1.25rem !important; }
-          #contact > div { grid-template-columns: 1fr !important; gap: 3rem !important; }
+          #contact-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+          #contact-name-row { grid-template-columns: 1fr !important; gap: 1rem !important; }
         }
-        input::placeholder, textarea::placeholder, select { color: rgba(15,15,14,0.3) !important; }
+        input::placeholder, textarea::placeholder { color: rgba(15,15,14,0.3) !important; }
         select option { background: var(--page); color: var(--ink); }
       `}</style>
     </section>

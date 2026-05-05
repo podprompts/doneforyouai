@@ -76,3 +76,49 @@ body {
 .delay-3 { animation-delay: 0.35s; }
 .delay-4 { animation-delay: 0.5s; }
 .delay-5 { animation-delay: 0.65s; }
+
+/* ── RESPONSIVE GRID OVERRIDES ── */
+/* These override inline-style grids on mobile */
+
+@media (max-width: 680px) {
+
+  /* Audience section */
+  #audience-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Contact section */
+  #contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 3rem !important;
+  }
+
+  /* Contact name/company row */
+  #contact-name-row {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Services / Process grids */
+  [data-mobile-stack] {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* Global section padding on mobile */
+  section {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  /* Prevent anything from bleeding outside viewport */
+  * {
+    max-width: 100%;
+  }
+
+  img, video, iframe {
+    width: 100% !important;
+    height: auto !important;
+  }
+}

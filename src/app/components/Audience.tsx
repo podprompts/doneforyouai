@@ -15,7 +15,7 @@ export default function Audience() {
       borderTop: '1px solid var(--border-light)',
       borderBottom: '1px solid var(--border-light)',
     }}>
-      <div style={{
+      <div id="audience-grid" style={{
         display: 'grid',
         gridTemplateColumns: '240px 1fr',
         gap: '4rem',
@@ -56,12 +56,6 @@ export default function Audience() {
           ))}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 680px) {
-          section { grid-template-columns: 1fr !important; gap: 1.5rem !important; padding: 3rem 1.25rem !important; }
-        }
-      `}</style>
     </section>
   )
 }
