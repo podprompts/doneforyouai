@@ -367,6 +367,7 @@ export default function Marketplace() {
 }
 
 // ── OPERATOR CARD ─────────────────────────────────────────────────
+// ── OPERATOR CARD — Option 1: full-bleed video + frosted glass content panel ─
 function OperatorCard({ op, active, onToggle, onApply, featured = false }: {
   op: Operator; active: boolean; onToggle: () => void; onApply: () => void; featured?: boolean
 }) {
@@ -377,37 +378,60 @@ function OperatorCard({ op, active, onToggle, onApply, featured = false }: {
   const avatarColor = op.avatarColor || AVATAR_COLORS[op.avatar] || '#e8521a'
 
   return (
-    <div style={{ position: 'relative', background: active ? 'var(--ink-2)' : featured ? 'rgba(232,82,26,0.04)' : 'var(--ink)', border: `1px solid ${active ? 'var(--coral-border)' : featured ? 'rgba(232,82,26,0.15)' : 'var(--border-dark)'}`, transition: 'background 0.3s, border-color 0.3s', marginBottom: '1px', minHeight: active && hasVideo ? 380 : undefined, overflow: 'hidden' }}>
+    <div style={{
+      position: 'relative',
+      background: active ? 'var(--ink-2)' : featured ? 'rgba(232,82,26,0.04)' : 'var(--ink)',
+      border: `1px solid ${active ? 'var(--coral-border)' : featured ? 'rgba(232,82,26,0.15)' : 'var(--border-dark)'}`,
+      transition: 'background 0.3s, border-color 0.3s',
+      marginBottom: '1px',
+      // Taller when video is active so the video has room to breathe
+      minHeight: active && hasVideo ? 460 : undefined,
+      overflow: 'hidden',
+    }}>
 
+      {/* Full-bleed video layer */}
       <OperatorVideoBackground source={videoSource} active={active && hasVideo} opacity={0.28} />
 
+      {/* All card content — sits above video */}
       <div style={{ position: 'relative', zIndex: 3 }}>
-        <div onClick={onToggle} style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 'clamp(0.75rem, 3vw, 1.25rem)', padding: 'clamp(1rem, 4vw, 1.5rem)', cursor: 'pointer', alignItems: 'center' }}>
 
+        {/* ── Header row — always visible, click toggles ── */}
+        <div onClick={onToggle} style={{
+          display: 'grid', gridTemplateColumns: 'auto 1fr auto',
+          gap: 'clamp(0.75rem, 3vw, 1.25rem)',
+          padding: 'clamp(1rem, 4vw, 1.5rem)',
+          cursor: 'pointer', alignItems: 'center',
+          // When video is active, add a subtle dark scrim behind the header too
+          background: active && hasVideo ? 'rgba(15,15,14,0.45)' : 'transparent',
+          backdropFilter: active && hasVideo ? 'blur(4px)' : 'none',
+          transition: 'background 0.5s',
+        }}>
+          {/* Avatar */}
           <div style={{ width: 'clamp(40px, 10vw, 52px)', height: 'clamp(40px, 10vw, 52px)', borderRadius: '50%', background: avatarColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: 'clamp(0.7rem, 2.5vw, 0.85rem)', color: 'var(--white)', flexShrink: 0, opacity: op.available ? 1 : 0.5, position: 'relative' }}>
             {op.avatar}
             {op.available && <span style={{ position: 'absolute', bottom: 2, right: 2, width: 8, height: 8, background: '#3ecf8e', borderRadius: '50%', border: '1.5px solid var(--ink)' }} />}
           </div>
 
+          {/* Name / title / tags */}
           <div style={{ minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.2rem' }}>
               <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: 'clamp(0.85rem, 2.5vw, 0.95rem)', color: 'var(--page)' }}>{op.name}</span>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, color: 'rgba(247,245,240,0.3)' }}>@{op.handle}</span>
               {featured && <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '0.1rem 0.4rem' }}>Featured</span>}
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: tier.color, border: `1px solid ${tier.border}`, padding: '0.1rem 0.4rem' }}>{tier.label}</span>
-              {(op.tier === 'pro_video') && (
+              {op.tier === 'pro_video' && (
                 <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#3ecf8e', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                   <span style={{ fontSize: '0.5rem' }}>▶</span> video
                 </span>
               )}
               {hasVideo && active && (
-                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.55)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.7)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <span style={{ width: 4, height: 4, background: 'var(--coral)', borderRadius: '50%', animation: 'pulse-dot 1.5s infinite' }} />
                   {videoLabel}
                 </span>
               )}
             </div>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.75rem, 2vw, 0.82rem)', color: 'rgba(247,245,240,0.45)', marginBottom: '0.5rem' }}>{op.title} · {op.location}</div>
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.75rem, 2vw, 0.82rem)', color: 'rgba(247,245,240,0.55)', marginBottom: '0.5rem' }}>{op.title} · {op.location}</div>
             <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
               {(op.tags || []).slice(0, 3).map(tag => (
                 <span key={tag} style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.06em', padding: '0.2rem 0.5rem', background: 'var(--ink-3)', color: 'rgba(247,245,240,0.45)', border: '1px solid var(--border-dark)' }}>{tag}</span>
@@ -415,6 +439,7 @@ function OperatorCard({ op, active, onToggle, onApply, featured = false }: {
             </div>
           </div>
 
+          {/* Rate + rating */}
           <div style={{ textAlign: 'right', flexShrink: 0 }}>
             <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.1rem, 3vw, 1.4rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
             <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, color: 'rgba(247,245,240,0.3)', marginBottom: '0.35rem' }}>{op.rate_type}</div>
@@ -422,45 +447,86 @@ function OperatorCard({ op, active, onToggle, onApply, featured = false }: {
           </div>
         </div>
 
+        {/* ── Expanded panel ── */}
         {active && (
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', padding: 'clamp(1rem, 4vw, 1.5rem)', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', opacity: hasVideo ? 0.15 : 1, transition: 'opacity 0.7s ease' }}>
+          <div style={{
+            // When video is playing: frosted glass panel at the bottom of the card
+            // When no video: normal panel with border
+            ...(hasVideo ? {
+              position: 'absolute',
+              bottom: 0, left: 0, right: 0,
+              background: 'rgba(15,15,14,0.78)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              borderTop: '1px solid rgba(247,245,240,0.08)',
+            } : {
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              background: 'rgba(255,255,255,0.02)',
+            }),
+            padding: 'clamp(1rem, 4vw, 1.5rem)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '1.5rem',
+            // Always 100% readable — no opacity ghosting
+            opacity: 1,
+          }}>
             <div>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', display: 'block', marginBottom: '0.5rem' }}>About</span>
-              <p style={{ fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'rgba(247,245,240,0.65)', lineHeight: 1.7 }}>{op.bio}</p>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)', display: 'block', marginBottom: '0.5rem' }}>About</span>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'rgba(247,245,240,0.85)', lineHeight: 1.7 }}>{op.bio}</p>
               <div style={{ marginTop: '1rem' }}>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', display: 'block', marginBottom: '0.5rem' }}>What you get</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)', display: 'block', marginBottom: '0.5rem' }}>What you get</span>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                   {(op.deliverables || []).map((d, i) => (
-                    <span key={i} style={{ fontFamily: 'var(--sans)', fontSize: '0.82rem', color: 'rgba(247,245,240,0.6)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span key={i} style={{ fontFamily: 'var(--sans)', fontSize: '0.82rem', color: 'rgba(247,245,240,0.8)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <span style={{ color: 'var(--coral)', fontSize: '0.6rem' }}>◆</span>{d}
                     </span>
                   ))}
                 </div>
               </div>
             </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)' }}>Connect</span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)' }}>Connect</span>
               <button style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: op.available ? 'var(--coral)' : 'rgba(247,245,240,0.08)', color: op.available ? 'var(--white)' : 'rgba(247,245,240,0.25)', border: 'none', padding: '0.85rem 1.5rem', cursor: op.available ? 'pointer' : 'not-allowed', width: '100%', textAlign: 'left' }}>
                 {op.available ? 'Book a Strategy Call →' : 'Currently Unavailable'}
               </button>
               {op.available && (
-                <button style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, letterSpacing: '0.08em', background: 'transparent', color: 'rgba(247,245,240,0.5)', border: '1px solid rgba(255,255,255,0.08)', padding: '0.85rem 1.5rem', cursor: 'pointer', width: '100%', textAlign: 'left' }}>
+                <button style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, letterSpacing: '0.08em', background: 'transparent', color: 'rgba(247,245,240,0.6)', border: '1px solid rgba(255,255,255,0.12)', padding: '0.85rem 1.5rem', cursor: 'pointer', width: '100%', textAlign: 'left' }}>
                   Send a message →
                 </button>
               )}
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.06em', color: 'rgba(247,245,240,0.18)', lineHeight: 1.6 }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.06em', color: 'rgba(247,245,240,0.25)', lineHeight: 1.6 }}>
                 All operators are vetted<br />by the DoneForYouAI team.
               </div>
             </div>
           </div>
         )}
 
+        {/* Close hint — bottom right, above the frosted panel */}
         {active && hasVideo && (
           <div onClick={onToggle}
-            style={{ position: 'absolute', bottom: '1.25rem', right: '1.25rem', zIndex: 10, fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.75rem', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(15,15,14,0.65)', backdropFilter: 'blur(8px)' }}
+            style={{
+              position: 'absolute',
+              // sits just above the frosted panel
+              bottom: 'calc(100% - 100% + 0.75rem)',
+              right: '1.25rem',
+              zIndex: 10,
+              fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300,
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+              color: 'rgba(247,245,240,0.5)',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '0.4rem',
+              padding: '0.35rem 0.75rem',
+              border: '1px solid rgba(255,255,255,0.12)',
+              background: 'rgba(15,15,14,0.60)',
+              backdropFilter: 'blur(8px)',
+              transition: 'color 0.2s',
+            }}
             onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
-            onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.4)'}
-          >✕ close</div>
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.5)'}
+          >
+            ✕ close
+          </div>
         )}
       </div>
     </div>
