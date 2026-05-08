@@ -5,9 +5,6 @@
 //   1. Cloudflare R2 MP4 (clean, no branding, best performance)
 //   2. Mux (adaptive bitrate, analytics, power users)
 //   3. YouTube (lowest friction, most operators already have this)
-//
-// Each resolves to a { type, src, poster } object consumed by
-// the <OperatorVideoBackground /> component.
 // ─────────────────────────────────────────────────────────────────
 
 export type VideoSource =
@@ -17,9 +14,9 @@ export type VideoSource =
   | null
 
 export interface OperatorMedia {
-  r2Key?: string          // e.g. "operators/mayabuilds/reel.mp4"
-  muxPlaybackId?: string  // e.g. "DS00Spx1CV902MCtPj5WknGlR"
-  youtubeUrl?: string     // e.g. "https://youtube.com/watch?v=abc123"
+  r2Key?: string
+  muxPlaybackId?: string
+  youtubeUrl?: string
 }
 
 const R2_BASE = process.env.NEXT_PUBLIC_R2_BASE_URL || ''
@@ -46,7 +43,12 @@ export function resolveVideoSource(media: OperatorMedia): VideoSource {
       return {
         type: 'youtube',
         embedId,
-        src: `https://www.youtube-nocookie.com/embed/${embedId}?autoplay=1&mute=1&loop=1&playlist=${embedId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1`,
+        // youtube-nocookie = privacy-enhanced mode
+        // enablejsapi=1 allows postMessage control
+        // disablekb=1 disables keyboard nav away
+        // fs=0 removes fullscreen button (keeps user in card)
+        // cc_load_policy=0 no captions
+        src: `https://www.youtube-nocookie.com/embed/${embedId}?autoplay=1&mute=0&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0&cc_load_policy=0&color=white`,
       }
     }
   }
@@ -73,4 +75,13 @@ export function getR2OperatorKey(handle: string, filename: string): string {
   const ext = filename.split('.').pop()?.toLowerCase() || 'mp4'
   const safe = handle.replace(/[^a-z0-9_-]/gi, '-').toLowerCase()
   return `operators/${safe}/reel.${ext}`
+}
+
+// Returns a thumbnail URL for the video source (used as poster before play)
+export function getVideoThumbnail(source: VideoSource): string | null {
+  if (!source) return null
+  if (source.type === 'youtube') return `https://img.youtube.com/vi/${source.embedId}/maxresdefault.jpg`
+  if (source.type === 'mux') return source.poster || null
+  if (source.type === 'r2') return source.poster || null
+  return null
 }

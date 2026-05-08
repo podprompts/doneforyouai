@@ -3,19 +3,20 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import { OperatorCard, type OperatorCardData } from '@/app/components/OperatorCard'
 
 const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_HERO_MUX_PLAYBACK_ID || ''
 
 const AVATAR_COLORS = ['#e8521a', '#2cb67d', '#f5a623', '#7c3aed', '#0ea5e9']
 
-const FALLBACK_OPERATORS = [
+const FALLBACK_OPERATORS: OperatorCardData[] = [
   {
     id: '1', name: 'Maya Reeves', handle: 'mayabuilds',
     title: 'AI Automation Architect', location: 'Austin, TX',
     avatar: 'MR', avatarColor: '#e8521a',
     tags: ['Automation', 'Zapier', 'Make'],
     rate: '$2,400', rate_type: 'per project',
-    rating: 4.9, reviews: 34, available: true,
+    rating: 4.9, reviews: 34, available: true, featured: true, tier: 'pro_video',
     bio: 'I build end-to-end automation systems that eliminate manual work.',
     deliverables: ['Workflow audit', 'Full build + testing', 'Team handoff doc'],
     youtube_url: '', r2_key: null, mux_playback_id: null,
@@ -26,7 +27,7 @@ const FALLBACK_OPERATORS = [
     avatar: 'JO', avatarColor: '#2cb67d',
     tags: ['ChatGPT', 'Claude', 'Voiceflow'],
     rate: '$180', rate_type: 'per hour',
-    rating: 5.0, reviews: 19, available: true,
+    rating: 5.0, reviews: 19, available: true, featured: true, tier: 'pro',
     bio: 'Custom AI assistants trained on your business voice and knowledge base.',
     deliverables: ['Bot strategy session', 'Full chatbot build', '30-day support'],
     youtube_url: '', r2_key: null, mux_playback_id: null,
@@ -37,26 +38,24 @@ const FALLBACK_OPERATORS = [
     avatar: 'SM', avatarColor: '#f5a623',
     tags: ['Strategy', 'Tool Selection', 'Roadmap'],
     rate: '$250', rate_type: 'per hour',
-    rating: 4.9, reviews: 41, available: false,
+    rating: 4.9, reviews: 41, available: false, featured: true, tier: 'pro_video',
     bio: 'A custom roadmap: which tools, which workflows, which prompts will compound.',
     deliverables: ['AI audit', 'Tool stack recommendation', 'Implementation roadmap'],
     youtube_url: '', r2_key: null, mux_playback_id: null,
   },
 ]
 
-type Operator = typeof FALLBACK_OPERATORS[0]
-
 export default function Hero() {
   const hasVideo = Boolean(MUX_PLAYBACK_ID)
   const [expanded, setExpanded] = useState<string | null>(null)
-  const [operators, setOperators] = useState<Operator[]>(FALLBACK_OPERATORS)
+  const [operators, setOperators] = useState<OperatorCardData[]>(FALLBACK_OPERATORS)
 
   useEffect(() => {
     const fetchOperators = async () => {
       try {
         const { data, error } = await supabase
           .from('operators')
-          .select('id, name, handle, title, location, avatar, tags, rate, rate_type, rating, reviews, available, bio, deliverables, youtube_url, r2_key, mux_playback_id')
+          .select('id, name, handle, title, location, avatar, tags, rate, rate_type, rating, reviews, available, bio, deliverables, tier, youtube_url, r2_key, mux_playback_id')
           .eq('featured', true)
           .eq('approved', true)
           .limit(3)
@@ -66,8 +65,8 @@ export default function Hero() {
           setOperators(data.map((op, i) => ({
             ...op,
             avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
-            // ── FIX: rate already has $ in Supabase — do NOT prepend another ──
             rate: op.rate,
+            featured: true,
             youtube_url: op.youtube_url || '',
             r2_key: op.r2_key || null,
             mux_playback_id: op.mux_playback_id || null,
@@ -79,11 +78,6 @@ export default function Hero() {
     }
     fetchOperators()
   }, [])
-
-  const toggle = (id: string, suffix = '') => {
-    const key = id + suffix
-    setExpanded(expanded === key ? null : key)
-  }
 
   return (
     <section style={{
@@ -133,27 +127,29 @@ export default function Hero() {
         </p>
 
         <div className="animate-fade-up delay-4" style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
-          <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: 'var(--coral)', color: 'var(--white)', border: 'none', padding: '0.95rem 2.25rem', cursor: 'pointer', transition: 'opacity 0.2s, transform 0.15s' }}
+          <button
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', border: 'none', padding: '0.95rem 2.25rem', cursor: 'pointer', transition: 'opacity 0.2s, transform 0.15s' }}
             onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'translateY(-1px)' }}
             onMouseLeave={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)' }}
           >Book a Free Strategy Call</button>
-          <button onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+          <button
+            onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
             style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase', background: 'transparent', color: 'rgba(247,245,240,0.48)', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.2s' }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--page)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(247,245,240,0.48)')}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.48)'}
           >See Services <span>↓</span></button>
         </div>
       </div>
 
-      {/* Right — Operator Panel (desktop) */}
-      <div className="animate-fade-in delay-5 hero-panel" style={{ position: 'relative', zIndex: 1, border: '1px solid var(--border-dark)', overflow: 'hidden' }}>
-        <OperatorPanel operators={operators} expanded={expanded} onToggle={(id) => toggle(id)} suffix="" />
+      {/* Right — Operator panel */}
+      <div className="animate-fade-in delay-5 hero-panel" style={{ position: 'relative', zIndex: 1 }}>
+        <OperatorPanel operators={operators} expanded={expanded} onExpand={setExpanded} />
       </div>
 
       {/* Mobile operator panel */}
       <div className="hero-panel-mobile" style={{ position: 'relative', zIndex: 1 }}>
-        <OperatorPanel operators={operators} expanded={expanded} onToggle={(id) => toggle(id, '-m')} suffix="-m" />
+        <OperatorPanel operators={operators} expanded={expanded} onExpand={setExpanded} />
       </div>
 
       <style>{`
@@ -168,14 +164,14 @@ export default function Hero() {
   )
 }
 
-function OperatorPanel({ operators, expanded, onToggle, suffix }: {
-  operators: Operator[]
+function OperatorPanel({ operators, expanded, onExpand }: {
+  operators: OperatorCardData[]
   expanded: string | null
-  onToggle: (id: string) => void
-  suffix: string
+  onExpand: (id: string | null) => void
 }) {
   return (
     <div style={{ border: '1px solid var(--border-dark)', overflow: 'hidden' }}>
+      {/* Header */}
       <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid var(--border-dark)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)' }}>Featured Operators</span>
         <span style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: '#3ecf8e', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -184,69 +180,19 @@ function OperatorPanel({ operators, expanded, onToggle, suffix }: {
         </span>
       </div>
 
-      {operators.map((op, i) => {
-        const key = op.id + suffix
-        const isOpen = expanded === key
-        return (
-          <div key={op.id}>
-            <button onClick={() => onToggle(op.id)}
-              style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', padding: '1.1rem 1.5rem', borderBottom: isOpen ? 'none' : (i < operators.length - 1 ? '1px solid var(--border-dark)' : 'none'), display: 'flex', alignItems: 'center', gap: '1rem', textAlign: 'left', transition: 'background 0.2s' }}
-              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.03)')}
-              onMouseLeave={e => (e.currentTarget.style.background = 'none')}
-            >
-              <div style={{ width: 42, height: 42, borderRadius: '50%', background: op.avatarColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '0.72rem', color: '#fff', flexShrink: 0, position: 'relative' }}>
-                {op.avatar}
-                {op.available && <span style={{ position: 'absolute', bottom: 1, right: 1, width: 8, height: 8, borderRadius: '50%', background: '#3ecf8e', border: '1.5px solid var(--ink)' }} />}
-              </div>
+      {/* Operator cards */}
+      {operators.map(op => (
+        <OperatorCard
+          key={op.id}
+          op={op}
+          active={expanded === op.id}
+          onToggle={() => onExpand(expanded === op.id ? null : op.id)}
+          showViewProfile={true}
+          featured={op.featured}
+        />
+      ))}
 
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.15rem' }}>
-                  <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.82rem', color: 'var(--page)' }}>{op.name}</span>
-                  <span style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.3)' }}>@{op.handle}</span>
-                </div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, color: 'rgba(247,245,240,0.42)', marginBottom: '0.4rem' }}>{op.title} · {op.location}</div>
-                <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                  {op.tags.slice(0, 3).map((tag: string) => (
-                    <span key={tag} style={{ fontFamily: 'var(--mono)', fontSize: '0.56rem', fontWeight: 300, padding: '0.2rem 0.5rem', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(247,245,240,0.4)' }}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: '0.56rem', color: 'rgba(247,245,240,0.3)', marginBottom: '0.3rem' }}>{op.rate_type}</div>
-                <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: '#3ecf8e' }}>★ {op.rating} ({op.reviews})</div>
-              </div>
-
-              <span style={{ color: 'rgba(247,245,240,0.25)', fontSize: '0.7rem', flexShrink: 0, transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▼</span>
-            </button>
-
-            {isOpen && (
-              <div style={{ padding: '0 1.5rem 1.25rem', borderBottom: i < operators.length - 1 ? '1px solid var(--border-dark)' : 'none', background: 'rgba(255,255,255,0.02)' }}>
-                {(op.youtube_url || op.r2_key || op.mux_playback_id) && (
-                  <div style={{ marginBottom: '1rem', position: 'relative', paddingBottom: '56.25%', background: '#000' }}>
-                    {op.youtube_url ? (
-                      <iframe src={getYouTubeEmbedUrl(op.youtube_url)} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }} allow="autoplay; encrypted-media" allowFullScreen />
-                    ) : op.mux_playback_id ? (
-                      <video src={`https://stream.mux.com/${op.mux_playback_id}/high.mp4`} controls style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
-                    ) : null}
-                  </div>
-                )}
-                <p style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', color: 'rgba(247,245,240,0.5)', lineHeight: 1.65, marginBottom: '0.85rem' }}>{op.bio}</p>
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                  {op.deliverables.map((d: string) => (
-                    <span key={d} style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, padding: '0.3rem 0.7rem', border: '1px solid var(--coral-border)', color: 'var(--coral)' }}>✓ {d}</span>
-                  ))}
-                </div>
-                <Link href="/marketplace" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '0.5rem 1.25rem', textDecoration: 'none' }}>
-                  View Profile →
-                </Link>
-              </div>
-            )}
-          </div>
-        )
-      })}
-
+      {/* Footer */}
       <div style={{ padding: '0.85rem 1.5rem', borderTop: '1px solid var(--border-dark)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
           {[{ val: '47+', label: 'Businesses' }, { val: '98%', label: 'Satisfaction' }, { val: '3wk', label: 'Delivery' }].map(s => (
@@ -260,21 +206,4 @@ function OperatorPanel({ operators, expanded, onToggle, suffix }: {
       </div>
     </div>
   )
-}
-
-function getYouTubeEmbedUrl(url: string): string {
-  try {
-    if (url.includes('youtu.be/')) {
-      const id = url.split('youtu.be/')[1].split(/[?&]/)[0]
-      return `https://www.youtube.com/embed/${id}`
-    }
-    if (url.includes('/shorts/')) {
-      const id = url.split('/shorts/')[1].split(/[?&]/)[0]
-      return `https://www.youtube.com/embed/${id}`
-    }
-    const urlObj = new URL(url)
-    const id = urlObj.searchParams.get('v')
-    if (id) return `https://www.youtube.com/embed/${id}`
-  } catch {}
-  return url
 }
