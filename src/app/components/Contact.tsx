@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
@@ -23,7 +23,7 @@ export default function Contact() {
     if (!form.name || !form.email || !form.message) return
     setStatus('loading')
     try {
-      const supabase = createClient()
+      
       const { error } = await supabase.from('leads').insert({
         name:         form.name,
         email:        form.email,
