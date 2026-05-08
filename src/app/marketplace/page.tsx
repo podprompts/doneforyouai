@@ -47,7 +47,7 @@ const operators: Operator[] = [
     deliverables: ['Workflow audit', 'Full build + testing', 'Team handoff doc'],
     muxPlaybackId: '',
     r2Key: '',
-    youtubeUrl: '', // ← paste your YouTube URL here e.g. 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    youtubeUrl: '',
   },
   {
     id: '2',
@@ -445,20 +445,22 @@ function OperatorCard({ op, active, onToggle, featured = false }: {
       border: `1px solid ${active ? 'var(--coral-border)' : featured ? 'rgba(232,82,26,0.15)' : 'var(--border-dark)'}`,
       transition: 'background 0.3s, border-color 0.3s',
       marginBottom: '1px',
+      // Give the card enough height when video is active so video fills it
+      minHeight: active && hasVideo ? 380 : undefined,
       overflow: 'hidden',
     }}>
 
-      {/* ── VIDEO BACKGROUND — wired through OperatorVideoBackground ── */}
+      {/* ── VIDEO LAYER (z:1) — full-bleed behind everything ── */}
       <OperatorVideoBackground
         source={videoSource}
-        active={active}
+        active={active && hasVideo}
         opacity={0.28}
       />
 
-      {/* ── CARD CONTENT (above video layer) ── */}
-      <div style={{ position: 'relative', zIndex: 2 }}>
+      {/* ── ALL CARD CONTENT (z:3, above video + its overlay) ── */}
+      <div style={{ position: 'relative', zIndex: 3 }}>
 
-        {/* Header row */}
+        {/* Header row — always visible, click toggles card */}
         <div
           onClick={onToggle}
           style={{
@@ -491,7 +493,7 @@ function OperatorCard({ op, active, onToggle, featured = false }: {
             )}
           </div>
 
-          {/* Info */}
+          {/* Name / title / tags */}
           <div style={{ minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.2rem' }}>
               <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: 'clamp(0.85rem, 2.5vw, 0.95rem)', color: 'var(--page)' }}>{op.name}</span>
@@ -504,16 +506,16 @@ function OperatorCard({ op, active, onToggle, featured = false }: {
                   padding: '0.1rem 0.4rem',
                 }}>Featured</span>
               )}
-              {/* Live reel badge — shows when video is active */}
+              {/* Live reel badge */}
               {hasVideo && active && (
                 <span style={{
                   fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300,
                   letterSpacing: '0.1em', textTransform: 'uppercase',
-                  color: 'rgba(247,245,240,0.4)',
+                  color: 'rgba(247,245,240,0.55)',
                   display: 'flex', alignItems: 'center', gap: '0.3rem',
                 }}>
                   <span style={{
-                    width: 4, height: 4, background: 'rgba(247,245,240,0.4)',
+                    width: 4, height: 4, background: 'var(--coral)',
                     borderRadius: '50%', animation: 'pulse-dot 1.5s infinite',
                   }} />
                   {videoLabel}
@@ -543,7 +545,7 @@ function OperatorCard({ op, active, onToggle, featured = false }: {
           </div>
         </div>
 
-        {/* Expanded panel */}
+        {/* ── EXPANDED PANEL ── */}
         {active && (
           <div style={{
             borderTop: '1px solid rgba(255,255,255,0.08)',
@@ -551,6 +553,9 @@ function OperatorCard({ op, active, onToggle, featured = false }: {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
             gap: '1.5rem',
+            // When video is playing, ghost the profile content back so video is the hero
+            opacity: hasVideo ? 0.15 : 1,
+            transition: 'opacity 0.7s ease',
           }}>
             <div>
               <span style={{
@@ -611,6 +616,33 @@ function OperatorCard({ op, active, onToggle, featured = false }: {
             </div>
           </div>
         )}
+
+        {/* ── CLOSE HINT — only when video is active ── */}
+        {active && hasVideo && (
+          <div
+            onClick={onToggle}
+            style={{
+              position: 'absolute',
+              bottom: '1.25rem', right: '1.25rem',
+              zIndex: 10,
+              fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300,
+              letterSpacing: '0.1em', textTransform: 'uppercase',
+              color: 'rgba(247,245,240,0.4)',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '0.4rem',
+              padding: '0.4rem 0.75rem',
+              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(15,15,14,0.65)',
+              backdropFilter: 'blur(8px)',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.4)'}
+          >
+            ✕ close
+          </div>
+        )}
+
       </div>
     </div>
   )

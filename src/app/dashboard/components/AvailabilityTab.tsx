@@ -5,7 +5,10 @@ import { useState } from 'react'
 interface Props {
   operator: {
     available: boolean
-    tier: string
+    capacity: string
+    responseTime: string
+    projectDuration: string
+    availabilityNote: string
   }
   onSave: (data: any) => Promise<void>
 }
@@ -16,10 +19,10 @@ const durationOptions  = ['1–2 weeks', '2–4 weeks', '1–3 months', '3+ mont
 
 export default function AvailabilityTab({ operator, onSave }: Props) {
   const [available, setAvailable] = useState(operator.available)
-  const [capacity, setCapacity] = useState('2 projects')
-  const [responseTime, setResponseTime] = useState('Within 24 hours')
-  const [projectDuration, setProjectDuration] = useState('2–4 weeks')
-  const [note, setNote] = useState('')
+  const [capacity, setCapacity] = useState(operator.capacity || '2 projects')
+  const [responseTime, setResponseTime] = useState(operator.responseTime || 'Within 24 hours')
+  const [projectDuration, setProjectDuration] = useState(operator.projectDuration || '2–4 weeks')
+  const [note, setNote] = useState(operator.availabilityNote || '')
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -59,7 +62,6 @@ export default function AvailabilityTab({ operator, onSave }: Props) {
           </p>
         </div>
 
-        {/* Toggle switch */}
         <button
           onClick={() => setAvailable(v => !v)}
           style={{
@@ -139,7 +141,7 @@ export default function AvailabilityTab({ operator, onSave }: Props) {
       {/* Save */}
       <div style={{ paddingTop: '0.5rem', borderTop: '1px solid var(--border-dark)' }}>
         <button
-          onClick={() => onSave({ available, capacity, responseTime, projectDuration, note })}
+          onClick={() => onSave({ available, capacity, responseTime, projectDuration, availabilityNote: note })}
           style={{
             fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600,
             letterSpacing: '0.08em', textTransform: 'uppercase',

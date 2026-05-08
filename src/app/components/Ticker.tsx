@@ -20,7 +20,7 @@ export default function Ticker() {
     }}>
       <div style={{
         display: 'flex',
-        animation: 'ticker 28s linear infinite',
+        animation: 'ticker 14s linear infinite',
         width: 'max-content',
       }}>
         {repeated.map((item, i) => (

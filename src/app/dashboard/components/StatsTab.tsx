@@ -1,23 +1,17 @@
 'use client'
 
 interface Props {
-  operator: {
-    tier: string
-    stats: {
-      profileViews: number
-      cardExpands: number
-      callBookings: number
-      messagesSent: number
-      viewsThisWeek: number
-      expandsThisWeek: number
-    }
+  stats: {
+    profileViews: number
+    cardExpands: number
+    callBookings: number
+    messagesSent: number
+    viewsThisWeek: number
+    expandsThisWeek: number
   }
 }
 
-export default function StatsTab({ operator }: Props) {
-  const { stats } = operator
-  const isPro = operator.tier === 'pro' || operator.tier === 'elite'
-
+export default function StatsTab({ stats }: Props) {
   const mainStats = [
     { label: 'Profile Views',   value: stats.profileViews,  sub: `+${stats.viewsThisWeek} this week`,    accent: false },
     { label: 'Card Expands',    value: stats.cardExpands,   sub: `+${stats.expandsThisWeek} this week`,  accent: false },
@@ -45,10 +39,7 @@ export default function StatsTab({ operator }: Props) {
         border: '1px solid var(--border-dark)',
       }}>
         {mainStats.map((s, i) => (
-          <div key={i} style={{
-            background: 'var(--ink-2)',
-            padding: '1.5rem',
-          }}>
+          <div key={i} style={{ background: 'var(--ink-2)', padding: '1.5rem' }}>
             <span style={{
               fontFamily: 'var(--serif)',
               fontSize: 'clamp(2rem, 5vw, 2.8rem)',
@@ -83,8 +74,8 @@ export default function StatsTab({ operator }: Props) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
           {[
-            { label: 'View → Expand rate',    value: expandRate,   desc: 'Of visitors who expand your card' },
-            { label: 'Expand → Booking rate', value: bookingRate,  desc: 'Of expands that lead to a call booking' },
+            { label: 'View → Expand rate',    value: expandRate,  desc: 'Of visitors who expand your card' },
+            { label: 'Expand → Booking rate', value: bookingRate, desc: 'Of expands that lead to a call booking' },
           ].map((item, i) => (
             <div key={i} style={{
               display: 'grid', gridTemplateColumns: '1fr auto',
@@ -104,46 +95,13 @@ export default function StatsTab({ operator }: Props) {
                 }}>{item.desc}</span>
               </div>
               <span style={{
-                fontFamily: 'var(--serif)', fontSize: '1.8rem',
-                fontWeight: 400,
+                fontFamily: 'var(--serif)', fontSize: '1.8rem', fontWeight: 400,
                 color: item.value > 20 ? '#3ecf8e' : item.value > 10 ? 'var(--coral)' : 'rgba(247,245,240,0.4)',
               }}>{item.value}%</span>
             </div>
           ))}
         </div>
       </div>
-
-      {/* Pro analytics upsell */}
-      {!isPro && (
-        <div style={{
-          border: '1px solid var(--coral-border)',
-          padding: '1.5rem',
-          background: 'var(--coral-dim)',
-          display: 'flex', alignItems: 'center',
-          justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem',
-        }}>
-          <div>
-            <span style={{
-              fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300,
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              color: 'var(--coral)', display: 'block', marginBottom: '0.4rem',
-            }}>Pro Analytics</span>
-            <p style={{
-              fontFamily: 'var(--sans)', fontSize: '0.82rem',
-              color: 'rgba(247,245,240,0.45)', lineHeight: 1.6,
-            }}>
-              Upgrade to see weekly trends, traffic sources, and which tags are driving the most views.
-            </p>
-          </div>
-          <button style={{
-            fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
-            letterSpacing: '0.08em', textTransform: 'uppercase',
-            background: 'var(--coral)', color: 'var(--white)',
-            border: 'none', padding: '0.7rem 1.25rem', cursor: 'pointer',
-            flexShrink: 0,
-          }}>Upgrade →</button>
-        </div>
-      )}
 
     </div>
   )

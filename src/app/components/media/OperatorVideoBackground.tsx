@@ -43,9 +43,11 @@ export default function OperatorVideoBackground({ source, active, opacity = 0.28
             position: 'absolute', inset: 0,
             width: '100%', height: '100%',
             objectFit: 'cover',
-            opacity: active ? opacity : 0,
-            transition: 'opacity 0.9s ease',
-            pointerEvents: 'none', zIndex: 0,
+            opacity: active ? 1 : 0,
+            transition: 'opacity 0.7s ease',
+            pointerEvents: 'none',
+            // zIndex sits between card bg (0) and overlay (1) and content (2)
+            zIndex: 1,
           }}
         >
           {source.type === 'mux' && (
@@ -71,20 +73,22 @@ export default function OperatorVideoBackground({ source, active, opacity = 0.28
             position: 'absolute', inset: '-10%',
             width: '120%', height: '120%',
             border: 'none', pointerEvents: 'none',
-            opacity: iframeReady ? opacity : 0,
+            opacity: iframeReady ? 1 : 0,
             transition: 'opacity 1.2s ease',
-            zIndex: 0, transform: 'scale(1.05)',
+            zIndex: 1,
+            transform: 'scale(1.05)',
           }}
           title="Operator reel"
         />
       )}
 
-      {/* Gradient overlay — text readability */}
+      {/* Dark overlay — sits above video, below content */}
       <div style={{
-        position: 'absolute', inset: 0, zIndex: 1,
-        background: 'linear-gradient(135deg, rgba(15,15,14,0.82) 0%, rgba(15,15,14,0.62) 50%, rgba(15,15,14,0.82) 100%)',
+        position: 'absolute', inset: 0,
+        zIndex: 2,
+        background: 'rgba(15,15,14,0.55)',
         opacity: active ? 1 : 0,
-        transition: 'opacity 0.9s ease',
+        transition: 'opacity 0.7s ease',
         pointerEvents: 'none',
       }} />
     </>

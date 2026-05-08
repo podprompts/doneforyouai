@@ -18,9 +18,17 @@ const allTags = [
 
 interface Props {
   operator: {
-    name: string; handle: string; title: string; location: string
-    bio: string; rate: string; rateType: string; tags: string[]
+    name: string
+    handle: string
+    title: string
+    location: string
+    bio: string
+    rate: string
+    rateType: string
+    tags: string[]
     specialty: string
+    deliverables?: string[]
+    avatar?: string
   }
   onSave: (data: any) => Promise<void>
 }
