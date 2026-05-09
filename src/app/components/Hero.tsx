@@ -143,21 +143,15 @@ export default function Hero() {
       </div>
 
       {/* Right — Operator panel */}
-      <div className="animate-fade-in delay-5 hero-panel" style={{ position: 'relative', zIndex: 1 }}>
+      <div className="animate-fade-in delay-5 hero-panel-single" style={{ position: 'relative', zIndex: 1 }}>
         <OperatorPanel operators={operators} expanded={expanded} onExpand={setExpanded} />
       </div>
 
-      {/* Mobile operator panel */}
-      <div className="hero-panel-mobile" style={{ position: 'relative', zIndex: 1 }}>
-        <OperatorPanel operators={operators} expanded={expanded} onExpand={setExpanded} />
-      </div>
+
 
       <style>{`
-        .hero-panel-mobile { display: none; }
         @media (max-width: 768px) {
           section { grid-template-columns: 1fr !important; padding: 100px 1.25rem 60px !important; gap: 2.5rem !important; }
-          .hero-panel { display: none !important; }
-          .hero-panel-mobile { display: block !important; }
         }
       `}</style>
     </section>

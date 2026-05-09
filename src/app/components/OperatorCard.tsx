@@ -36,27 +36,40 @@ const TIER_CONFIG: Record<string, { label: string; color: string; border: string
   pro_video: { label: 'Pro+Video', color: '#3ecf8e',              border: 'rgba(62,207,142,0.3)'   },
 }
 
-// ── Auto-playing video — no play button, loads immediately on expand ──
+// ── Video player ──────────────────────────────────────────────────
+// - Autoplays immediately when mounted (card expands)
+// - YouTube: iframe with autoplay=1, mute=0, controls=1 so user can pause
+// - Native video: autoPlay + controls
+// - Click-blocker covers only the very top bar (title/channel) — NOT the controls
 function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVideoSource>> }) {
   if (source.type === 'youtube') {
-    // autoplay=1&mute=0 — plays with audio immediately, no extra click needed
-    const src = source.src
-      .replace('autoplay=1&mute=1', 'autoplay=1&mute=0')
-      .replace('mute=1', 'mute=0')
-      // Ensure autoplay is in the URL
-      + (source.src.includes('autoplay') ? '' : '&autoplay=1')
+    // Build URL: autoplay on, audio on, controls visible so user can pause
+    const embedId = source.embedId
+    const src = `https://www.youtube-nocookie.com/embed/${embedId}?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&playsinline=1&fs=0&color=white`
 
     return (
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000', overflow: 'hidden' }}>
         <iframe
           src={src}
-          allow="autoplay; encrypted-media"
+          allow="autoplay; encrypted-media; picture-in-picture"
           allowFullScreen={false}
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
           title="Operator video"
         />
-        {/* Click-blocker: covers title/channel/Watch on YouTube, leaves bottom controls open */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '85%', zIndex: 2, background: 'transparent', cursor: 'default' }} />
+        {/*
+          Click-blocker covers ONLY the top ~12% of the iframe:
+          - Blocks: channel name, video title (top bar)
+          - Does NOT block: play/pause, volume, progress bar (bottom controls)
+          This lets the user pause/seek without being redirected to YouTube
+        */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          height: '12%',
+          zIndex: 2,
+          background: 'transparent',
+          cursor: 'default',
+          pointerEvents: 'auto',
+        }} />
       </div>
     )
   }
@@ -65,13 +78,17 @@ function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVi
     return (
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000' }}>
         <video
-          autoPlay playsInline
+          autoPlay
+          controls
+          playsInline  // required for iOS autoplay
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           poster={source.poster}
         >
           {source.type === 'mux' && <source src={source.src} type="application/x-mpegURL" />}
           <source
-            src={source.type === 'mux' ? `https://stream.mux.com/${source.playbackId}/high.mp4` : source.src}
+            src={source.type === 'mux'
+              ? `https://stream.mux.com/${source.playbackId}/high.mp4`
+              : source.src}
             type="video/mp4"
           />
         </video>
@@ -96,7 +113,7 @@ export function OperatorCard({
   showViewProfile?: boolean
   featured?: boolean
 }) {
-  const router     = useRouter()
+  const router      = useRouter()
   const videoSource = resolveVideoSource({
     r2Key:         op.r2_key         || undefined,
     muxPlaybackId: op.mux_playback_id || undefined,
@@ -106,14 +123,11 @@ export function OperatorCard({
   const tier     = TIER_CONFIG[op.tier || 'pro'] || TIER_CONFIG.pro
   const avatarBg = op.avatarColor || '#e8521a'
 
-  // Navigate to homepage contact section with operator context
   const goToContact = (e: React.MouseEvent, type: 'book' | 'message') => {
     e.stopPropagation()
     const message = type === 'book'
       ? `I'd like to book a strategy call with ${op.name}${op.specialty ? ` (${op.specialty})` : ''}. Please connect us.`
       : `I'd like to get in touch with ${op.name}${op.specialty ? ` (${op.specialty})` : ''}. Please connect us.`
-
-    // Store in sessionStorage for the Contact form to read
     try {
       sessionStorage.setItem('contactPrefill', JSON.stringify({
         operator: op.name,
@@ -121,8 +135,6 @@ export function OperatorCard({
         message,
       }))
     } catch {}
-
-    // Push to homepage contact anchor
     router.push('/#contact')
   }
 
@@ -135,7 +147,7 @@ export function OperatorCard({
       overflow: 'hidden',
     }}>
 
-      {/* ── Header row — click to expand/collapse ── */}
+      {/* ── Header row ── */}
       <div
         onClick={onToggle}
         style={{
@@ -206,7 +218,7 @@ export function OperatorCard({
       {active && (
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
 
-          {/* Video — auto-plays immediately, no extra click */}
+          {/* Video — autoplays, controls visible so user can pause/seek */}
           {hasVideo && videoSource && <AutoVideo source={videoSource} />}
 
           {/* Bio · Deliverables · CTAs */}
@@ -216,11 +228,9 @@ export function OperatorCard({
             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
             gap: '1.5rem',
           }}>
-            {/* Left: about + deliverables */}
             <div>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', display: 'block', marginBottom: '0.5rem' }}>About</span>
               <p style={{ fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'rgba(247,245,240,0.65)', lineHeight: 1.7, marginBottom: '1rem' }}>{op.bio}</p>
-
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', display: 'block', marginBottom: '0.5rem' }}>What you get</span>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {(op.deliverables || []).map((d, i) => (
@@ -229,41 +239,23 @@ export function OperatorCard({
               </div>
             </div>
 
-            {/* Right: CTAs */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)' }}>Connect</span>
 
-              {/* Book a Strategy Call */}
               <button
                 onClick={e => goToContact(e, 'book')}
                 disabled={!op.available}
-                style={{
-                  fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600,
-                  letterSpacing: '0.08em', textTransform: 'uppercase',
-                  background: op.available ? 'var(--coral)' : 'rgba(247,245,240,0.08)',
-                  color: op.available ? '#fff' : 'rgba(247,245,240,0.25)',
-                  border: 'none', padding: '0.85rem 1.5rem',
-                  cursor: op.available ? 'pointer' : 'not-allowed',
-                  width: '100%', textAlign: 'left', transition: 'opacity 0.2s',
-                }}
+                style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: op.available ? 'var(--coral)' : 'rgba(247,245,240,0.08)', color: op.available ? '#fff' : 'rgba(247,245,240,0.25)', border: 'none', padding: '0.85rem 1.5rem', cursor: op.available ? 'pointer' : 'not-allowed', width: '100%', textAlign: 'left', transition: 'opacity 0.2s' }}
                 onMouseEnter={e => { if (op.available) e.currentTarget.style.opacity = '0.85' }}
                 onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
               >
                 {op.available ? 'Book a Strategy Call →' : 'Currently Unavailable'}
               </button>
 
-              {/* Send a message */}
               {op.available && (
                 <button
                   onClick={e => goToContact(e, 'message')}
-                  style={{
-                    fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-                    letterSpacing: '0.08em', background: 'transparent',
-                    color: 'rgba(247,245,240,0.5)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    padding: '0.85rem 1.5rem', cursor: 'pointer',
-                    width: '100%', textAlign: 'left', transition: 'all 0.15s',
-                  }}
+                  style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, letterSpacing: '0.08em', background: 'transparent', color: 'rgba(247,245,240,0.5)', border: '1px solid rgba(255,255,255,0.08)', padding: '0.85rem 1.5rem', cursor: 'pointer', width: '100%', textAlign: 'left', transition: 'all 0.15s' }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--coral-border)'; e.currentTarget.style.color = 'var(--page)' }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.color = 'rgba(247,245,240,0.5)' }}
                 >
@@ -271,18 +263,11 @@ export function OperatorCard({
                 </button>
               )}
 
-              {/* View Full Profile — links to /marketplace/[handle] */}
               {showViewProfile && (
                 <Link
                   href={`/marketplace/${op.handle}`}
                   onClick={e => e.stopPropagation()}
-                  style={{
-                    display: 'block', fontFamily: 'var(--sans)', fontSize: '0.7rem',
-                    fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase',
-                    background: 'transparent', color: 'rgba(247,245,240,0.4)',
-                    border: '1px solid var(--border-dark)', padding: '0.65rem 1.5rem',
-                    textDecoration: 'none', textAlign: 'center', transition: 'all 0.15s',
-                  }}
+                  style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'transparent', color: 'rgba(247,245,240,0.4)', border: '1px solid var(--border-dark)', padding: '0.65rem 1.5rem', textDecoration: 'none', textAlign: 'center', transition: 'all 0.15s' }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--coral-border)'; e.currentTarget.style.color = 'var(--page)' }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-dark)'; e.currentTarget.style.color = 'rgba(247,245,240,0.4)' }}
                 >
