@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 
 const projects = [
@@ -86,52 +86,113 @@ const projects = [
   },
 ]
 
+// Clone count on each side for infinite illusion
+const CLONES = 3
+const total = projects.length
+
+// Build: [...last CLONES, ...all, ...first CLONES]
+const clonedProjects = [
+  ...projects.slice(total - CLONES),
+  ...projects,
+  ...projects.slice(0, CLONES),
+]
+
+// Real items start at index CLONES in the cloned array
+const OFFSET = CLONES
+
 export default function WorkCarousel() {
-  const [active, setActive] = useState(0)
-  const [dragging, setDragging] = useState(false)
-  const [dragStart, setDragStart] = useState(0)
+  // index into clonedProjects, starts at first real item
+  const [index, setIndex] = useState(OFFSET)
+  const [animated, setAnimated] = useState(true)
+  const [dragStart, setDragStart] = useState<number | null>(null)
   const [dragDelta, setDragDelta] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
   const trackRef = useRef<HTMLDivElement>(null)
   const autoRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const jumpRef = useRef(false)
 
-  const total = projects.length
+  // Active real index (0-based) for dots
+  const realIndex = ((index - OFFSET) % total + total) % total
 
-  const prev = () => setActive(a => (a - 1 + total) % total)
-  const next = () => setActive(a => (a + 1) % total)
+  const goTo = useCallback((newIndex: number, withAnimation = true) => {
+    setAnimated(withAnimation)
+    setIndex(newIndex)
+  }, [])
 
-  // Auto-advance every 4s, pause on interaction
-  const resetAuto = () => {
+  const next = useCallback(() => goTo(index + 1), [index, goTo])
+  const prev = useCallback(() => goTo(index - 1), [index, goTo])
+
+  // After a transition, silently jump from clone zone to real zone
+  useEffect(() => {
+    if (!animated) return
+    const timer = setTimeout(() => {
+      const clonedLen = clonedProjects.length
+      if (index >= total + OFFSET) {
+        // Went past the end clones — jump to start
+        jumpRef.current = true
+        goTo(index - total, false)
+      } else if (index < OFFSET) {
+        // Went past the start clones — jump to end
+        jumpRef.current = true
+        goTo(index + total, false)
+      }
+    }, 450) // match transition duration
+    return () => clearTimeout(timer)
+  }, [index, animated, goTo])
+
+  // Re-enable animation after silent jump
+  useEffect(() => {
+    if (!animated && jumpRef.current) {
+      const t = setTimeout(() => {
+        setAnimated(true)
+        jumpRef.current = false
+      }, 20)
+      return () => clearTimeout(t)
+    }
+  }, [animated])
+
+  const resetAuto = useCallback(() => {
     if (autoRef.current) clearInterval(autoRef.current)
-    autoRef.current = setInterval(() => setActive(a => (a + 1) % total), 4000)
-  }
+    autoRef.current = setInterval(() => {
+      setIndex(i => i + 1)
+      setAnimated(true)
+    }, 4000)
+  }, [])
 
   useEffect(() => {
     resetAuto()
     return () => { if (autoRef.current) clearInterval(autoRef.current) }
-  }, [])
+  }, [resetAuto])
 
   const handlePrev = () => { prev(); resetAuto() }
   const handleNext = () => { next(); resetAuto() }
-  const handleDot  = (i: number) => { setActive(i); resetAuto() }
+  const handleDot  = (i: number) => { goTo(i + OFFSET); resetAuto() }
 
-  // Drag / swipe
+  // Pointer drag
   const onPointerDown = (e: React.PointerEvent) => {
-    setDragging(true)
     setDragStart(e.clientX)
     setDragDelta(0)
+    setIsDragging(false)
     trackRef.current?.setPointerCapture(e.pointerId)
   }
   const onPointerMove = (e: React.PointerEvent) => {
-    if (!dragging) return
-    setDragDelta(e.clientX - dragStart)
+    if (dragStart === null) return
+    const delta = e.clientX - dragStart
+    setDragDelta(delta)
+    if (Math.abs(delta) > 5) setIsDragging(true)
   }
   const onPointerUp = () => {
-    if (!dragging) return
-    setDragging(false)
+    if (dragStart === null) return
     if (dragDelta < -50) handleNext()
     else if (dragDelta > 50) handlePrev()
+    setDragStart(null)
     setDragDelta(0)
+    setIsDragging(false)
   }
+
+  // Card width in CSS — 72vw capped at 640px
+  const cardW = 'min(72vw, 640px)'
+  const gap = 'clamp(0.75rem, 2vw, 1.25rem)'
 
   return (
     <section style={{
@@ -141,11 +202,13 @@ export default function WorkCarousel() {
       padding: 'clamp(3rem, 7vw, 5rem) 0',
       overflow: 'hidden',
     }}>
-      {/* Section header */}
+
+      {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
         padding: '0 clamp(1.25rem, 5vw, 3rem)',
         marginBottom: 'clamp(1.5rem, 4vw, 2.5rem)',
+        gap: '1rem',
       }}>
         <div>
           <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.75rem' }}>
@@ -156,16 +219,15 @@ export default function WorkCarousel() {
             <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>live product.</em>
           </h2>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem' }}>
-          {/* Arrow controls */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '1rem', flexShrink: 0 }}>
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             {[{ label: '←', fn: handlePrev }, { label: '→', fn: handleNext }].map(({ label, fn }) => (
               <button key={label} onClick={fn} style={{
                 width: 40, height: 40, borderRadius: '50%',
                 background: 'transparent', border: '1px solid var(--border-dark)',
                 color: 'rgba(247,245,240,0.5)', fontFamily: 'var(--mono)',
-                fontSize: '0.85rem', cursor: 'pointer', display: 'flex',
-                alignItems: 'center', justifyContent: 'center',
+                fontSize: '0.85rem', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'all 0.15s',
               }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--coral)'; e.currentTarget.style.color = 'var(--coral)' }}
@@ -176,13 +238,11 @@ export default function WorkCarousel() {
           <Link href="/work" style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', textDecoration: 'none', transition: 'color 0.15s' }}
             onMouseEnter={e => e.currentTarget.style.color = 'var(--coral)'}
             onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.35)'}
-          >
-            View all work →
-          </Link>
+          >View all →</Link>
         </div>
       </div>
 
-      {/* Carousel track */}
+      {/* Track */}
       <div
         ref={trackRef}
         onPointerDown={onPointerDown}
@@ -191,48 +251,46 @@ export default function WorkCarousel() {
         onPointerCancel={onPointerUp}
         style={{
           display: 'flex',
-          gap: 'clamp(0.75rem, 2vw, 1.25rem)',
+          gap,
           paddingLeft: 'clamp(1.25rem, 5vw, 3rem)',
-          paddingRight: 'clamp(1.25rem, 5vw, 3rem)',
-          cursor: dragging ? 'grabbing' : 'grab',
+          cursor: isDragging ? 'grabbing' : 'grab',
           userSelect: 'none',
-          // Offset so active card is left-aligned and next peeks in
-          transform: `translateX(calc(-${active} * (min(72vw, 640px) + clamp(0.75rem, 2vw, 1.25rem)) + ${dragging ? dragDelta : 0}px))`,
-          transition: dragging ? 'none' : 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)',
+          transform: `translateX(calc(-${index} * (${cardW} + ${gap}) + ${isDragging ? dragDelta : 0}px))`,
+          transition: animated && !isDragging ? 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
           willChange: 'transform',
         }}
       >
-        {projects.map((p, i) => {
-          const isActive = i === active
+        {clonedProjects.map((p, i) => {
+          const isActive = i === index
           return (
             <div
-              key={p.id}
+              key={`${p.id}-${i}`}
               style={{
                 flexShrink: 0,
-                width: 'min(72vw, 640px)',
+                width: cardW,
                 transition: 'transform 0.4s ease, opacity 0.4s ease',
                 transform: isActive ? 'scale(1)' : 'scale(0.97)',
-                opacity: isActive ? 1 : 0.5,
+                opacity: isActive ? 1 : 0.45,
               }}
             >
               <a
                 href={p.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={e => { if (dragging || Math.abs(dragDelta) > 5) e.preventDefault() }}
+                onClick={e => { if (isDragging || Math.abs(dragDelta) > 8) e.preventDefault() }}
                 style={{ display: 'block', textDecoration: 'none' }}
               >
                 {/* Browser mockup */}
                 <div style={{
                   borderRadius: '12px',
                   overflow: 'hidden',
-                  border: isActive ? '1px solid rgba(232,82,26,0.25)' : '1px solid var(--border-dark)',
+                  border: isActive ? '1px solid rgba(232,82,26,0.3)' : '1px solid var(--border-dark)',
                   boxShadow: isActive
-                    ? '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(232,82,26,0.15)'
+                    ? '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(232,82,26,0.1)'
                     : '0 8px 24px rgba(0,0,0,0.3)',
                   transition: 'box-shadow 0.4s ease, border-color 0.4s ease',
                 }}>
-                  {/* Chrome bar */}
+                  {/* Chrome */}
                   <div style={{ height: 34, background: '#222', display: 'flex', alignItems: 'center', padding: '0 12px', gap: '6px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#ff5f57', flexShrink: 0 }} />
                     <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#febc2e', flexShrink: 0 }} />
@@ -241,14 +299,13 @@ export default function WorkCarousel() {
                       {p.url}
                     </div>
                   </div>
-
                   {/* Screenshot */}
-                  <div style={{ width: '100%', aspectRatio: '16/9', background: p.light ? '#f0f0f0' : '#1a1a1a', overflow: 'hidden', position: 'relative' }}>
+                  <div style={{ width: '100%', aspectRatio: '16/9', background: p.light ? '#f0f0f0' : '#1a1a1a', overflow: 'hidden' }}>
                     <img
                       src={p.screenshot}
                       alt={p.name}
                       draggable={false}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block', transition: 'filter 0.3s ease', filter: isActive ? 'none' : 'brightness(0.6) saturate(0.7)' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block', filter: isActive ? 'none' : 'brightness(0.55) saturate(0.6)', transition: 'filter 0.4s ease' }}
                       onError={e => {
                         const el = e.currentTarget.parentElement!
                         e.currentTarget.style.display = 'none'
@@ -259,13 +316,9 @@ export default function WorkCarousel() {
                   </div>
                 </div>
 
-                {/* Card info — only fully visible on active */}
-                <div style={{
-                  padding: '1.1rem 0.25rem 0',
-                  opacity: isActive ? 1 : 0.3,
-                  transition: 'opacity 0.4s ease',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.4rem' }}>
+                {/* Info below card */}
+                <div style={{ padding: '1rem 0.25rem 0', opacity: isActive ? 1 : 0.2, transition: 'opacity 0.4s ease' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.35rem' }}>
                     <h3 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1 }}>{p.name}</h3>
                     <span style={{ fontFamily: 'var(--mono)', fontSize: '0.52rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '0.12rem 0.45rem', whiteSpace: 'nowrap', flexShrink: 0 }}>{p.tag}</span>
                   </div>
@@ -277,17 +330,17 @@ export default function WorkCarousel() {
         })}
       </div>
 
-      {/* Dot indicators */}
+      {/* Dots */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', marginTop: 'clamp(1.5rem, 3vw, 2rem)', padding: '0 clamp(1.25rem, 5vw, 3rem)' }}>
         {projects.map((_, i) => (
           <button
             key={i}
             onClick={() => handleDot(i)}
             style={{
-              width: i === active ? 20 : 6,
+              width: i === realIndex ? 20 : 6,
               height: 6,
               borderRadius: 3,
-              background: i === active ? 'var(--coral)' : 'rgba(247,245,240,0.15)',
+              background: i === realIndex ? 'var(--coral)' : 'rgba(247,245,240,0.15)',
               border: 'none',
               cursor: 'pointer',
               padding: 0,
