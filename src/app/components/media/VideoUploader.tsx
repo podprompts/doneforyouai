@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { getR2OperatorKey, isValidYouTubeUrl } from '@/lib/media'
+import { getR2ExpertKey, isValidYouTubeUrl } from '@/lib/media'
 
 interface Props {
   handle: string
@@ -61,7 +61,7 @@ export default function VideoUploader({ handle, currentR2Key, currentMuxId, curr
     setUploadState('uploading')
     setUploadProgress(0)
     try {
-      const key = getR2OperatorKey(handle, file.name)
+      const key = getR2ExpertKey(handle, file.name)
       const res = await fetch('/api/r2/presign', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

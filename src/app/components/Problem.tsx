@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 export default function Problem() {
   return (
@@ -36,11 +36,11 @@ export default function Problem() {
         <p>
           You've seen what AI can do. You know your competitors are moving faster.
           But between <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>understanding the tools</em> and
-          actually implementing them inside a real, running business â€” there's a gap most companies never close.
+          actually implementing them inside a real, running business — there's a gap most companies never close.
         </p>
         <p style={{ marginTop: '1.25rem', fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)', color: 'rgba(15,15,14,0.6)' }}>
           We close it. No guesswork, no wasted months, no half-built automations
-          collecting dust. Just AI that works â€” built around how you actually operate.
+          collecting dust. Just AI that works — built around how you actually operate.
         </p>
       </div>
 

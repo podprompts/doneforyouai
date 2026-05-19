@@ -8,7 +8,7 @@ interface Props {
   opacity?: number
 }
 
-export default function OperatorVideoBackground({ source, active, opacity = 0.28 }: Props) {
+export default function ExpertVideoBackground({ source, active, opacity = 0.28 }: Props) {
   const videoRef    = useRef<HTMLVideoElement>(null)
   const [iframeReady, setIframeReady] = useState(false)
 
@@ -78,7 +78,7 @@ export default function OperatorVideoBackground({ source, active, opacity = 0.28
             zIndex: 1,
             transform: 'scale(1.05)',
           }}
-          title="Operator reel"
+          title="Expert reel"
         />
       )}
 

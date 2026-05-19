@@ -2,21 +2,21 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { supabase, type OperatorRow } from '@/lib/supabase'
+import { supabase, type ExpertRow } from '@/lib/supabase'
 import ProfileTab from './components/ProfileTab'
 import VideoTab from './components/VideoTab'
 import StatsTab from './components/StatsTab'
 import AvailabilityTab from './components/AvailabilityTab'
 
-// ── OPERATOR DASHBOARD ─────────────────────────────────────────────
+// ── Expert DASHBOARD ─────────────────────────────────────────────
 // Saves by handle — no auth required for now.
-// Set DASHBOARD_HANDLE in .env.local to your operator handle.
+// Set DASHBOARD_HANDLE in .env.local to your Expert handle.
 // e.g. NEXT_PUBLIC_DASHBOARD_HANDLE=mayabuilds
 // ──────────────────────────────────────────────────────────────────
 
 const DASHBOARD_HANDLE = process.env.NEXT_PUBLIC_DASHBOARD_HANDLE || 'mayabuilds'
 
-const MOCK_OPERATOR = {
+const MOCK_Expert = {
   id: '',
   name: 'Maya Reeves',
   handle: DASHBOARD_HANDLE,
@@ -67,13 +67,13 @@ const tierColors = {
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<Tab>('profile')
-  const [operator, setOperator] = useState(MOCK_OPERATOR)
+  const [Expert, setExpert] = useState(MOCK_Expert)
   const [loading, setLoading] = useState(true)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
 
-  useEffect(() => { fetchOperator() }, [])
+  useEffect(() => { fetchExpert() }, [])
 
-  const fetchOperator = async () => {
+  const fetchExpert = async () => {
     setLoading(true)
     try {
       const { data, error } = await supabase
@@ -84,8 +84,8 @@ export default function Dashboard() {
 
       if (error) throw error
       if (data) {
-        setOperator({
-          ...MOCK_OPERATOR,
+        setExpert({
+          ...MOCK_Expert,
           ...data,
           youtube_url: data.youtube_url || '',
           r2_key: data.r2_key || null,
@@ -131,7 +131,7 @@ export default function Dashboard() {
       if (error) throw error
 
       // Update local state to reflect immediately
-      setOperator(prev => ({ ...prev, ...updates }))
+      setExpert(prev => ({ ...prev, ...updates }))
       setSaveStatus('saved')
       setTimeout(() => setSaveStatus('idle'), 2500)
     } catch (err) {
@@ -141,8 +141,8 @@ export default function Dashboard() {
     }
   }
 
-  const isPro = operator.tier === 'pro' || operator.tier === 'elite'
-  const tier = tierColors[operator.tier]
+  const isPro = Expert.tier === 'pro' || Expert.tier === 'elite'
+  const tier = tierColors[Expert.tier]
 
   if (loading) {
     return (
@@ -221,16 +221,16 @@ export default function Dashboard() {
             background: 'var(--coral)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '0.85rem', color: '#fff',
-          }}>{operator.avatar}</div>
+          }}>{Expert.avatar}</div>
           <div>
             <h1 style={{
               fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '1rem',
               color: 'var(--page)', margin: 0,
-            }}>{operator.name}</h1>
+            }}>{Expert.name}</h1>
             <span style={{
               fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300,
               color: 'rgba(247,245,240,0.35)',
-            }}>@{operator.handle}</span>
+            }}>@{Expert.handle}</span>
           </div>
         </div>
 
@@ -263,25 +263,25 @@ export default function Dashboard() {
       <div style={{ padding: '2rem 1.5rem', maxWidth: 800 }}>
         {activeTab === 'profile' && (
           <ProfileTab
-  operator={{
-    name: operator.name, handle: operator.handle,
-    title: operator.title, location: operator.location,
-    bio: operator.bio, rate: operator.rate,
-    rateType: operator.rate_type, specialty: operator.specialty,
-    tags: operator.tags, deliverables: operator.deliverables,
-    avatar: operator.avatar,
+  Expert={{
+    name: Expert.name, handle: Expert.handle,
+    title: Expert.title, location: Expert.location,
+    bio: Expert.bio, rate: Expert.rate,
+    rateType: Expert.rate_type, specialty: Expert.specialty,
+    tags: Expert.tags, deliverables: Expert.deliverables,
+    avatar: Expert.avatar,
   }}
   onSave={handleSave}
 />
         )}
         {activeTab === 'video' && (
           <VideoTab
-            operator={{
-              handle: operator.handle,
-              r2Key: operator.r2_key || '',
-              muxPlaybackId: operator.mux_playback_id || '',
-              youtubeUrl: operator.youtube_url || '',
-              tier: operator.tier,
+            Expert={{
+              handle: Expert.handle,
+              r2Key: Expert.r2_key || '',
+              muxPlaybackId: Expert.mux_playback_id || '',
+              youtubeUrl: Expert.youtube_url || '',
+              tier: Expert.tier,
             }}
             onSave={handleSave}
             isPro={isPro}
@@ -290,23 +290,23 @@ export default function Dashboard() {
         {activeTab === 'stats' && (
           <StatsTab
             stats={{
-              profileViews: operator.profile_views,
-              cardExpands: operator.card_expands,
-              callBookings: operator.call_bookings,
-              messagesSent: operator.messages_sent,
-              viewsThisWeek: operator.views_this_week,
-              expandsThisWeek: operator.expands_this_week,
+              profileViews: Expert.profile_views,
+              cardExpands: Expert.card_expands,
+              callBookings: Expert.call_bookings,
+              messagesSent: Expert.messages_sent,
+              viewsThisWeek: Expert.views_this_week,
+              expandsThisWeek: Expert.expands_this_week,
             }}
           />
         )}
         {activeTab === 'availability' && (
           <AvailabilityTab
-            operator={{
-              available: operator.available,
-              capacity: operator.capacity || '',
-              responseTime: operator.response_time || '',
-              projectDuration: operator.project_duration || '',
-              availabilityNote: operator.availability_note || '',
+            Expert={{
+              available: Expert.available,
+              capacity: Expert.capacity || '',
+              responseTime: Expert.response_time || '',
+              projectDuration: Expert.project_duration || '',
+              availabilityNote: Expert.availability_note || '',
             }}
             onSave={handleSave}
           />

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { resolveVideoSource } from '@/lib/media'
 
-export interface OperatorCardData {
+export interface ExpertCardData {
   id: string
   name: string
   handle: string
@@ -54,7 +54,7 @@ function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVi
           allow="autoplay; encrypted-media; picture-in-picture"
           allowFullScreen={false}
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
-          title="Operator video"
+          title="Expert video"
         />
         {/*
           Click-blocker covers ONLY the top ~12% of the iframe:
@@ -99,15 +99,15 @@ function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVi
   return null
 }
 
-// ── Operator Card ─────────────────────────────────────────────────
-export function OperatorCard({
+// ── Expert Card ─────────────────────────────────────────────────
+export function ExpertCard({
   op,
   active,
   onToggle,
   showViewProfile = true,
   featured = false,
 }: {
-  op: OperatorCardData
+  op: ExpertCardData
   active: boolean
   onToggle: () => void
   showViewProfile?: boolean
@@ -130,7 +130,7 @@ export function OperatorCard({
       : `I'd like to get in touch with ${op.name}${op.specialty ? ` (${op.specialty})` : ''}. Please connect us.`
     try {
       sessionStorage.setItem('contactPrefill', JSON.stringify({
-        operator: op.name,
+        Expert: op.name,
         service:  op.specialty || '',
         message,
       }))

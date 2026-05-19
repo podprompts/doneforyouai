@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 export default function Footer() {
   return (
@@ -31,7 +31,7 @@ export default function Footer() {
         letterSpacing: '0.1em', color: 'rgba(247,245,240,0.18)',
         textAlign: 'center',
       }}>
-        Â© 2026 DoneForYouAI.com Â· All rights reserved
+        © 2026 DoneForYouAI.com · All rights reserved
       </span>
 
       {/* Links */}

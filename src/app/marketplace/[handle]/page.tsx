@@ -54,7 +54,7 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
               allow="autoplay; encrypted-media; picture-in-picture"
               allowFullScreen
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
-              title="Operator video"
+              title="Expert video"
             />
             {/*
               Click-blocker covers ONLY the top ~10% (title bar area).
@@ -97,7 +97,7 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
 }
 
 // ── Page ──────────────────────────────────────────────────────────
-export default function OperatorProfilePage() {
+export default function ExpertProfilePage() {
   const params  = useParams()
   const handle  = params?.handle as string
   const [op, setOp]           = useState<any>(null)
@@ -131,7 +131,7 @@ export default function OperatorProfilePage() {
   if (notFound || !op) {
     return (
       <div style={{ background: 'var(--ink)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem' }}>
-        <p style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', color: 'rgba(247,245,240,0.3)', fontWeight: 400 }}>Operator not found.</p>
+        <p style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', color: 'rgba(247,245,240,0.3)', fontWeight: 400 }}>Expert not found.</p>
         <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--coral)', textDecoration: 'none' }}>← Back to marketplace</Link>
       </div>
     )
@@ -145,7 +145,7 @@ export default function OperatorProfilePage() {
   const scrollToContact = (prefill: { message: string; service?: string }) => {
     try {
       sessionStorage.setItem('contactPrefill', JSON.stringify({
-        operator: op.name,
+        Expert: op.name,
         service:  prefill.service || op.specialty || '',
         message:  prefill.message,
       }))
@@ -294,7 +294,7 @@ export default function OperatorProfilePage() {
               Send a message →
             </button>
             <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', textDecoration: 'none', textAlign: 'center', padding: '0.5rem', display: 'block' }}>
-              ← Browse all operators
+              ← Browse all Experts
             </Link>
           </div>
         </div>
@@ -359,7 +359,7 @@ export default function OperatorProfilePage() {
             onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
             onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.3)'}
           >
-            ← Browse all operators
+            ← Browse all Experts
           </Link>
         </div>
       </div>

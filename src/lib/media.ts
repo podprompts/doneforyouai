@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────────
 // MEDIA UTILITY — DoneForYouAI
 //
-// Priority order for operator video backgrounds:
+// Priority order for Expert video backgrounds:
 //   1. Cloudflare R2 MP4 (clean, no branding, best performance)
 //   2. Mux (adaptive bitrate, analytics, power users)
-//   3. YouTube (lowest friction, most operators already have this)
+//   3. YouTube (lowest friction, most Experts already have this)
 // ─────────────────────────────────────────────────────────────────
 
 export type VideoSource =
@@ -13,7 +13,7 @@ export type VideoSource =
   | { type: 'youtube'; src: string; embedId: string }
   | null
 
-export interface OperatorMedia {
+export interface ExpertMedia {
   r2Key?: string
   muxPlaybackId?: string
   youtubeUrl?: string
@@ -21,7 +21,7 @@ export interface OperatorMedia {
 
 const R2_BASE = process.env.NEXT_PUBLIC_R2_BASE_URL || ''
 
-export function resolveVideoSource(media: OperatorMedia): VideoSource {
+export function resolveVideoSource(media: ExpertMedia): VideoSource {
   if (media.r2Key && R2_BASE) {
     return {
       type: 'r2',
@@ -71,7 +71,7 @@ export function isValidYouTubeUrl(url: string): boolean {
   return Boolean(extractYouTubeId(url))
 }
 
-export function getR2OperatorKey(handle: string, filename: string): string {
+export function getR2ExpertKey(handle: string, filename: string): string {
   const ext = filename.split('.').pop()?.toLowerCase() || 'mp4'
   const safe = handle.replace(/[^a-z0-9_-]/gi, '-').toLowerCase()
   return `operators/${safe}/reel.${ext}`

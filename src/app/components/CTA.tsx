@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 export default function CTA() {
   return (
@@ -45,7 +45,7 @@ export default function CTA() {
           maxWidth: '40ch', margin: '0 auto 3rem', lineHeight: 1.75,
         }}>
           Book a free 30-minute strategy call. We'll show you exactly
-          where AI moves the needle in your business â€” no fluff, no pitch.
+          where AI moves the needle in your business — no fluff, no pitch.
         </p>
 
         <button
@@ -68,7 +68,7 @@ export default function CTA() {
           letterSpacing: '0.1em', color: 'rgba(247,245,240,0.2)',
           marginTop: '2rem',
         }}>
-          No commitment required Â· 30 minutes Â· Results-focused
+          No commitment required · 30 minutes · Results-focused
         </p>
       </div>
     </section>

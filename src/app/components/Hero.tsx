@@ -10,45 +10,45 @@ const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_HERO_MUX_PLAYBACK_ID || ''
 const AVATAR_COLORS = ['#e8521a', '#2cb67d', '#f5a623', '#7c3aed', '#0ea5e9', '#f472b6']
 
 // ── AI Pulse feed data ────────────────────────────────────────────
-// Alternates between TREND headlines and OPERATOR responses
+// Alternates between TREND headlines and Expert responses
 const PULSE_FEED = [
   { type: 'trend', text: 'OpenAI releases GPT-5 with native voice + vision — real-time reasoning now standard' },
-  { type: 'operator', avatar: 'MR', name: 'Maya Reeves', color: '#e8521a', handle: 'mayabuilds', text: 'This reshapes every automation workflow I build. Voice-triggered n8n pipelines are now viable for SMBs without custom dev.' },
-  { type: 'operator', avatar: 'JO', name: 'James Okoro', color: '#2cb67d', handle: 'jokoro_ai', text: 'My clients are asking about this daily. The voice layer alone eliminates 3 tools from the average support stack.' },
+  { type: 'Expert', avatar: 'MR', name: 'Maya Reeves', color: '#e8521a', handle: 'mayabuilds', text: 'This reshapes every automation workflow I build. Voice-triggered n8n pipelines are now viable for SMBs without custom dev.' },
+  { type: 'Expert', avatar: 'JO', name: 'James Okoro', color: '#2cb67d', handle: 'jokoro_ai', text: 'My clients are asking about this daily. The voice layer alone eliminates 3 tools from the average support stack.' },
 
   { type: 'trend', text: 'Google Gemini 2.0 now embedded in Workspace — AI drafting, summarizing, and scheduling natively' },
-  { type: 'operator', avatar: 'SM', name: 'Sasha Monroe', color: '#f5a623', handle: 'sashaai', text: 'Most businesses don\'t know half of what\'s already in their Google account. I spend 2hrs showing clients this — it changes everything.' },
-  { type: 'operator', avatar: 'PN', name: 'Priya Nair', color: '#a78bfa', handle: 'priya.ops', text: 'Content teams that aren\'t using Gemini in Docs are already behind. I\'m building full editorial pipelines on top of this.' },
+  { type: 'Expert', avatar: 'SM', name: 'Sasha Monroe', color: '#f5a623', handle: 'sashaai', text: 'Most businesses don\'t know half of what\'s already in their Google account. I spend 2hrs showing clients this — it changes everything.' },
+  { type: 'Expert', avatar: 'PN', name: 'Priya Nair', color: '#a78bfa', handle: 'priya.ops', text: 'Content teams that aren\'t using Gemini in Docs are already behind. I\'m building full editorial pipelines on top of this.' },
 
   { type: 'trend', text: 'AI agents now booking meetings, sending follow-ups, and closing deals — without human input' },
-  { type: 'operator', avatar: 'DL', name: 'Derek Lam', color: '#60a5fa', handle: 'derekbuilds', text: 'Built exactly this for a SaaS client last month. Clay + GPT-4o + Instantly = 40 qualified meetings booked in 2 weeks, zero manual outreach.' },
-  { type: 'operator', avatar: 'MR', name: 'Maya Reeves', color: '#e8521a', handle: 'mayabuilds', text: 'The agentic layer is here. Businesses still doing manual follow-up in 6 months will be uncompetitive.' },
+  { type: 'Expert', avatar: 'DL', name: 'Derek Lam', color: '#60a5fa', handle: 'derekbuilds', text: 'Built exactly this for a SaaS client last month. Clay + GPT-4o + Instantly = 40 qualified meetings booked in 2 weeks, zero manual outreach.' },
+  { type: 'Expert', avatar: 'MR', name: 'Maya Reeves', color: '#e8521a', handle: 'mayabuilds', text: 'The agentic layer is here. Businesses still doing manual follow-up in 6 months will be uncompetitive.' },
 
   { type: 'trend', text: 'Anthropic Claude 3.5 beats GPT-4 on coding benchmarks — enterprises shifting stacks' },
-  { type: 'operator', avatar: 'TV', name: 'Tomas Vega', color: '#f472b6', handle: 'tomasv', text: 'I\'ve migrated 3 client stacks to Claude this quarter. Better instruction following, fewer hallucinations on structured data tasks.' },
-  { type: 'operator', avatar: 'SM', name: 'Sasha Monroe', color: '#f5a623', handle: 'sashaai', text: 'Tool selection matters more than ever. I\'m doing full AI stack audits — most teams are using the wrong model for their use case.' },
+  { type: 'Expert', avatar: 'TV', name: 'Tomas Vega', color: '#f472b6', handle: 'tomasv', text: 'I\'ve migrated 3 client stacks to Claude this quarter. Better instruction following, fewer hallucinations on structured data tasks.' },
+  { type: 'Expert', avatar: 'SM', name: 'Sasha Monroe', color: '#f5a623', handle: 'sashaai', text: 'Tool selection matters more than ever. I\'m doing full AI stack audits — most teams are using the wrong model for their use case.' },
 
   { type: 'trend', text: 'No-code AI builders surge: Voiceflow, Botpress, and Relevance AI hit 1M+ users each' },
-  { type: 'operator', avatar: 'JO', name: 'James Okoro', color: '#2cb67d', handle: 'jokoro_ai', text: 'Voiceflow is my go-to for customer-facing bots. Built a healthcare triage assistant last week — deployed in 4 days.' },
-  { type: 'operator', avatar: 'PN', name: 'Priya Nair', color: '#a78bfa', handle: 'priya.ops', text: 'Relevance AI changed how I build content workflows. The agent layer is genuinely production-ready now.' },
+  { type: 'Expert', avatar: 'JO', name: 'James Okoro', color: '#2cb67d', handle: 'jokoro_ai', text: 'Voiceflow is my go-to for customer-facing bots. Built a healthcare triage assistant last week — deployed in 4 days.' },
+  { type: 'Expert', avatar: 'PN', name: 'Priya Nair', color: '#a78bfa', handle: 'priya.ops', text: 'Relevance AI changed how I build content workflows. The agent layer is genuinely production-ready now.' },
 
   { type: 'trend', text: 'AI replacing first-round interviews — HireVue, Paradox, and custom GPT bots screening candidates' },
-  { type: 'operator', avatar: 'DL', name: 'Derek Lam', color: '#60a5fa', handle: 'derekbuilds', text: 'Built a lead qualification bot that does exactly this for sales teams. Screens 200 inbound leads/day, only passes the top 15% to humans.' },
-  { type: 'operator', avatar: 'TV', name: 'Tomas Vega', color: '#f472b6', handle: 'tomasv', text: 'The integration layer is the hard part — connecting these bots to your ATS, CRM, Slack. That\'s where I come in.' },
+  { type: 'Expert', avatar: 'DL', name: 'Derek Lam', color: '#60a5fa', handle: 'derekbuilds', text: 'Built a lead qualification bot that does exactly this for sales teams. Screens 200 inbound leads/day, only passes the top 15% to humans.' },
+  { type: 'Expert', avatar: 'TV', name: 'Tomas Vega', color: '#f472b6', handle: 'tomasv', text: 'The integration layer is the hard part — connecting these bots to your ATS, CRM, Slack. That\'s where I come in.' },
 
   { type: 'trend', text: 'Perplexity AI launches shopping mode — AI-native search threatens Google Shopping' },
-  { type: 'operator', avatar: 'SM', name: 'Sasha Monroe', color: '#f5a623', handle: 'sashaai', text: 'SEO strategies built for Google are already obsolete. I\'m helping clients build AI-discovery-optimized content architectures.' },
-  { type: 'operator', avatar: 'PN', name: 'Priya Nair', color: '#a78bfa', handle: 'priya.ops', text: 'Content that answers specific questions wins in AI search. Generic blog posts are dead. Specificity is the new SEO.' },
+  { type: 'Expert', avatar: 'SM', name: 'Sasha Monroe', color: '#f5a623', handle: 'sashaai', text: 'SEO strategies built for Google are already obsolete. I\'m helping clients build AI-discovery-optimized content architectures.' },
+  { type: 'Expert', avatar: 'PN', name: 'Priya Nair', color: '#a78bfa', handle: 'priya.ops', text: 'Content that answers specific questions wins in AI search. Generic blog posts are dead. Specificity is the new SEO.' },
 ]
 
-// ── Featured Operator Spotlight ───────────────────────────────────
+// ── Featured Expert Spotlight ───────────────────────────────────
 function FeaturedSpotlight({ op }: { op: any }) {
   const router = useRouter()
 
   const goToContact = () => {
     try {
       sessionStorage.setItem('contactPrefill', JSON.stringify({
-        operator: op.name,
+        Expert: op.name,
         service: op.specialty || '',
         message: `I'd like to book a strategy call with ${op.name}. Please connect us.`,
       }))
@@ -155,7 +155,7 @@ function AIPulseFeed() {
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#e53e3e', animation: 'pulse-dot 1.5s infinite', display: 'inline-block' }} />
           <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--page)' }}>AI Pulse</span>
         </div>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.08em' }}>LIVE · OPERATORS REACTING</span>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.08em' }}>LIVE · ExpertS REACTING</span>
       </div>
 
       {/* Scrolling feed */}
@@ -176,7 +176,7 @@ function AIPulseFeed() {
                 </p>
               </div>
             ) : (
-              // Operator response — like a chat message
+              // Expert response — like a chat message
               <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start' }}>
                 <div style={{ width: 24, height: 24, borderRadius: '50%', background: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '0.5rem', color: '#fff', flexShrink: 0 }}>
                   {item.avatar}
@@ -201,10 +201,10 @@ function AIPulseFeed() {
       {/* Footer */}
       <div style={{ padding: '0.65rem 1rem', borderTop: '1px solid var(--border-dark)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.02)' }}>
         <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', color: 'rgba(247,245,240,0.2)', letterSpacing: '0.08em' }}>
-          {PULSE_FEED.filter(i => i.type === 'operator').length} operators active
+          {PULSE_FEED.filter(i => i.type === 'Expert').length} Experts active
         </span>
         <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', textDecoration: 'none' }}>
-          View All Operators →
+          View All Experts →
         </Link>
       </div>
     </div>
@@ -239,7 +239,7 @@ export default function Hero() {
     fetchFeatured()
   }, [])
 
-  // Fallback featured operator if Supabase empty
+  // Fallback featured Expert if Supabase empty
   const featured = featuredOp || {
     id: '1', name: 'Maya Reeves', handle: 'mayabuilds',
     title: 'AI Automation Architect', location: 'Austin, TX',
@@ -320,7 +320,7 @@ export default function Hero() {
         display: 'flex', flexDirection: 'column', gap: '1px',
         maxHeight: '70vh',
       }}>
-        {/* Featured operator spotlight */}
+        {/* Featured Expert spotlight */}
         <FeaturedSpotlight op={featured} />
 
         {/* AI Pulse live feed */}

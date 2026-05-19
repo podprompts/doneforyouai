@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 interface Props {
-  operator: {
+  Expert: {
     available: boolean
     capacity: string
     responseTime: string
@@ -17,12 +17,12 @@ const capacityOptions = ['1 project', '2 projects', '3 projects', '4+ projects']
 const responseOptions = ['Within 24 hours', 'Within 48 hours', 'Within 1 week']
 const durationOptions  = ['1–2 weeks', '2–4 weeks', '1–3 months', '3+ months', 'Ongoing retainer']
 
-export default function AvailabilityTab({ operator, onSave }: Props) {
-  const [available, setAvailable] = useState(operator.available)
-  const [capacity, setCapacity] = useState(operator.capacity || '2 projects')
-  const [responseTime, setResponseTime] = useState(operator.responseTime || 'Within 24 hours')
-  const [projectDuration, setProjectDuration] = useState(operator.projectDuration || '2–4 weeks')
-  const [note, setNote] = useState(operator.availabilityNote || '')
+export default function AvailabilityTab({ Expert, onSave }: Props) {
+  const [available, setAvailable] = useState(Expert.available)
+  const [capacity, setCapacity] = useState(Expert.capacity || '2 projects')
+  const [responseTime, setResponseTime] = useState(Expert.responseTime || 'Within 24 hours')
+  const [projectDuration, setProjectDuration] = useState(Expert.projectDuration || '2–4 weeks')
+  const [note, setNote] = useState(Expert.availabilityNote || '')
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>

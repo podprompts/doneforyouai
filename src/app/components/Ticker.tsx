@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 export default function Ticker() {
   const items = [
@@ -33,7 +33,7 @@ export default function Ticker() {
             whiteSpace: 'nowrap',
           }}>
             {item}
-            <span style={{ color: 'var(--coral)', fontSize: '0.5rem' }}>â—†</span>
+            <span style={{ color: 'var(--coral)', fontSize: '0.5rem' }}>◆</span>
           </span>
         ))}
       </div>

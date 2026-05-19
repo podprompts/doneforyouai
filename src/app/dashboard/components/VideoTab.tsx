@@ -4,7 +4,7 @@ import VideoUploader from '@/app/components/media/VideoUploader'
 import { resolveVideoSource } from '@/lib/media'
 
 interface Props {
-  operator: {
+  Expert: {
     handle: string
     r2Key: string
     muxPlaybackId: string
@@ -15,11 +15,11 @@ interface Props {
   isPro: boolean
 }
 
-export default function VideoTab({ operator, onSave, isPro }: Props) {
+export default function VideoTab({ Expert, onSave, isPro }: Props) {
   const currentSource = resolveVideoSource({
-    r2Key: operator.r2Key,
-    muxPlaybackId: operator.muxPlaybackId,
-    youtubeUrl: operator.youtubeUrl,
+    r2Key: Expert.r2Key,
+    muxPlaybackId: Expert.muxPlaybackId,
+    youtubeUrl: Expert.youtubeUrl,
   })
 
   return (
@@ -94,10 +94,10 @@ export default function VideoTab({ operator, onSave, isPro }: Props) {
 
       {/* Uploader */}
       <VideoUploader
-        handle={operator.handle}
-        currentR2Key={operator.r2Key}
-        currentMuxId={operator.muxPlaybackId}
-        currentYouTubeUrl={operator.youtubeUrl}
+        handle={Expert.handle}
+        currentR2Key={Expert.r2Key}
+        currentMuxId={Expert.muxPlaybackId}
+        currentYouTubeUrl={Expert.youtubeUrl}
         onSave={onSave}
         isPro={isPro}
       />

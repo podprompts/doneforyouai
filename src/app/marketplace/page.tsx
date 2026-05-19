@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
-import { OperatorCard, type OperatorCardData } from '@/app/components/OperatorCard'
+import { ExpertCard, type ExpertCardData } from '@/app/components/ExpertCard'
 
 const AVATAR_COLORS: Record<string, string> = {
   MR: '#e8521a', JO: '#3ecf8e', PN: '#a78bfa',
@@ -23,7 +23,7 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
     if (!form.name || !form.email) return
     setLoading(true)
     try {
-      const { error } = await supabase.from('operator_applications').insert({
+      const { error } = await supabase.from('Expert_applications').insert({
         name: form.name, email: form.email,
         website: form.website || null, skills: form.skills || null,
         message: form.message || null, tier: form.tier,
@@ -48,7 +48,7 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
         <div style={{ background: 'var(--ink-2)', padding: '1.5rem', borderBottom: '1px solid var(--border-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.35rem' }}>Join the network</span>
-            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 400, color: 'var(--page)' }}>Apply as an Operator</h3>
+            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 400, color: 'var(--page)' }}>Apply as an Expert</h3>
           </div>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgba(247,245,240,0.3)', cursor: 'pointer', fontSize: '1.2rem', padding: '0.25rem' }}>✕</button>
         </div>
@@ -127,11 +127,11 @@ export default function Marketplace() {
   const [search, setSearch] = useState('')
   const [activeCard, setActiveCard] = useState<string | null>(null)
   const [showWaitlist, setShowWaitlist] = useState(false)
-  const [operators, setOperators] = useState<OperatorCardData[]>([])
+  const [Experts, setExperts] = useState<ExpertCardData[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchOperators = async () => {
+    const fetchExperts = async () => {
       try {
         const { data, error } = await supabase
           .from('operators')
@@ -141,7 +141,7 @@ export default function Marketplace() {
           .order('rating', { ascending: false })
         if (error) throw error
         if (data) {
-          setOperators(data.map((op, i) => ({
+          setExperts(data.map((op, i) => ({
             ...op,
             avatarColor: AVATAR_COLORS[op.avatar] || COLOR_POOL[i % COLOR_POOL.length],
             tier: op.tier || 'pro',
@@ -158,10 +158,10 @@ export default function Marketplace() {
         setLoading(false)
       }
     }
-    fetchOperators()
+    fetchExperts()
   }, [])
 
-  const filtered = operators.filter(op => {
+  const filtered = Experts.filter(op => {
     const matchSpec   = activeFilter === 'All' || op.specialty === activeFilter
     const matchAvail  = !availableOnly || op.available
     const matchSearch = !search ||
@@ -185,27 +185,56 @@ export default function Marketplace() {
           <span style={{ width: 6, height: 6, background: 'var(--coral)', borderRadius: '50%' }} />
           DFYAI
         </Link>
-        <span className="marketplace-title" style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)' }}>Operator Marketplace</span>
+        <span className="marketplace-title" style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)' }}>Expert Marketplace</span>
         <button onClick={() => setShowWaitlist(true)} style={{ fontFamily: 'var(--sans)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)', background: 'var(--coral)', border: 'none', padding: '0.45rem 0.85rem', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}>
-          Join as Operator
+          Join as Expert
         </button>
       </nav>
 
-      {/* HERO */}
-      <div style={{ padding: 'clamp(2.5rem, 8vw, 6rem) 1.25rem clamp(2rem, 5vw, 4rem)', borderBottom: '1px solid var(--border-dark)', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '-30%', right: '-10%', width: '50vw', height: '50vw', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,82,26,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 640 }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '0.35rem 0.75rem', marginBottom: '1.5rem' }}>
-            <span style={{ width: 5, height: 5, background: 'var(--coral)', borderRadius: '50%', animation: 'pulse-dot 2s infinite' }} />
-            {loading ? '...' : `${operators.filter(o => o.available).length} operators available now`}
+      {/* HERO — full-width two-column on desktop */}
+      <div style={{ padding: 'clamp(2.5rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem)', borderBottom: '1px solid var(--border-dark)', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-20%', right: '5%', width: '40vw', height: '40vw', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,82,26,0.08) 0%, transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '-10%', left: '30%', width: '25vw', height: '25vw', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,82,26,0.04) 0%, transparent 65%)', pointerEvents: 'none' }} />
+
+        <div className="hero-grid" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center', maxWidth: 1200, margin: '0 auto' }}>
+
+          {/* Left — headline */}
+          <div>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '0.35rem 0.75rem', marginBottom: '1.75rem' }}>
+              <span style={{ width: 5, height: 5, background: 'var(--coral)', borderRadius: '50%', animation: 'pulse-dot 2s infinite' }} />
+              {loading ? '...' : `${Experts.filter(o => o.available).length} Experts available now`}
+            </div>
+            <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', fontWeight: 400, lineHeight: 1.05, marginBottom: '1.25rem' }}>
+              Find your<br />
+              <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>AI Expert.</em>
+            </h1>
+            <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.85rem, 1.5vw, 1rem)', color: 'rgba(247,245,240,0.45)', lineHeight: 1.75, maxWidth: '44ch', marginBottom: '2rem' }}>
+              Independent AI specialists who build, deploy, and run AI systems inside your business. Vetted by DoneForYouAI. Ready to work.
+            </p>
+            <button
+              onClick={() => setShowWaitlist(true)}
+              style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'transparent', color: 'rgba(247,245,240,0.5)', border: '1px solid var(--border-dark)', padding: '0.75rem 1.5rem', cursor: 'pointer', transition: 'all 0.15s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--coral-border)'; e.currentTarget.style.color = 'var(--page)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-dark)'; e.currentTarget.style.color = 'rgba(247,245,240,0.5)' }}
+            >
+              Join as an Expert →
+            </button>
           </div>
-          <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem, 6vw, 4rem)', fontWeight: 400, lineHeight: 1.08, marginBottom: '1rem' }}>
-            Find your<br />
-            <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>AI operator.</em>
-          </h1>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.82rem, 2.5vw, 0.95rem)', color: 'rgba(247,245,240,0.45)', lineHeight: 1.75, maxWidth: '42ch' }}>
-            Independent AI specialists who build, deploy, and run AI systems inside your business. Vetted by DoneForYouAI. Ready to work.
-          </p>
+
+          {/* Right — stats grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border-dark)' }}>
+            {[
+              { value: loading ? '—' : `${Experts.filter(o => o.available).length}`, label: 'Available now',     accent: true  },
+              { value: loading ? '—' : `${Experts.length}`,                          label: 'Total Experts',   accent: false },
+              { value: '24h',                                                           label: 'Avg. response',     accent: false },
+              { value: '100%',                                                          label: 'Vetted by DFYAI',   accent: false },
+            ].map((s, i) => (
+              <div key={i} style={{ background: 'var(--ink)', padding: 'clamp(1.25rem, 3vw, 2rem)' }}>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 400, color: s.accent ? 'var(--coral)' : 'var(--page)', lineHeight: 1, marginBottom: '0.5rem' }}>{s.value}</div>
+                <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)' }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -233,7 +262,7 @@ export default function Marketplace() {
       {/* RESULTS */}
       <div style={{ padding: '1.25rem 1rem', maxWidth: 900, margin: '0 auto' }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <span style={{ color: 'var(--coral)' }}>{loading ? '...' : filtered.length}</span> operators found
+          <span style={{ color: 'var(--coral)' }}>{loading ? '...' : filtered.length}</span> Experts found
           <span style={{ flex: 1, height: '0.5px', background: 'var(--border-dark)' }} />
         </div>
 
@@ -247,7 +276,7 @@ export default function Marketplace() {
 
         {!loading && filtered.length === 0 && (
           <div style={{ textAlign: 'center', padding: '5rem 1.25rem', fontFamily: 'var(--serif)', fontSize: '1.4rem', color: 'rgba(247,245,240,0.25)' }}>
-            No operators match that search.
+            No Experts match that search.
           </div>
         )}
 
@@ -255,11 +284,11 @@ export default function Marketplace() {
           <>
             <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', marginBottom: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ width: 5, height: 5, background: 'var(--coral)', borderRadius: '50%' }} />
-              Featured operators
+              Featured Experts
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', marginBottom: '2rem' }}>
               {featured.map(op => (
-                <OperatorCard key={op.id} op={op} active={activeCard === op.id} onToggle={() => setActiveCard(activeCard === op.id ? null : op.id)} showViewProfile={false} featured />
+                <ExpertCard key={op.id} op={op} active={activeCard === op.id} onToggle={() => setActiveCard(activeCard === op.id ? null : op.id)} showViewProfile={false} featured />
               ))}
             </div>
           </>
@@ -267,10 +296,10 @@ export default function Marketplace() {
 
         {!loading && rest.length > 0 && (
           <>
-            {featured.length > 0 && <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)', marginBottom: '0.85rem' }}>All operators</div>}
+            {featured.length > 0 && <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)', marginBottom: '0.85rem' }}>All Experts</div>}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
               {rest.map(op => (
-                <OperatorCard key={op.id} op={op} active={activeCard === op.id} onToggle={() => setActiveCard(activeCard === op.id ? null : op.id)} showViewProfile={false} />
+                <ExpertCard key={op.id} op={op} active={activeCard === op.id} onToggle={() => setActiveCard(activeCard === op.id ? null : op.id)} showViewProfile={false} />
               ))}
             </div>
           </>
@@ -278,16 +307,16 @@ export default function Marketplace() {
       </div>
 
       {/* JOIN CTA */}
-      <div style={{ margin: '2rem 1rem 4rem', border: '1px solid var(--border-dark)', padding: 'clamp(2rem, 6vw, 3.5rem) clamp(1.25rem, 5vw, 3rem)', position: 'relative', overflow: 'hidden', maxWidth: 860 }}>
+      <div style={{ margin: '2rem auto 4rem', padding: 'clamp(2rem, 6vw, 3.5rem) clamp(1.25rem, 5vw, 3rem)', position: 'relative', overflow: 'hidden', maxWidth: 900, border: '1px solid var(--border-dark)', marginLeft: '1rem', marginRight: '1rem' }}>
         <div style={{ position: 'absolute', top: 0, right: 0, fontFamily: 'var(--sans)', fontWeight: 800, fontSize: 'clamp(4rem, 15vw, 10rem)', color: 'rgba(255,255,255,0.025)', lineHeight: 1, letterSpacing: '-0.05em', pointerEvents: 'none', userSelect: 'none' }}>OP</div>
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '1rem' }}>Are you an AI operator?</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '1rem' }}>Are you an AI Expert?</span>
           <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 400, lineHeight: 1.15, marginBottom: '0.85rem' }}>
             Join the waitlist.<br />
             <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>Get found. Get hired.</em>
           </h2>
           <p style={{ fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'rgba(247,245,240,0.4)', lineHeight: 1.7, maxWidth: '44ch', marginBottom: '1.5rem' }}>
-            Apply for Basic (free), Pro ($49/mo), or Pro + Video ($79/mo). Approved operators get listed, leads routed, and dashboard access.
+            Apply for Basic (free), Pro ($49/mo), or Pro + Video ($79/mo). Approved Experts get listed, leads routed, and dashboard access.
           </p>
           <button onClick={() => setShowWaitlist(true)} style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', border: 'none', padding: '0.85rem 2rem', cursor: 'pointer' }}>
             Apply to Join →
@@ -297,8 +326,9 @@ export default function Marketplace() {
 
       <style>{`
         @media (max-width: 768px) {
-  .marketplace-title { display: none; }
-}
+          .marketplace-title { display: none; }
+          .hero-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+        }
       `}</style>
     </div>
   )

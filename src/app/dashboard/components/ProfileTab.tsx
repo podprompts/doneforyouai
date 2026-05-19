@@ -17,7 +17,7 @@ const allTags = [
 ]
 
 interface Props {
-  operator: {
+  Expert: {
     name: string
     handle: string
     title: string
@@ -33,17 +33,17 @@ interface Props {
   onSave: (data: any) => Promise<void>
 }
 
-export default function ProfileTab({ operator, onSave }: Props) {
+export default function ProfileTab({ Expert, onSave }: Props) {
   const [form, setForm] = useState({
-    name: operator.name,
-    handle: operator.handle,
-    title: operator.title,
-    location: operator.location,
-    bio: operator.bio,
-    rate: operator.rate,
-    rateType: operator.rateType,
-    specialty: operator.specialty,
-    tags: operator.tags,
+    name: Expert.name,
+    handle: Expert.handle,
+    title: Expert.title,
+    location: Expert.location,
+    bio: Expert.bio,
+    rate: Expert.rate,
+    rateType: Expert.rateType,
+    specialty: Expert.specialty,
+    tags: Expert.tags,
   })
 
   const toggleTag = (tag: string) => {

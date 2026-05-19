@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 const steps = [
   {
@@ -9,12 +9,12 @@ const steps = [
   {
     num: '02',
     title: 'Build',
-    body: 'Our team designs, builds, and tests your AI systems â€” integrated seamlessly with your existing tools, team, and workflows. You approve everything before it goes live.',
+    body: 'Our team designs, builds, and tests your AI systems — integrated seamlessly with your existing tools, team, and workflows. You approve everything before it goes live.',
   },
   {
     num: '03',
     title: 'Deploy & Iterate',
-    body: 'We launch, train your team, and stay on as your AI partner â€” refining and expanding the systems as your business grows and evolves.',
+    body: 'We launch, train your team, and stay on as your AI partner — refining and expanding the systems as your business grows and evolves.',
   },
 ]
 
@@ -54,7 +54,7 @@ export default function Process() {
             maxWidth: '36ch',
           }}>
             No long onboarding. No confusing tech. We've built a process that
-            gets AI working inside your business in weeks â€” and keeps it
+            gets AI working inside your business in weeks — and keeps it
             working as you grow.
           </p>
         </div>
