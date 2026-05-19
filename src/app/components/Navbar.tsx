@@ -5,10 +5,10 @@ import Link from 'next/link'
 
 const NAV_LINKS = [
   { label: 'Services', href: '/#services' },
-  { label: 'Process', href: '/#process' },
-  { label: 'Work', href: '/work' },
-  { label: 'Experts', href: '/marketplace' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Process',  href: '/#process'  },
+  { label: 'Work',     href: '/work'       },
+  { label: 'Experts',  href: '/marketplace' },
+  { label: 'Contact',  href: '/#contact'  },
 ]
 
 export default function Navbar() {
@@ -21,7 +21,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Lock body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -55,18 +54,12 @@ export default function Navbar() {
           color: 'var(--page)', textDecoration: 'none',
           display: 'flex', alignItems: 'center', gap: '0.5rem',
         }}>
-          <span style={{
-            width: 7, height: 7, background: 'var(--coral)',
-            borderRadius: '50%', display: 'inline-block',
-            animation: 'pulse-dot 2.5s infinite',
-          }} />
-          DoneForYouAI
+          <span style={{ width: 7, height: 7, background: 'var(--coral)', borderRadius: '50%', display: 'inline-block', animation: 'pulse-dot 2.5s infinite' }} />
+          DFYAI
         </Link>
 
         {/* Desktop nav links */}
-        <ul className="nav-links-desktop" style={{
-          display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0,
-        }}>
+        <ul className="nav-links-desktop" style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }}>
           {NAV_LINKS.map((item) => (
             <li key={item.label}>
               <Link href={item.href} style={{
@@ -84,97 +77,97 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Desktop CTA */}
-        <button onClick={handleBookCall} className="nav-cta-desktop" style={{
-          fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: 'var(--page)', background: 'var(--coral)',
-          border: '1px solid var(--coral)', padding: '0.5rem 1.25rem',
-          cursor: 'pointer', transition: 'opacity 0.2s',
-        }}
-          onMouseEnter={e => { e.currentTarget.style.opacity = '0.85' }}
-          onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
-        >
-          Book a Call
-        </button>
+        {/* Desktop CTAs */}
+        <div className="nav-cta-desktop" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <Link href="/marketplace" style={{
+            fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
+            letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: 'var(--coral)', background: 'transparent',
+            border: '1px solid var(--coral-border)', padding: '0.5rem 1rem',
+            textDecoration: 'none', transition: 'all 0.2s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,82,26,0.08)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+          >
+            Join as Expert
+          </Link>
+          <button onClick={handleBookCall} style={{
+            fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
+            letterSpacing: '0.1em', textTransform: 'uppercase',
+            color: 'var(--page)', background: 'var(--coral)',
+            border: '1px solid var(--coral)', padding: '0.5rem 1.25rem',
+            cursor: 'pointer', transition: 'opacity 0.2s',
+          }}
+            onMouseEnter={e => { e.currentTarget.style.opacity = '0.85' }}
+            onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
+          >
+            Book a Call
+          </button>
+        </div>
 
-        {/* Hamburger button — mobile only */}
+        {/* Hamburger */}
         <button
           className="hamburger"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
-          style={{
-            display: 'none',
-            flexDirection: 'column', justifyContent: 'center',
-            alignItems: 'center', gap: '5px',
-            background: 'none', border: 'none', cursor: 'pointer',
-            padding: '4px', zIndex: 300,
-          }}
+          style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '5px', background: 'none', border: 'none', cursor: 'pointer', padding: '4px', zIndex: 300 }}
         >
-          <span style={{
-            display: 'block', width: '22px', height: '2px',
-            background: 'var(--page)',
-            transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none',
-            transition: 'transform 0.25s',
-          }} />
-          <span style={{
-            display: 'block', width: '22px', height: '2px',
-            background: 'var(--page)',
-            opacity: menuOpen ? 0 : 1,
-            transition: 'opacity 0.25s',
-          }} />
-          <span style={{
-            display: 'block', width: '22px', height: '2px',
-            background: 'var(--page)',
-            transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none',
-            transition: 'transform 0.25s',
-          }} />
+          <span style={{ display: 'block', width: '22px', height: '2px', background: 'var(--page)', transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none', transition: 'transform 0.25s' }} />
+          <span style={{ display: 'block', width: '22px', height: '2px', background: 'var(--page)', opacity: menuOpen ? 0 : 1, transition: 'opacity 0.25s' }} />
+          <span style={{ display: 'block', width: '22px', height: '2px', background: 'var(--page)', transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none', transition: 'transform 0.25s' }} />
         </button>
       </nav>
 
       {/* Mobile drawer */}
       <div style={{
         position: 'fixed', top: '60px', left: 0, right: 0, bottom: 0,
-        background: 'rgba(15,15,14,0.98)',
-        backdropFilter: 'blur(16px)',
-        zIndex: 190,
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', gap: '2.5rem',
+        background: 'rgba(15,15,14,0.98)', backdropFilter: 'blur(16px)',
+        zIndex: 190, display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center', gap: '2rem',
         transform: menuOpen ? 'translateX(0)' : 'translateX(100%)',
         transition: 'transform 0.3s ease',
       }}>
         {NAV_LINKS.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            onClick={() => setMenuOpen(false)}
-            style={{
-              fontFamily: 'var(--mono)', fontSize: '0.9rem',
-              letterSpacing: '0.18em', textTransform: 'uppercase',
-              color: item.href === '/marketplace' ? 'var(--coral)' : 'var(--page)',
-              textDecoration: 'none',
-            }}
-          >
+          <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{
+            fontFamily: 'var(--mono)', fontSize: '0.9rem',
+            letterSpacing: '0.18em', textTransform: 'uppercase',
+            color: item.href === '/marketplace' ? 'var(--coral)' : 'var(--page)',
+            textDecoration: 'none',
+          }}>
             {item.label}
           </Link>
         ))}
+
+        {/* Divider */}
+        <div style={{ width: 40, height: 1, background: 'var(--border-dark)' }} />
+
+        {/* Join as Expert */}
+        <Link href="/marketplace" onClick={() => setMenuOpen(false)} style={{
+          fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600,
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+          color: 'var(--coral)', background: 'transparent',
+          border: '1px solid var(--coral-border)', padding: '0.85rem 2.5rem',
+          textDecoration: 'none', textAlign: 'center',
+        }}>
+          Join as Expert
+        </Link>
+
+        {/* Book a Call */}
         <button onClick={handleBookCall} style={{
-          marginTop: '1rem',
           fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 600,
           letterSpacing: '0.1em', textTransform: 'uppercase',
           color: 'var(--page)', background: 'var(--coral)',
-          border: 'none', padding: '0.85rem 2.5rem',
-          cursor: 'pointer',
+          border: 'none', padding: '0.85rem 2.5rem', cursor: 'pointer',
         }}>
           Book a Call
         </button>
       </div>
 
       <style>{`
-        @media (max-width: 680px) {
+        @media (max-width: 768px) {
           .nav-links-desktop { display: none !important; }
-          .nav-cta-desktop { display: none !important; }
-          .hamburger { display: flex !important; }
+          .nav-cta-desktop   { display: none !important; }
+          .hamburger         { display: flex !important; }
         }
       `}</style>
     </>

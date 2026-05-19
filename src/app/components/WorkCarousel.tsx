@@ -26,7 +26,7 @@ const projects = [
   },
   {
     id: 3,
-    name: 'LiveReselling',
+    name: 'Live Reselling',
     url: 'livereselling.com',
     href: 'https://livereselling.com',
     tag: 'Live Commerce',

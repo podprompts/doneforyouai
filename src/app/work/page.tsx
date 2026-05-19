@@ -1,140 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import Navbar from '@/app/components/Navbar'
 
 const projects = [
-  {
-    id: 1,
-    name: 'Done For You AI',
-    url: 'doneforyouai.com',
-    href: 'https://doneforyouai.com',
-    tag: 'AI Services',
-    year: '2025',
-    description: 'AI implementation agency with expert marketplace, live pulse feed, and operator network.',
-    stack: ['Next.js', 'Supabase', 'Stripe', 'Vercel'],
-    screenshot: '/screenshots/doneforyouai.png',
-    light: false,
-  },
-  {
-    id: 2,
-    name: 'AI News Clips',
-    url: 'ainewsclips.com',
-    href: 'https://ainewsclips.com',
-    tag: 'Media',
-    year: '2024',
-    description: 'AI news publication covering tech, agents, jobs, and innovation — built on WordPress with custom theming.',
-    stack: ['WordPress', 'Elementor', 'GoDaddy'],
-    screenshot: '/screenshots/ainewsclips.png',
-    light: false,
-  },
-  {
-    id: 3,
-    name: 'Live Reselling',
-    url: 'livereselling.com',
-    href: 'https://livereselling.com',
-    tag: 'Live Commerce',
-    year: '2025',
-    description: 'Live-stream reselling platform. Sellers go live, drop items, and buyers claim in real time from their phone.',
-    stack: ['Next.js', 'Supabase', 'Mux', 'Stripe'],
-    screenshot: '/screenshots/livereselling.png',
-    light: true,
-  },
-  {
-    id: 4,
-    name: 'UGC Affiliates',
-    url: 'ugcaffiliates.com',
-    href: 'https://ugcaffiliates.com',
-    tag: 'Marketplace',
-    year: '2024',
-    description: 'Affiliate marketplace connecting UGC creators with vendors. Promote products, earn commissions.',
-    stack: ['Next.js', 'Supabase', 'Stripe'],
-    screenshot: '/screenshots/ugcaffiliates.png',
-    light: true,
-  },
-  {
-    id: 5,
-    name: 'AI Print on Demand',
-    url: 'aiprintondemand.com',
-    href: 'https://aiprintondemand.com',
-    tag: 'AI + E-commerce',
-    year: '2025',
-    description: 'Generate AI designs and push them directly to Printify products — instantly.',
-    stack: ['Next.js', 'Replicate', 'Printify', 'Stripe'],
-    screenshot: '/screenshots/aipod.png',
-    light: true,
-  },
-  {
-    id: 6,
-    name: 'Vintage Garage Sale',
-    url: 'vintagegaragesale.com',
-    href: 'https://vintagegaragesale.com',
-    tag: 'Marketplace',
-    year: '2025',
-    description: 'Curated vintage & thrifted marketplace. Buy now or name your price with offer negotiation.',
-    stack: ['Next.js', 'Supabase', 'Cloudflare R2', 'Resend'],
-    screenshot: '/screenshots/vintagegaragesale.png',
-    light: false,
-  },
-  {
-    id: 7,
-    name: 'AI Digital Products',
-    url: 'aidigitalproducts.com',
-    href: 'https://aidigitalproducts.com',
-    tag: 'Digital Marketplace',
-    year: '2025',
-    description: 'Ready-made AI products that work out of the box. Built by experts, deployed in minutes.',
-    stack: ['Next.js', 'Supabase', 'Stripe', 'Resend'],
-    screenshot: '/screenshots/aidigitalproducts.png',
-    light: true,
-  },
-  {
-    id: 8,
-    name: 'Home Service Agents',
-    url: 'homeserviceagents.com',
-    href: 'https://homeserviceagents.com',
-    tag: 'AI + Home Services',
-    year: '2025',
-    description: 'AI matches homeowners with vetted, insured agents for plumbing, junk removal, pool cleaning and more — instantly.',
-    stack: ['WordPress', 'AI Booking', 'Twilio'],
-    screenshot: '/screenshots/homeserviceagents.png',
-    light: true,
-  },
-]
-
-const navLinks = [
-  { label: 'Services', href: '/#services'   },
-  { label: 'Process',  href: '/#process'    },
-  { label: 'Experts',  href: '/marketplace' },
-  { label: 'Work',     href: '/work'        },
-  { label: 'Contact',  href: '/#contact'    },
+  { id: 1, name: 'Done For You AI', url: 'doneforyouai.com', href: 'https://doneforyouai.com', tag: 'AI Services', year: '2025', description: 'AI implementation agency with expert marketplace, live pulse feed, and operator network.', stack: ['Next.js', 'Supabase', 'Stripe', 'Vercel'], screenshot: '/screenshots/doneforyouai.png', light: false },
+  { id: 2, name: 'AI News Clips', url: 'ainewsclips.com', href: 'https://ainewsclips.com', tag: 'Media', year: '2024', description: 'AI news publication covering tech, agents, jobs, and innovation — built on WordPress with custom theming.', stack: ['WordPress', 'Elementor', 'GoDaddy'], screenshot: '/screenshots/ainewsclips.png', light: false },
+  { id: 3, name: 'Live Reselling', url: 'livereselling.com', href: 'https://livereselling.com', tag: 'Live Commerce', year: '2025', description: 'Live-stream reselling platform. Sellers go live, drop items, and buyers claim in real time from their phone.', stack: ['Next.js', 'Supabase', 'Mux', 'Stripe'], screenshot: '/screenshots/livereselling.png', light: true },
+  { id: 4, name: 'UGC Affiliates', url: 'ugcaffiliates.com', href: 'https://ugcaffiliates.com', tag: 'Marketplace', year: '2024', description: 'Affiliate marketplace connecting UGC creators with vendors. Promote products, earn commissions.', stack: ['Next.js', 'Supabase', 'Stripe'], screenshot: '/screenshots/ugcaffiliates.png', light: true },
+  { id: 5, name: 'AI Print on Demand', url: 'aiprintondemand.com', href: 'https://aiprintondemand.com', tag: 'AI + E-commerce', year: '2025', description: 'Generate AI designs and push them directly to Printify products — instantly.', stack: ['Next.js', 'Replicate', 'Printify', 'Stripe'], screenshot: '/screenshots/aipod.png', light: true },
+  { id: 6, name: 'Vintage Garage Sale', url: 'vintagegaragesale.com', href: 'https://vintagegaragesale.com', tag: 'Marketplace', year: '2025', description: 'Curated vintage & thrifted marketplace. Buy now or name your price with offer negotiation.', stack: ['Next.js', 'Supabase', 'Cloudflare R2', 'Resend'], screenshot: '/screenshots/vintagegaragesale.png', light: false },
+  { id: 7, name: 'AI Digital Products', url: 'aidigitalproducts.com', href: 'https://aidigitalproducts.com', tag: 'Digital Marketplace', year: '2025', description: 'Ready-made AI products that work out of the box. Built by experts, deployed in minutes.', stack: ['Next.js', 'Supabase', 'Stripe', 'Resend'], screenshot: '/screenshots/aidigitalproducts.png', light: true },
+  { id: 8, name: 'Home Service Agents', url: 'homeserviceagents.com', href: 'https://homeserviceagents.com', tag: 'AI + Home Services', year: '2025', description: 'AI matches homeowners with vetted, insured agents for plumbing, junk removal, pool cleaning and more — instantly.', stack: ['WordPress', 'AI Booking', 'Twilio'], screenshot: '/screenshots/homeserviceagents.png', light: true },
 ]
 
 export default function WorkPage() {
   const [hovered, setHovered] = useState<number | null>(null)
 
   return (
-    <div style={{ background: 'var(--ink)', minHeight: '100vh', fontFamily: 'var(--sans)' }}>
+    <div style={{ background: 'var(--ink)', minHeight: '100vh', fontFamily: 'var(--sans)', paddingTop: '60px' }}>
 
-      {/* NAV */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 clamp(1rem, 4vw, 2.5rem)', height: 60, background: 'rgba(15,15,14,0.97)', borderBottom: '1px solid var(--border-dark)', backdropFilter: 'blur(12px)', gap: '1rem' }}>
-        <Link href="/" style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.85rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--page)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
-          <span style={{ width: 7, height: 7, background: 'var(--coral)', borderRadius: '50%' }} />
-          DoneForYouAI
-        </Link>
-        <div className="nav-links" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(1rem, 3vw, 2rem)' }}>
-          {navLinks.map(l => (
-            <Link key={l.label} href={l.href}
-              style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: l.href === '/work' ? 'var(--coral)' : 'rgba(247,245,240,0.5)', textDecoration: 'none', transition: 'color 0.15s' }}
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
-              onMouseLeave={e => e.currentTarget.style.color = l.href === '/work' ? 'var(--coral)' : 'rgba(247,245,240,0.5)'}
-            >{l.label}</Link>
-          ))}
-        </div>
-        <Link href="/#contact" style={{ fontFamily: 'var(--sans)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)', background: 'var(--coral)', padding: '0.5rem 1rem', flexShrink: 0, whiteSpace: 'nowrap', textDecoration: 'none', display: 'block' }}>
-          Book a Call
-        </Link>
-      </nav>
+      <Navbar />
 
       {/* HERO */}
       <div style={{ padding: 'clamp(4rem, 10vw, 8rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem)', borderBottom: '1px solid var(--border-dark)', position: 'relative', overflow: 'hidden' }}>
@@ -142,8 +28,7 @@ export default function WorkPage() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '1.5rem' }}>Selected work</span>
           <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(3rem, 8vw, 7rem)', fontWeight: 400, lineHeight: 1, color: 'var(--page)', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
-            Built from<br />
-            <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>scratch.</em>
+            Built from<br /><em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>scratch.</em>
           </h1>
           <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.85rem, 2vw, 1rem)', color: 'rgba(247,245,240,0.4)', lineHeight: 1.75, maxWidth: '52ch' }}>
             Every platform here was designed, developed, and deployed solo — full-stack, from zero to production.
@@ -154,27 +39,12 @@ export default function WorkPage() {
         </div>
       </div>
 
-      {/* ── DESKTOP: horizontal list rows ── */}
+      {/* DESKTOP list */}
       <div className="desktop-list" style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem)' }}>
         {projects.map((p, i) => (
-          <a
-            key={p.id}
-            href={p.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            onMouseEnter={() => setHovered(p.id)}
-            onMouseLeave={() => setHovered(null)}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '3rem 1fr 1fr',
-              gap: 'clamp(1rem, 3vw, 2.5rem)',
-              alignItems: 'center',
-              padding: 'clamp(1.5rem, 4vw, 2.5rem) 0',
-              borderBottom: '1px solid var(--border-dark)',
-              textDecoration: 'none',
-              cursor: 'pointer',
-              position: 'relative',
-            }}
+          <a key={p.id} href={p.href} target="_blank" rel="noopener noreferrer"
+            onMouseEnter={() => setHovered(p.id)} onMouseLeave={() => setHovered(null)}
+            style={{ display: 'grid', gridTemplateColumns: '3rem 1fr 1fr', gap: 'clamp(1rem, 3vw, 2.5rem)', alignItems: 'center', padding: 'clamp(1.5rem, 4vw, 2.5rem) 0', borderBottom: '1px solid var(--border-dark)', textDecoration: 'none', cursor: 'pointer', position: 'relative' }}
           >
             <span style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, color: hovered === p.id ? 'var(--coral)' : 'rgba(247,245,240,0.2)', letterSpacing: '0.08em', transition: 'color 0.2s', alignSelf: 'start', paddingTop: '0.2rem' }}>
               {String(i + 1).padStart(2, '0')}
@@ -187,9 +57,7 @@ export default function WorkPage() {
               <p style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, color: 'rgba(247,245,240,0.3)', letterSpacing: '0.08em', marginBottom: '1rem' }}>{p.url}</p>
               <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.8rem, 1.5vw, 0.9rem)', color: 'rgba(247,245,240,0.5)', lineHeight: 1.7, maxWidth: '42ch', marginBottom: '1.25rem' }}>{p.description}</p>
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-                {p.stack.map(s => (
-                  <span key={s} style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, letterSpacing: '0.06em', padding: '0.2rem 0.5rem', background: 'var(--ink-2)', color: 'rgba(247,245,240,0.35)', border: '1px solid var(--border-dark)' }}>{s}</span>
-                ))}
+                {p.stack.map(s => <span key={s} style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, letterSpacing: '0.06em', padding: '0.2rem 0.5rem', background: 'var(--ink-2)', color: 'rgba(247,245,240,0.35)', border: '1px solid var(--border-dark)' }}>{s}</span>)}
               </div>
             </div>
             <div style={{ transform: hovered === p.id ? 'translateY(-4px) scale(1.01)' : 'translateY(0) scale(1)', transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)' }}>
@@ -202,12 +70,7 @@ export default function WorkPage() {
                 </div>
                 <div style={{ width: '100%', aspectRatio: '16/9', background: p.light ? '#f5f5f5' : '#1a1a1a', overflow: 'hidden' }}>
                   <img src={p.screenshot} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block', filter: hovered === p.id ? 'none' : 'brightness(0.85)', transition: 'filter 0.3s ease' }}
-                    onError={e => {
-                      const el = e.currentTarget.parentElement!
-                      e.currentTarget.style.display = 'none'
-                      el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center'
-                      el.innerHTML = `<span style="font-family:monospace;font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em;text-transform:uppercase">${p.url}</span>`
-                    }}
+                    onError={e => { const el = e.currentTarget.parentElement!; e.currentTarget.style.display = 'none'; el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center'; el.innerHTML = `<span style="font-family:monospace;font-size:0.65rem;color:rgba(255,255,255,0.2);letter-spacing:0.1em;text-transform:uppercase">${p.url}</span>` }}
                   />
                 </div>
               </div>
@@ -217,50 +80,22 @@ export default function WorkPage() {
         ))}
       </div>
 
-      {/* ── MOBILE: card grid ── */}
+      {/* MOBILE grid */}
       <div className="mobile-grid" style={{ display: 'none', padding: '1.5rem 1rem 3rem', flexDirection: 'column', gap: '1.5rem' }}>
         {projects.map((p, i) => (
-          <a
-            key={p.id}
-            href={p.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'block',
-              textDecoration: 'none',
-              border: '1px solid var(--border-dark)',
-              borderRadius: '12px',
-              overflow: 'hidden',
-              background: 'var(--ink-2)',
-            }}
-          >
-            {/* Screenshot — full width, prominent */}
+          <a key={p.id} href={p.href} target="_blank" rel="noopener noreferrer" style={{ display: 'block', textDecoration: 'none', border: '1px solid var(--border-dark)', borderRadius: '12px', overflow: 'hidden', background: 'var(--ink-2)' }}>
             <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: p.light ? '#f0f0f0' : '#1a1a1a', overflow: 'hidden' }}>
-              {/* Browser chrome strip */}
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 28, background: 'rgba(30,30,30,0.95)', zIndex: 2, display: 'flex', alignItems: 'center', padding: '0 10px', gap: '5px', backdropFilter: 'blur(4px)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 28, background: 'rgba(30,30,30,0.95)', zIndex: 2, display: 'flex', alignItems: 'center', padding: '0 10px', gap: '5px' }}>
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#ff5f57', flexShrink: 0 }} />
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#febc2e', flexShrink: 0 }} />
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#28c840', flexShrink: 0 }} />
                 <div style={{ flex: 1, height: 14, background: 'rgba(255,255,255,0.1)', borderRadius: 3, margin: '0 6px', display: 'flex', alignItems: 'center', paddingLeft: 6, fontFamily: 'monospace', fontSize: '0.5rem', color: 'rgba(255,255,255,0.5)', overflow: 'hidden', whiteSpace: 'nowrap' }}>{p.url}</div>
               </div>
-              <img
-                src={p.screenshot}
-                alt={p.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
-                onError={e => {
-                  const el = e.currentTarget.parentElement!
-                  e.currentTarget.style.display = 'none'
-                  el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center'
-                  el.innerHTML += `<span style="font-family:monospace;font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;padding-top:28px">${p.url}</span>`
-                }}
+              <img src={p.screenshot} alt={p.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
+                onError={e => { const el = e.currentTarget.parentElement!; e.currentTarget.style.display = 'none'; el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center'; el.innerHTML += `<span style="font-family:monospace;font-size:0.65rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em;text-transform:uppercase;padding-top:28px">${p.url}</span>` }}
               />
-              {/* Index badge */}
-              <div style={{ position: 'absolute', top: 36, left: 12, fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>
-                {String(i + 1).padStart(2, '0')}
-              </div>
+              <div style={{ position: 'absolute', top: 36, left: 12, fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em' }}>{String(i + 1).padStart(2, '0')}</div>
             </div>
-
-            {/* Info */}
             <div style={{ padding: '1.1rem 1.1rem 1.25rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '0.5rem' }}>
                 <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.3rem', fontWeight: 400, color: 'var(--page)', lineHeight: 1.15 }}>{p.name}</h2>
@@ -269,9 +104,7 @@ export default function WorkPage() {
               <p style={{ fontFamily: 'var(--sans)', fontSize: '0.82rem', color: 'rgba(247,245,240,0.5)', lineHeight: 1.65, marginBottom: '1rem' }}>{p.description}</p>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                  {p.stack.slice(0, 3).map(s => (
-                    <span key={s} style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', fontWeight: 300, letterSpacing: '0.05em', padding: '0.18rem 0.45rem', background: 'var(--ink-3)', color: 'rgba(247,245,240,0.3)', border: '1px solid var(--border-dark)' }}>{s}</span>
-                  ))}
+                  {p.stack.slice(0, 3).map(s => <span key={s} style={{ fontFamily: 'var(--mono)', fontSize: '0.5rem', fontWeight: 300, letterSpacing: '0.05em', padding: '0.18rem 0.45rem', background: 'var(--ink-3)', color: 'rgba(247,245,240,0.3)', border: '1px solid var(--border-dark)' }}>{s}</span>)}
                 </div>
                 <span style={{ fontFamily: 'var(--mono)', fontSize: '0.7rem', color: 'var(--coral)' }}>↗</span>
               </div>
@@ -286,23 +119,16 @@ export default function WorkPage() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '1.5rem' }}>Want something built?</span>
           <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 400, lineHeight: 1.1, color: 'var(--page)', marginBottom: '1.5rem' }}>
-            Your business.<br />
-            <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>Powered by AI.</em>
+            Your business.<br /><em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>Powered by AI.</em>
           </h2>
-          <Link href="/#contact"
-            style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '1rem 2.5rem', textDecoration: 'none' }}
+          <a href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '1rem 2.5rem', textDecoration: 'none' }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
             onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            Book a Strategy Call →
-          </Link>
+          >Book a Strategy Call →</a>
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          .nav-links { display: none !important; }
-        }
         @media (max-width: 640px) {
           .desktop-list { display: none !important; }
           .mobile-grid  { display: flex !important; }
