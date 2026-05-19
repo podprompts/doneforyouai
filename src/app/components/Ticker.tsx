@@ -1,15 +1,38 @@
 ﻿'use client'
 
-export default function Ticker() {
-  const items = [
-    'AI Automation', 'Custom Chatbots', 'Content Systems',
-    'Lead Generation', 'AI Strategy', 'Tool Stack Setup',
-    'Done For You', 'Workflow Design', 'Prompt Engineering',
-  ]
+import { useEffect, useRef } from 'react'
 
-  // Triple the items so the loop is long enough that speed feels
-  // consistent — we scroll exactly 1/3 of the total width per cycle
-  const repeated = [...items, ...items, ...items]
+const items = [
+  'AI Automation', 'Custom Chatbots', 'Content Systems',
+  'Lead Generation', 'AI Strategy', 'Tool Stack Setup',
+  'Done For You', 'Workflow Design', 'Prompt Engineering',
+]
+
+const repeated = [...items, ...items, ...items]
+
+// Pixels per second — identical perceived speed on all screen sizes
+const PX_PER_SECOND = 80
+
+export default function Ticker() {
+  const trackRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = trackRef.current
+    if (!el) return
+
+    const measure = () => {
+      const oneSetWidth = el.scrollWidth / 3
+      const duration = oneSetWidth / PX_PER_SECOND
+      el.style.setProperty('--ticker-duration', `${duration}s`)
+    }
+
+    measure()
+    if (document.fonts?.ready) document.fonts.ready.then(measure)
+
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   return (
     <div style={{
@@ -20,11 +43,14 @@ export default function Ticker() {
       overflow: 'hidden',
       position: 'relative',
     }}>
-      <div style={{
-        display: 'flex',
-        animation: 'ticker-consistent 13s linear infinite',
-        width: 'max-content',
-      }}>
+      <div
+        ref={trackRef}
+        style={{
+          display: 'flex',
+          width: 'max-content',
+          animation: 'ticker-px var(--ticker-duration, 20s) linear infinite',
+        }}
+      >
         {repeated.map((item, i) => (
           <span key={i} style={{
             display: 'inline-flex', alignItems: 'center', gap: '1.5rem',
@@ -41,7 +67,7 @@ export default function Ticker() {
       </div>
 
       <style>{`
-        @keyframes ticker-consistent {
+        @keyframes ticker-px {
           from { transform: translateX(0); }
           to   { transform: translateX(-33.333%); }
         }
