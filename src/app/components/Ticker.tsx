@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 export default function Ticker() {
   const items = [
@@ -7,7 +7,9 @@ export default function Ticker() {
     'Done For You', 'Workflow Design', 'Prompt Engineering',
   ]
 
-  const repeated = [...items, ...items]
+  // Triple the items so the loop is long enough that speed feels
+  // consistent — we scroll exactly 1/3 of the total width per cycle
+  const repeated = [...items, ...items, ...items]
 
   return (
     <div style={{
@@ -20,7 +22,7 @@ export default function Ticker() {
     }}>
       <div style={{
         display: 'flex',
-        animation: 'ticker 6s linear infinite',
+        animation: 'ticker-consistent 30s linear infinite',
         width: 'max-content',
       }}>
         {repeated.map((item, i) => (
@@ -37,7 +39,13 @@ export default function Ticker() {
           </span>
         ))}
       </div>
+
+      <style>{`
+        @keyframes ticker-consistent {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-33.333%); }
+        }
+      `}</style>
     </div>
   )
 }
-
