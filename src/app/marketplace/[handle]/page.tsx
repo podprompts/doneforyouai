@@ -26,13 +26,22 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
   const thumbnail = getVideoThumbnail(source)
 
   if (source.type === 'youtube') {
+    // Build autoplay src only after user clicks play
+    const embedSrc = `${source.src}${source.src.includes('?') ? '&' : '?'}autoplay=1&rel=0&modestbranding=1&controls=1&color=white`
+
     return (
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000', borderRadius: '4px', overflow: 'hidden' }}>
         {!playing ? (
           <>
-            {thumbnail && <img src={thumbnail} alt="Video" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }} />}
-            <div onClick={() => setPlaying(true)} style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'rgba(15,15,14,0.35)' }}>
-              <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'var(--coral)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', color: '#fff', boxShadow: '0 0 0 16px rgba(232,82,26,0.15)', transition: 'transform 0.2s' }}
+            {thumbnail && (
+              <img src={thumbnail} alt="Video thumbnail" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }} />
+            )}
+            <div
+              onClick={() => setPlaying(true)}
+              style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', background: 'rgba(15,15,14,0.35)' }}
+            >
+              <div
+                style={{ width: 72, height: 72, borderRadius: '50%', background: 'var(--coral)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', color: '#fff', boxShadow: '0 0 0 16px rgba(232,82,26,0.15)', transition: 'transform 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
                 onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
               >▶</div>
@@ -41,14 +50,24 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
         ) : (
           <>
             <iframe
-              src={source.src}
-              allow="autoplay; encrypted-media"
-              allowFullScreen={false}
+              src={embedSrc}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
               title="Operator video"
             />
-            {/* Click-blocker — prevents clicks on title/channel/Watch on YouTube */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '85%', zIndex: 2, background: 'transparent', cursor: 'default' }} />
+            {/*
+              Click-blocker covers ONLY the top ~10% (title bar area).
+              Controls live at the bottom — NOT blocked so pause/seek work.
+            */}
+            <div style={{
+              position: 'absolute', top: 0, left: 0, right: 0,
+              height: '10%',
+              zIndex: 2,
+              background: 'transparent',
+              pointerEvents: 'auto',
+              cursor: 'default',
+            }} />
           </>
         )}
       </div>
@@ -58,9 +77,18 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
   if (source.type === 'r2' || source.type === 'mux') {
     return (
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000', borderRadius: '4px', overflow: 'hidden' }}>
-        <video autoPlay controls style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} poster={source.poster}>
+        <video
+          autoPlay
+          controls
+          playsInline
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          poster={source.poster}
+        >
           {source.type === 'mux' && <source src={source.src} type="application/x-mpegURL" />}
-          <source src={source.type === 'mux' ? `https://stream.mux.com/${source.playbackId}/high.mp4` : source.src} type="video/mp4" />
+          <source
+            src={source.type === 'mux' ? `https://stream.mux.com/${source.playbackId}/high.mp4` : source.src}
+            type="video/mp4"
+          />
         </video>
       </div>
     )
@@ -70,28 +98,26 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
 
 // ── Page ──────────────────────────────────────────────────────────
 export default function OperatorProfilePage() {
-  const params   = useParams()
-  const router   = useRouter()
-  const handle   = params?.handle as string
-  const [op, setOp]       = useState<any>(null)
+  const params  = useParams()
+  const handle  = params?.handle as string
+  const [op, setOp]           = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
     if (!handle) return
-    const fetch = async () => {
+    const fetchOp = async () => {
       const { data, error } = await supabase
         .from('operators')
         .select('*')
         .eq('handle', handle)
         .eq('approved', true)
         .single()
-
-      if (error || !data) { setNotFound(true) }
-      else { setOp(data) }
+      if (error || !data) setNotFound(true)
+      else setOp(data)
       setLoading(false)
     }
-    fetch()
+    fetchOp()
   }, [handle])
 
   if (loading) {
@@ -111,23 +137,19 @@ export default function OperatorProfilePage() {
     )
   }
 
-  const avatarColor  = AVATAR_COLORS[op.avatar] || COLOR_POOL[0]
-  const tier         = TIER_CONFIG[op.tier] || TIER_CONFIG.pro
-  const videoSource  = resolveVideoSource({ r2Key: op.r2_key, muxPlaybackId: op.mux_playback_id, youtubeUrl: op.youtube_url })
-  const hasVideo     = Boolean(videoSource)
-
-  // Pre-filled contact form URL
-  const contactMsg   = encodeURIComponent(`Hi, I'm interested in working with ${op.name} (${op.specialty}). Please connect us.`)
-  const contactUrl   = `/#contact?operator=${encodeURIComponent(op.name)}&message=${contactMsg}`
-  const bookUrl      = `/#contact?operator=${encodeURIComponent(op.name)}&service=${encodeURIComponent(op.specialty || '')}&message=${encodeURIComponent(`I'd like to book a strategy call with ${op.name}.`)}`
+  const avatarColor = AVATAR_COLORS[op.avatar] || COLOR_POOL[0]
+  const tier        = TIER_CONFIG[op.tier] || TIER_CONFIG.pro
+  const videoSource = resolveVideoSource({ r2Key: op.r2_key, muxPlaybackId: op.mux_playback_id, youtubeUrl: op.youtube_url })
+  const hasVideo    = Boolean(videoSource)
 
   const scrollToContact = (prefill: { message: string; service?: string }) => {
-    // Store prefill in sessionStorage so Contact form picks it up
-    sessionStorage.setItem('contactPrefill', JSON.stringify({
-      operator: op.name,
-      service: prefill.service || op.specialty || '',
-      message: prefill.message,
-    }))
+    try {
+      sessionStorage.setItem('contactPrefill', JSON.stringify({
+        operator: op.name,
+        service:  prefill.service || op.specialty || '',
+        message:  prefill.message,
+      }))
+    } catch {}
     window.location.href = '/#contact'
   }
 
@@ -135,52 +157,57 @@ export default function OperatorProfilePage() {
     <div style={{ background: 'var(--ink)', minHeight: '100vh', fontFamily: 'var(--sans)' }}>
 
       {/* NAV */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 1.25rem', height: 56, background: 'rgba(15,15,14,0.97)', borderBottom: '1px solid var(--border-dark)', backdropFilter: 'blur(12px)' }}>
-        <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 1rem', height: 56, background: 'rgba(15,15,14,0.97)', borderBottom: '1px solid var(--border-dark)', backdropFilter: 'blur(12px)', gap: '0.75rem' }}>
+        <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
           ← Marketplace
         </Link>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)' }}>@{op.handle}</span>
+        <span className="profile-handle" style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>@{op.handle}</span>
         <button
           onClick={() => scrollToContact({ message: `I'd like to book a strategy call with ${op.name}.`, service: op.specialty })}
-          style={{ fontFamily: 'var(--sans)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)', background: 'var(--coral)', border: 'none', padding: '0.45rem 1rem', cursor: 'pointer' }}
+          style={{ fontFamily: 'var(--sans)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)', background: 'var(--coral)', border: 'none', padding: '0.45rem 0.85rem', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}
         >
           Book a Call
         </button>
       </nav>
 
       {/* HERO */}
-      <div style={{ borderBottom: '1px solid var(--border-dark)', padding: 'clamp(2.5rem, 6vw, 4rem) 1.25rem' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto', display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: '1.5rem', alignItems: 'center' }}>
+      <div style={{ borderBottom: '1px solid var(--border-dark)', padding: 'clamp(2rem, 6vw, 4rem) 1rem' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto' }}>
 
-          {/* Avatar */}
-          <div style={{ width: 72, height: 72, borderRadius: '50%', background: avatarColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: '1.1rem', color: '#fff', flexShrink: 0, position: 'relative' }}>
-            {op.avatar}
-            {op.available && <span style={{ position: 'absolute', bottom: 3, right: 3, width: 12, height: 12, background: '#3ecf8e', borderRadius: '50%', border: '2px solid var(--ink)' }} />}
+          {/* Top row: avatar + name block */}
+          <div className="profile-hero-top" style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem', marginBottom: '1rem' }}>
+            {/* Avatar */}
+            <div style={{ width: 'clamp(52px,12vw,72px)', height: 'clamp(52px,12vw,72px)', borderRadius: '50%', background: avatarColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--sans)', fontWeight: 700, fontSize: 'clamp(0.85rem,3vw,1.1rem)', color: '#fff', flexShrink: 0, position: 'relative' }}>
+              {op.avatar}
+              {op.available && <span style={{ position: 'absolute', bottom: 3, right: 3, width: 10, height: 10, background: '#3ecf8e', borderRadius: '50%', border: '2px solid var(--ink)' }} />}
+            </div>
+
+            {/* Name / title */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap', marginBottom: '0.35rem' }}>
+                <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.4rem, 4vw, 2.5rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1.1 }}>{op.name}</h1>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'rgba(247,245,240,0.3)' }}>@{op.handle}</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: tier.color, border: `1px solid ${tier.border}`, padding: '0.15rem 0.5rem' }}>{tier.label}</span>
+                {hasVideo && <span style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: '#3ecf8e', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><span style={{ fontSize: '0.48rem' }}>▶</span> video</span>}
+              </div>
+              <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.78rem,2.5vw,0.9rem)', color: 'rgba(247,245,240,0.45)', marginBottom: '0.5rem' }}>{op.title} · {op.location}</p>
+              <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
+                {(op.tags || []).map((tag: string) => (
+                  <span key={tag} style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 300, padding: '0.2rem 0.45rem', background: 'var(--ink-3)', color: 'rgba(247,245,240,0.45)', border: '1px solid var(--border-dark)' }}>{tag}</span>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Name / title */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.35rem' }}>
-              <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1.1 }}>{op.name}</h1>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'rgba(247,245,240,0.3)' }}>@{op.handle}</span>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: tier.color, border: `1px solid ${tier.border}`, padding: '0.15rem 0.5rem' }}>{tier.label}</span>
-              {hasVideo && <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: '#3ecf8e', display: 'flex', alignItems: 'center', gap: '0.3rem' }}><span style={{ fontSize: '0.5rem' }}>▶</span> video</span>}
+          {/* Rate + rating row — below on mobile, inline on desktop */}
+          <div className="profile-rate-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid var(--border-dark)' }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+              <span style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.4rem, 4vw, 2rem)', fontWeight: 400, color: 'var(--page)' }}>{op.rate}</span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: 'rgba(247,245,240,0.3)' }}>{op.rate_type}</span>
             </div>
-            <p style={{ fontFamily: 'var(--sans)', fontSize: '0.9rem', color: 'rgba(247,245,240,0.45)', marginBottom: '0.5rem' }}>{op.title} · {op.location}</p>
-            <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-              {(op.tags || []).map((tag: string) => (
-                <span key={tag} style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, padding: '0.2rem 0.5rem', background: 'var(--ink-3)', color: 'rgba(247,245,240,0.45)', border: '1px solid var(--border-dark)' }}>{tag}</span>
-              ))}
-            </div>
-          </div>
-
-          {/* Rate + rating */}
-          <div style={{ textAlign: 'right', flexShrink: 0 }}>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.4rem, 4vw, 2rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
-            <div style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: 'rgba(247,245,240,0.3)', marginBottom: '0.35rem' }}>{op.rate_type}</div>
-            <div style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: '#3ecf8e' }}>★ {op.rating} ({op.reviews} reviews)</div>
-            <div style={{ marginTop: '0.5rem' }}>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: op.available ? '#3ecf8e' : 'rgba(247,245,240,0.3)', display: 'flex', alignItems: 'center', gap: '0.35rem', justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: '#3ecf8e' }}>★ {op.rating} ({op.reviews} reviews)</span>
+              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: op.available ? '#3ecf8e' : 'rgba(247,245,240,0.3)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: op.available ? '#3ecf8e' : '#555', display: 'inline-block' }} />
                 {op.available ? 'Available now' : 'Currently unavailable'}
               </span>
@@ -190,17 +217,15 @@ export default function OperatorProfilePage() {
       </div>
 
       {/* MAIN CONTENT */}
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: 'clamp(2rem, 5vw, 3.5rem) 1.25rem', display: 'grid', gridTemplateColumns: '1fr 320px', gap: '3rem', alignItems: 'start' }}>
+      <div className="profile-grid" style={{ maxWidth: 860, margin: '0 auto', padding: 'clamp(1.5rem, 5vw, 3.5rem) 1rem', display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2.5rem', alignItems: 'start' }}>
 
         {/* LEFT */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem', minWidth: 0 }}>
 
           {/* Video */}
           {hasVideo && videoSource && (
             <div>
-              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', marginBottom: '0.85rem' }}>
-                Intro Video
-              </p>
+              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', marginBottom: '0.85rem' }}>Intro Video</p>
               <VideoPlayer source={videoSource} />
             </div>
           )}
@@ -234,11 +259,11 @@ export default function OperatorProfilePage() {
             </div>
           )}
 
-          {/* Capacity / response time */}
+          {/* Working Details */}
           {(op.capacity || op.response_time || op.project_duration) && (
             <div>
               <p style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', marginBottom: '0.85rem' }}>Working Details</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1px', background: 'var(--border-dark)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1px', background: 'var(--border-dark)' }}>
                 {[
                   { label: 'Capacity',       value: op.capacity },
                   { label: 'Response time',  value: op.response_time },
@@ -252,12 +277,31 @@ export default function OperatorProfilePage() {
               </div>
             </div>
           )}
+
+          {/* Mobile CTA — shown only on mobile, below content */}
+          <div className="profile-cta-mobile" style={{ display: 'none', flexDirection: 'column', gap: '0.75rem' }}>
+            <button
+              onClick={() => scrollToContact({ service: op.specialty || '', message: `I'd like to book a strategy call with ${op.name} (${op.specialty}). Please connect us.` })}
+              disabled={!op.available}
+              style={{ width: '100%', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: op.available ? 'var(--coral)' : 'rgba(247,245,240,0.08)', color: op.available ? '#fff' : 'rgba(247,245,240,0.25)', border: 'none', padding: '1rem', cursor: op.available ? 'pointer' : 'not-allowed', textAlign: 'center' }}
+            >
+              {op.available ? 'Book a Strategy Call →' : 'Currently Unavailable'}
+            </button>
+            <button
+              onClick={() => scrollToContact({ service: op.specialty || '', message: `I'd like to send a message to ${op.name}. Please connect us.` })}
+              style={{ width: '100%', fontFamily: 'var(--mono)', fontSize: '0.72rem', fontWeight: 300, letterSpacing: '0.08em', background: 'transparent', color: 'rgba(247,245,240,0.55)', border: '1px solid var(--border-dark)', padding: '0.85rem', cursor: 'pointer', textAlign: 'center' }}
+            >
+              Send a message →
+            </button>
+            <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', textDecoration: 'none', textAlign: 'center', padding: '0.5rem', display: 'block' }}>
+              ← Browse all operators
+            </Link>
+          </div>
         </div>
 
-        {/* RIGHT — sticky CTA panel */}
-        <div style={{ position: 'sticky', top: '72px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {/* RIGHT — sticky CTA panel (desktop only) */}
+        <div className="profile-sidebar" style={{ position: 'sticky', top: '72px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
-          {/* Rate card */}
           <div style={{ border: '1px solid var(--border-dark)', padding: '1.5rem', background: 'rgba(255,255,255,0.02)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-dark)' }}>
               <div>
@@ -271,12 +315,8 @@ export default function OperatorProfilePage() {
               </div>
             </div>
 
-            {/* Book a Strategy Call → contact form pre-filled */}
             <button
-              onClick={() => scrollToContact({
-                service: op.specialty || '',
-                message: `I'd like to book a strategy call with ${op.name} (${op.specialty}). Please connect us.`,
-              })}
+              onClick={() => scrollToContact({ service: op.specialty || '', message: `I'd like to book a strategy call with ${op.name} (${op.specialty}). Please connect us.` })}
               disabled={!op.available}
               style={{ width: '100%', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: op.available ? 'var(--coral)' : 'rgba(247,245,240,0.08)', color: op.available ? '#fff' : 'rgba(247,245,240,0.25)', border: 'none', padding: '1rem', cursor: op.available ? 'pointer' : 'not-allowed', marginBottom: '0.75rem', transition: 'opacity 0.2s', textAlign: 'center' }}
               onMouseEnter={e => { if (op.available) e.currentTarget.style.opacity = '0.85' }}
@@ -285,12 +325,8 @@ export default function OperatorProfilePage() {
               {op.available ? 'Book a Strategy Call →' : 'Currently Unavailable'}
             </button>
 
-            {/* Send a message → contact form pre-filled */}
             <button
-              onClick={() => scrollToContact({
-                service: op.specialty || '',
-                message: `I'd like to send a message to ${op.name} (${op.specialty}). Please connect us.`,
-              })}
+              onClick={() => scrollToContact({ service: op.specialty || '', message: `I'd like to send a message to ${op.name}. Please connect us.` })}
               style={{ width: '100%', fontFamily: 'var(--mono)', fontSize: '0.72rem', fontWeight: 300, letterSpacing: '0.08em', background: 'transparent', color: 'rgba(247,245,240,0.55)', border: '1px solid var(--border-dark)', padding: '0.85rem', cursor: 'pointer', transition: 'all 0.2s', textAlign: 'center' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--coral-border)'; e.currentTarget.style.color = 'var(--page)' }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-dark)'; e.currentTarget.style.color = 'rgba(247,245,240,0.55)' }}
@@ -303,7 +339,6 @@ export default function OperatorProfilePage() {
             </p>
           </div>
 
-          {/* Stats */}
           {(op.profile_views || op.review_count) && (
             <div style={{ border: '1px solid var(--border-dark)', padding: '1rem 1.25rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: 'var(--border-dark)' }}>
               {[
@@ -318,8 +353,9 @@ export default function OperatorProfilePage() {
             </div>
           )}
 
-          {/* Back to marketplace */}
-          <Link href="/marketplace" style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', textDecoration: 'none', textAlign: 'center', padding: '0.5rem', transition: 'color 0.15s', display: 'block' }}
+          <Link
+            href="/marketplace"
+            style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)', textDecoration: 'none', textAlign: 'center', padding: '0.5rem', transition: 'color 0.15s', display: 'block' }}
             onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
             onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.3)'}
           >
@@ -329,10 +365,11 @@ export default function OperatorProfilePage() {
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          .profile-grid { grid-template-columns: 1fr !important; }
-          .profile-hero-grid { grid-template-columns: auto 1fr !important; }
-          .profile-sticky { position: static !important; }
+        @media (max-width: 680px) {
+          .profile-grid     { grid-template-columns: 1fr !important; }
+          .profile-sidebar  { display: none !important; }
+          .profile-cta-mobile { display: flex !important; }
+          .profile-handle   { display: none; }
         }
       `}</style>
     </div>
