@@ -1,13 +1,18 @@
 'use client'
 
+// ── Video config ─────────────────────────────────────────────────────────────
+const SHOW_VIDEO  = false                        // ← set false to hide the section
+const YOUTUBE_ID  = 'YOUR_YOUTUBE_ID_HERE'      // ← paste your new YouTube video ID here
 const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_SHOWCASE_MUX_PLAYBACK_ID || ''
-const YOUTUBE_ID      = process.env.NEXT_PUBLIC_SHOWCASE_YOUTUBE_ID || ''
+// ─────────────────────────────────────────────────────────────────────────────
 
 interface Props {
   mode?: 'embed' | 'bg'
 }
 
 export default function VideoShowcase({ mode = 'embed' }: Props) {
+  if (!SHOW_VIDEO) return null
+
   const hasMux     = Boolean(MUX_PLAYBACK_ID)
   const hasYoutube = Boolean(YOUTUBE_ID)
   const hasVideo   = hasMux || hasYoutube
@@ -79,7 +84,7 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
         {!hasVideo && (
           <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
             <span style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)' }}>
-              Set NEXT_PUBLIC_SHOWCASE_YOUTUBE_ID in Vercel
+              Set YOUTUBE_ID at the top of this file
             </span>
           </div>
         )}

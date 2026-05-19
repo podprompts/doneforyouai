@@ -38,14 +38,14 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
     }
   }
 
-  const inp: React.CSSProperties = { width: '100%', background: 'var(--ink-2)', border: '1px solid var(--border-dark)', padding: '0.75rem 1rem', fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'var(--page)', outline: 'none', transition: 'border-color 0.2s' }
+  const inp: React.CSSProperties = { width: '100%', background: 'var(--ink-2)', border: '1px solid var(--border-dark)', padding: '0.75rem 1rem', fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'var(--page)', outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box' }
 
   return (
     <div onClick={e => { if (e.target === e.currentTarget) onClose() }}
       style={{ position: 'fixed', inset: 0, background: 'rgba(15,15,14,0.85)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(8px)' }}
     >
       <div style={{ background: 'var(--ink)', border: '1px solid var(--border-dark)', width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}>
-        <div style={{ background: 'var(--ink-2)', padding: '1.5rem 2rem', borderBottom: '1px solid var(--border-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={{ background: 'var(--ink-2)', padding: '1.5rem', borderBottom: '1px solid var(--border-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.35rem' }}>Join the network</span>
             <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 400, color: 'var(--page)' }}>Apply as an Operator</h3>
@@ -54,7 +54,7 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {step === 'success' ? (
-          <div style={{ padding: '3rem 2rem', textAlign: 'center' }}>
+          <div style={{ padding: '3rem 1.5rem', textAlign: 'center' }}>
             <div style={{ width: 56, height: 56, borderRadius: '50%', border: '1px solid var(--coral-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: 'var(--coral)', fontSize: '1.3rem' }}>✓</div>
             <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.6rem', fontWeight: 400, color: 'var(--page)', marginBottom: '0.75rem' }}>You're on the list.</h3>
             <p style={{ fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'rgba(247,245,240,0.45)', lineHeight: 1.75, marginBottom: '1.5rem' }}>We review applications weekly. You'll hear from us within 5–7 days.</p>
@@ -63,7 +63,7 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
             </button>
           </div>
         ) : (
-          <div style={{ padding: '2rem' }}>
+          <div style={{ padding: '1.5rem' }}>
             <div style={{ marginBottom: '1.5rem' }}>
               <label style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.75rem' }}>Choose your plan</label>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
@@ -73,11 +73,11 @@ function WaitlistModal({ onClose }: { onClose: () => void }) {
                   { value: 'pro_video', label: 'Pro + Video', price: '$79/mo', perks: ['Everything in Pro', 'Video profile'] },
                 ].map(t => (
                   <div key={t.value} onClick={() => setForm(f => ({ ...f, tier: t.value }))}
-                    style={{ border: `1px solid ${form.tier === t.value ? 'var(--coral)' : 'var(--border-dark)'}`, padding: '0.85rem', cursor: 'pointer', background: form.tier === t.value ? 'rgba(232,82,26,0.06)' : 'transparent', transition: 'all 0.15s' }}
+                    style={{ border: `1px solid ${form.tier === t.value ? 'var(--coral)' : 'var(--border-dark)'}`, padding: '0.85rem 0.65rem', cursor: 'pointer', background: form.tier === t.value ? 'rgba(232,82,26,0.06)' : 'transparent', transition: 'all 0.15s' }}
                   >
                     <div style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, color: 'var(--page)', marginBottom: '0.2rem' }}>{t.label}</div>
                     <div style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', marginBottom: '0.5rem' }}>{t.price}</div>
-                    {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--sans)', fontSize: '0.68rem', color: 'rgba(247,245,240,0.35)', lineHeight: 1.5 }}>· {p}</div>)}
+                    {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--sans)', fontSize: '0.65rem', color: 'rgba(247,245,240,0.35)', lineHeight: 1.5 }}>· {p}</div>)}
                   </div>
                 ))}
               </div>
@@ -139,7 +139,6 @@ export default function Marketplace() {
           .eq('approved', true)
           .order('featured', { ascending: false })
           .order('rating', { ascending: false })
-
         if (error) throw error
         if (data) {
           setOperators(data.map((op, i) => ({
@@ -181,59 +180,59 @@ export default function Marketplace() {
       {showWaitlist && <WaitlistModal onClose={() => setShowWaitlist(false)} />}
 
       {/* NAV */}
-      <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 1.25rem', height: 56, background: 'rgba(15,15,14,0.97)', borderBottom: '1px solid var(--border-dark)', backdropFilter: 'blur(12px)' }}>
-        <Link href="/" style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.82rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.5)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+      <nav style={{ position: 'sticky', top: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 1rem', height: 56, background: 'rgba(15,15,14,0.97)', borderBottom: '1px solid var(--border-dark)', backdropFilter: 'blur(12px)', gap: '0.75rem' }}>
+        <Link href="/" style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.82rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.5)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
           <span style={{ width: 6, height: 6, background: 'var(--coral)', borderRadius: '50%' }} />
           DFYAI
         </Link>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)' }}>Operator Marketplace</span>
-        <button onClick={() => setShowWaitlist(true)} style={{ fontFamily: 'var(--sans)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)', background: 'var(--coral)', border: 'none', padding: '0.45rem 1rem', cursor: 'pointer' }}>
+        <span className="marketplace-title" style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)' }}>Operator Marketplace</span>
+        <button onClick={() => setShowWaitlist(true)} style={{ fontFamily: 'var(--sans)', fontSize: '0.68rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)', background: 'var(--coral)', border: 'none', padding: '0.45rem 0.85rem', cursor: 'pointer', flexShrink: 0, whiteSpace: 'nowrap' }}>
           Join as Operator
         </button>
       </nav>
 
       {/* HERO */}
-      <div style={{ padding: 'clamp(3rem, 8vw, 6rem) 1.25rem clamp(2rem, 5vw, 4rem)', borderBottom: '1px solid var(--border-dark)', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ padding: 'clamp(2.5rem, 8vw, 6rem) 1.25rem clamp(2rem, 5vw, 4rem)', borderBottom: '1px solid var(--border-dark)', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-30%', right: '-10%', width: '50vw', height: '50vw', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,82,26,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 640 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '0.35rem 0.75rem', marginBottom: '1.5rem' }}>
             <span style={{ width: 5, height: 5, background: 'var(--coral)', borderRadius: '50%', animation: 'pulse-dot 2s infinite' }} />
             {loading ? '...' : `${operators.filter(o => o.available).length} operators available now`}
           </div>
-          <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2.2rem, 6vw, 4rem)', fontWeight: 400, lineHeight: 1.08, marginBottom: '1rem' }}>
+          <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem, 6vw, 4rem)', fontWeight: 400, lineHeight: 1.08, marginBottom: '1rem' }}>
             Find your<br />
             <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>AI operator.</em>
           </h1>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.85rem, 2.5vw, 0.95rem)', color: 'rgba(247,245,240,0.45)', lineHeight: 1.75, maxWidth: '42ch' }}>
+          <p style={{ fontFamily: 'var(--sans)', fontSize: 'clamp(0.82rem, 2.5vw, 0.95rem)', color: 'rgba(247,245,240,0.45)', lineHeight: 1.75, maxWidth: '42ch' }}>
             Independent AI specialists who build, deploy, and run AI systems inside your business. Vetted by DoneForYouAI. Ready to work.
           </p>
         </div>
       </div>
 
       {/* SEARCH + FILTERS */}
-      <div style={{ position: 'sticky', top: 56, zIndex: 90, background: 'rgba(15,15,14,0.97)', borderBottom: '1px solid var(--border-dark)', backdropFilter: 'blur(12px)', padding: '0.85rem 1.25rem' }}>
-        <div style={{ position: 'relative', marginBottom: '0.75rem' }}>
+      <div style={{ position: 'sticky', top: 56, zIndex: 90, background: 'rgba(15,15,14,0.97)', borderBottom: '1px solid var(--border-dark)', backdropFilter: 'blur(12px)', padding: '0.75rem 1rem' }}>
+        <div style={{ position: 'relative', marginBottom: '0.65rem' }}>
           <span style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', fontFamily: 'var(--mono)', fontSize: '0.75rem', color: 'rgba(247,245,240,0.25)' }}>⌕</span>
           <input type="text" placeholder="Search by skill, tool, or specialty..." value={search} onChange={e => setSearch(e.target.value)}
-            style={{ width: '100%', background: 'var(--ink-2)', border: '1px solid var(--border-dark)', color: 'var(--page)', fontFamily: 'var(--sans)', fontSize: '0.85rem', padding: '0.65rem 0.85rem 0.65rem 2.25rem', outline: 'none', transition: 'border-color 0.2s' }}
+            style={{ width: '100%', background: 'var(--ink-2)', border: '1px solid var(--border-dark)', color: 'var(--page)', fontFamily: 'var(--sans)', fontSize: '0.85rem', padding: '0.65rem 0.85rem 0.65rem 2.25rem', outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box' }}
             onFocus={e => e.target.style.borderColor = 'var(--coral-border)'}
             onBlur={e => e.target.style.borderColor = 'var(--border-dark)'}
           />
         </div>
         <div style={{ display: 'flex', gap: '0.4rem', overflowX: 'auto', paddingBottom: '2px', scrollbarWidth: 'none' }}>
           {specialties.map(s => (
-            <button key={s} onClick={() => setActiveFilter(s)} style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.4rem 0.85rem', whiteSpace: 'nowrap', border: '1px solid', borderColor: activeFilter === s ? 'var(--coral)' : 'var(--border-dark)', background: activeFilter === s ? 'var(--coral)' : 'transparent', color: activeFilter === s ? '#fff' : 'rgba(247,245,240,0.4)', cursor: 'pointer', transition: 'all 0.15s', flexShrink: 0 }}>{s}</button>
+            <button key={s} onClick={() => setActiveFilter(s)} style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.38rem 0.75rem', whiteSpace: 'nowrap', border: '1px solid', borderColor: activeFilter === s ? 'var(--coral)' : 'var(--border-dark)', background: activeFilter === s ? 'var(--coral)' : 'transparent', color: activeFilter === s ? '#fff' : 'rgba(247,245,240,0.4)', cursor: 'pointer', transition: 'all 0.15s', flexShrink: 0 }}>{s}</button>
           ))}
-          <button onClick={() => setAvailableOnly(!availableOnly)} style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.4rem 0.85rem', whiteSpace: 'nowrap', border: '1px solid', borderColor: availableOnly ? '#3ecf8e' : 'var(--border-dark)', background: availableOnly ? 'rgba(62,207,142,0.12)' : 'transparent', color: availableOnly ? '#3ecf8e' : 'rgba(247,245,240,0.4)', cursor: 'pointer', transition: 'all 0.15s', flexShrink: 0, marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <button onClick={() => setAvailableOnly(!availableOnly)} style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '0.38rem 0.75rem', whiteSpace: 'nowrap', border: '1px solid', borderColor: availableOnly ? '#3ecf8e' : 'var(--border-dark)', background: availableOnly ? 'rgba(62,207,142,0.12)' : 'transparent', color: availableOnly ? '#3ecf8e' : 'rgba(247,245,240,0.4)', cursor: 'pointer', transition: 'all 0.15s', flexShrink: 0, marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: availableOnly ? '#3ecf8e' : 'rgba(247,245,240,0.2)' }} />
-            Available now
+            Available
           </button>
         </div>
       </div>
 
       {/* RESULTS */}
-      <div style={{ padding: '1.5rem 1.25rem', maxWidth: 900, margin: '0 auto' }}>
-        <div style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+      <div style={{ padding: '1.25rem 1rem', maxWidth: 900, margin: '0 auto' }}>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.25)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <span style={{ color: 'var(--coral)' }}>{loading ? '...' : filtered.length}</span> operators found
           <span style={{ flex: 1, height: '0.5px', background: 'var(--border-dark)' }} />
         </div>
@@ -279,11 +278,11 @@ export default function Marketplace() {
       </div>
 
       {/* JOIN CTA */}
-      <div style={{ margin: '2rem auto 4rem', maxWidth: 860, border: '1px solid var(--border-dark)', padding: 'clamp(2rem, 6vw, 3.5rem) clamp(1.5rem, 5vw, 3rem)', position: 'relative', overflow: 'hidden', marginLeft: '1.25rem', marginRight: '1.25rem' }}>
+      <div style={{ margin: '2rem 1rem 4rem', border: '1px solid var(--border-dark)', padding: 'clamp(2rem, 6vw, 3.5rem) clamp(1.25rem, 5vw, 3rem)', position: 'relative', overflow: 'hidden', maxWidth: 860 }}>
         <div style={{ position: 'absolute', top: 0, right: 0, fontFamily: 'var(--sans)', fontWeight: 800, fontSize: 'clamp(4rem, 15vw, 10rem)', color: 'rgba(255,255,255,0.025)', lineHeight: 1, letterSpacing: '-0.05em', pointerEvents: 'none', userSelect: 'none' }}>OP</div>
         <div style={{ position: 'relative', zIndex: 1 }}>
           <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '1rem' }}>Are you an AI operator?</span>
-          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.6rem, 4vw, 2.5rem)', fontWeight: 400, lineHeight: 1.15, marginBottom: '0.85rem' }}>
+          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', fontWeight: 400, lineHeight: 1.15, marginBottom: '0.85rem' }}>
             Join the waitlist.<br />
             <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>Get found. Get hired.</em>
           </h2>
@@ -295,6 +294,12 @@ export default function Marketplace() {
           </button>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+  .marketplace-title { display: none; }
+}
+      `}</style>
     </div>
   )
 }
