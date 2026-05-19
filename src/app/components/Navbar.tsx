@@ -4,16 +4,146 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const NAV_LINKS = [
-  { label: 'Services', href: '/#services' },
-  { label: 'Process',  href: '/#process'  },
+  { label: 'Services', href: '/#services'  },
+  { label: 'Process',  href: '/#process'   },
   { label: 'Work',     href: '/work'       },
   { label: 'Experts',  href: '/marketplace' },
   { label: 'Contact',  href: '/#contact'  },
 ]
 
+const TIERS = [
+  { value: 'basic',     label: 'Basic',       price: '$29/mo', perks: ['Listed profile', 'No leads routed'] },
+  { value: 'pro',       label: 'Pro',         price: '$49/mo', perks: ['Leads routed', 'Priority placement'] },
+  { value: 'pro_video', label: 'Pro + Video', price: '$79/mo', perks: ['Everything in Pro', 'Video profile'] },
+]
+
+// ── Apply Modal ───────────────────────────────────────────────────
+function ApplyModal({ onClose }: { onClose: () => void }) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [form, setForm] = useState({ name: '', email: '', website: '', skills: '', message: '', tier: 'pro' })
+
+  // Lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  const handleSubmit = async () => {
+    if (!form.name || !form.email) return
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.url) throw new Error(data.error || 'Failed to start checkout')
+      window.location.href = data.url
+    } catch (e: any) {
+      setError(e.message || 'Something went wrong. Please try again.')
+      setLoading(false)
+    }
+  }
+
+  const inp: React.CSSProperties = {
+    width: '100%', background: 'var(--ink-2)', border: '1px solid var(--border-dark)',
+    padding: '0.75rem 1rem', fontFamily: 'var(--sans)', fontSize: '0.85rem',
+    color: 'var(--page)', outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box',
+  }
+
+  return (
+    <div
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(15,15,14,0.88)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(10px)' }}
+    >
+      <div style={{ background: 'var(--ink)', border: '1px solid var(--border-dark)', width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}>
+
+        {/* Header */}
+        <div style={{ background: 'var(--ink-2)', padding: '1.5rem', borderBottom: '1px solid var(--border-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.35rem' }}>Join the network</span>
+            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 400, color: 'var(--page)', margin: 0 }}>Apply as an Expert</h3>
+          </div>
+          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgba(247,245,240,0.35)', cursor: 'pointer', fontSize: '1.2rem', padding: '0.25rem', lineHeight: 1 }}>✕</button>
+        </div>
+
+        <div style={{ padding: '1.5rem' }}>
+          {/* Tier picker */}
+          <div style={{ marginBottom: '1.5rem' }}>
+            <label style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.75rem' }}>Choose your plan</label>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+              {TIERS.map(t => (
+                <div key={t.value} onClick={() => setForm(f => ({ ...f, tier: t.value }))}
+                  style={{ border: `1px solid ${form.tier === t.value ? 'var(--coral)' : 'var(--border-dark)'}`, padding: '0.85rem 0.65rem', cursor: 'pointer', background: form.tier === t.value ? 'rgba(232,82,26,0.06)' : 'transparent', transition: 'all 0.15s' }}
+                >
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, color: 'var(--page)', marginBottom: '0.2rem' }}>{t.label}</div>
+                  <div style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', marginBottom: '0.5rem' }}>{t.price}</div>
+                  {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--sans)', fontSize: '0.65rem', color: 'rgba(247,245,240,0.35)', lineHeight: 1.5 }}>· {p}</div>)}
+                </div>
+              ))}
+            </div>
+            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', marginTop: '0.6rem', letterSpacing: '0.04em' }}>
+              Video profile is exclusive to Pro + Video tier.
+            </p>
+          </div>
+
+          {/* Fields */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div>
+                <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Name *</label>
+                <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'var(--border-dark)'} />
+              </div>
+              <div>
+                <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Email *</label>
+                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@email.com" style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'var(--border-dark)'} />
+              </div>
+            </div>
+            <div>
+              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Website / LinkedIn</label>
+              <input type="text" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://..." style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'var(--border-dark)'} />
+            </div>
+            <div>
+              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Your AI specialties</label>
+              <input type="text" value={form.skills} onChange={e => setForm(f => ({ ...f, skills: e.target.value }))} placeholder="e.g. Zapier, Claude, Voiceflow..." style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'var(--border-dark)'} />
+            </div>
+            <div>
+              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Tell us about your work</label>
+              <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="What kind of AI systems have you built?" rows={4} style={{ ...inp, resize: 'vertical', minHeight: '96px' }} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'var(--border-dark)'} />
+            </div>
+
+            {error && (
+              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: '#f87171', padding: '0.65rem 1rem', border: '1px solid rgba(248,113,113,0.3)', background: 'rgba(248,113,113,0.06)', margin: 0 }}>
+                {error}
+              </p>
+            )}
+
+            <button
+              onClick={handleSubmit}
+              disabled={loading || !form.name || !form.email}
+              style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: (!form.name || !form.email || loading) ? 'rgba(232,82,26,0.4)' : 'var(--coral)', color: '#fff', border: 'none', padding: '1rem', cursor: (!form.name || !form.email || loading) ? 'not-allowed' : 'pointer', width: '100%', transition: 'background 0.15s' }}
+            >
+              {loading ? 'Redirecting to checkout...' : 'Continue to Payment →'}
+            </button>
+
+            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', textAlign: 'center', letterSpacing: '0.06em', lineHeight: 1.6, margin: 0 }}>
+              Secure checkout via Stripe · Cancel anytime
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Navbar ────────────────────────────────────────────────────────
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [applyOpen, setApplyOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -22,9 +152,12 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
-  }, [menuOpen])
+    if (!applyOpen) {
+      document.body.style.overflow = menuOpen ? 'hidden' : ''
+    }
+  }, [menuOpen, applyOpen])
+
+  const openApply = () => { setMenuOpen(false); setApplyOpen(true) }
 
   const handleBookCall = () => {
     setMenuOpen(false)
@@ -37,6 +170,8 @@ export default function Navbar() {
 
   return (
     <>
+      {applyOpen && <ApplyModal onClose={() => setApplyOpen(false)} />}
+
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -60,37 +195,34 @@ export default function Navbar() {
 
         {/* Desktop nav links */}
         <ul className="nav-links-desktop" style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }}>
-          {NAV_LINKS.map((item) => (
+          {NAV_LINKS.map(item => (
             <li key={item.label}>
               <Link href={item.href} style={{
-                fontFamily: 'var(--mono)', fontSize: '0.68rem',
-                letterSpacing: '0.12em', textTransform: 'uppercase',
+                fontFamily: 'var(--mono)', fontSize: '0.68rem', letterSpacing: '0.12em',
+                textTransform: 'uppercase', textDecoration: 'none', transition: 'color 0.2s',
                 color: item.href === '/marketplace' ? 'var(--coral)' : 'rgba(247,245,240,0.45)',
-                textDecoration: 'none', transition: 'color 0.2s',
               }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--page)')}
-                onMouseLeave={e => (e.currentTarget.style.color = item.href === '/marketplace' ? 'var(--coral)' : 'rgba(247,245,240,0.45)')}
-              >
-                {item.label}
-              </Link>
+                onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
+                onMouseLeave={e => e.currentTarget.style.color = item.href === '/marketplace' ? 'var(--coral)' : 'rgba(247,245,240,0.45)'}
+              >{item.label}</Link>
             </li>
           ))}
         </ul>
 
         {/* Desktop CTAs */}
         <div className="nav-cta-desktop" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <Link href="/marketplace" style={{
+          <button onClick={openApply} style={{
             fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
             letterSpacing: '0.1em', textTransform: 'uppercase',
             color: 'var(--coral)', background: 'transparent',
             border: '1px solid var(--coral-border)', padding: '0.5rem 1rem',
-            textDecoration: 'none', transition: 'all 0.2s',
+            cursor: 'pointer', transition: 'all 0.2s',
           }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,82,26,0.08)' }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'rgba(232,82,26,0.08)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           >
             Join as Expert
-          </Link>
+          </button>
           <button onClick={handleBookCall} style={{
             fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
             letterSpacing: '0.1em', textTransform: 'uppercase',
@@ -98,18 +230,15 @@ export default function Navbar() {
             border: '1px solid var(--coral)', padding: '0.5rem 1.25rem',
             cursor: 'pointer', transition: 'opacity 0.2s',
           }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = '0.85' }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           >
             Book a Call
           </button>
         </div>
 
         {/* Hamburger */}
-        <button
-          className="hamburger"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
+        <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu"
           style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '5px', background: 'none', border: 'none', cursor: 'pointer', padding: '4px', zIndex: 300 }}
         >
           <span style={{ display: 'block', width: '22px', height: '2px', background: 'var(--page)', transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none', transition: 'transform 0.25s' }} />
@@ -127,30 +256,28 @@ export default function Navbar() {
         transform: menuOpen ? 'translateX(0)' : 'translateX(100%)',
         transition: 'transform 0.3s ease',
       }}>
-        {NAV_LINKS.map((item) => (
+        {NAV_LINKS.map(item => (
           <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{
-            fontFamily: 'var(--mono)', fontSize: '0.9rem',
-            letterSpacing: '0.18em', textTransform: 'uppercase',
+            fontFamily: 'var(--mono)', fontSize: '0.9rem', letterSpacing: '0.18em',
+            textTransform: 'uppercase', textDecoration: 'none',
             color: item.href === '/marketplace' ? 'var(--coral)' : 'var(--page)',
-            textDecoration: 'none',
           }}>
             {item.label}
           </Link>
         ))}
 
-        {/* Divider */}
         <div style={{ width: 40, height: 1, background: 'var(--border-dark)' }} />
 
-        {/* Join as Expert */}
-        <Link href="/marketplace" onClick={() => setMenuOpen(false)} style={{
+        {/* Join as Expert — opens modal */}
+        <button onClick={openApply} style={{
           fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600,
           letterSpacing: '0.1em', textTransform: 'uppercase',
           color: 'var(--coral)', background: 'transparent',
           border: '1px solid var(--coral-border)', padding: '0.85rem 2.5rem',
-          textDecoration: 'none', textAlign: 'center',
+          cursor: 'pointer',
         }}>
           Join as Expert
-        </Link>
+        </button>
 
         {/* Book a Call */}
         <button onClick={handleBookCall} style={{
