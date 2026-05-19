@@ -2,13 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 
 const NAV_LINKS = [
-  { label: 'Services', href: '/#services'  },
-  { label: 'Process',  href: '/#process'   },
-  { label: 'Work',     href: '/work'       },
+  { label: 'Services', href: '/#services'   },
+  { label: 'Process',  href: '/#process'    },
+  { label: 'Work',     href: '/work'        },
   { label: 'Experts',  href: '/marketplace' },
-  { label: 'Contact',  href: '/#contact'  },
+  { label: 'Contact',  href: '/#contact'   },
 ]
 
 const TIERS = [
@@ -20,10 +22,9 @@ const TIERS = [
 // ── Apply Modal ───────────────────────────────────────────────────
 function ApplyModal({ onClose }: { onClose: () => void }) {
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [form, setForm] = useState({ name: '', email: '', website: '', skills: '', message: '', tier: 'pro' })
+  const [error, setError]     = useState('')
+  const [form, setForm]       = useState({ name: '', email: '', website: '', skills: '', message: '', tier: 'pro' })
 
-  // Lock body scroll
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = '' }
@@ -34,34 +35,21 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
-      })
+      const res  = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
       const data = await res.json()
       if (!res.ok || !data.url) throw new Error(data.error || 'Failed to start checkout')
       window.location.href = data.url
     } catch (e: any) {
-      setError(e.message || 'Something went wrong. Please try again.')
+      setError(e.message || 'Something went wrong.')
       setLoading(false)
     }
   }
 
-  const inp: React.CSSProperties = {
-    width: '100%', background: 'var(--ink-2)', border: '1px solid var(--border-dark)',
-    padding: '0.75rem 1rem', fontFamily: 'var(--sans)', fontSize: '0.85rem',
-    color: 'var(--page)', outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box',
-  }
+  const inp: React.CSSProperties = { width: '100%', background: 'var(--ink-2)', border: '1px solid var(--border-dark)', padding: '0.75rem 1rem', fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'var(--page)', outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box' }
 
   return (
-    <div
-      onClick={e => { if (e.target === e.currentTarget) onClose() }}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(15,15,14,0.88)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(10px)' }}
-    >
+    <div onClick={e => { if (e.target === e.currentTarget) onClose() }} style={{ position: 'fixed', inset: 0, background: 'rgba(15,15,14,0.88)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(10px)' }}>
       <div style={{ background: 'var(--ink)', border: '1px solid var(--border-dark)', width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}>
-
-        {/* Header */}
         <div style={{ background: 'var(--ink-2)', padding: '1.5rem', borderBottom: '1px solid var(--border-dark)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.35rem' }}>Join the network</span>
@@ -69,28 +57,20 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
           </div>
           <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgba(247,245,240,0.35)', cursor: 'pointer', fontSize: '1.2rem', padding: '0.25rem', lineHeight: 1 }}>✕</button>
         </div>
-
         <div style={{ padding: '1.5rem' }}>
-          {/* Tier picker */}
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.75rem' }}>Choose your plan</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
               {TIERS.map(t => (
-                <div key={t.value} onClick={() => setForm(f => ({ ...f, tier: t.value }))}
-                  style={{ border: `1px solid ${form.tier === t.value ? 'var(--coral)' : 'var(--border-dark)'}`, padding: '0.85rem 0.65rem', cursor: 'pointer', background: form.tier === t.value ? 'rgba(232,82,26,0.06)' : 'transparent', transition: 'all 0.15s' }}
-                >
+                <div key={t.value} onClick={() => setForm(f => ({ ...f, tier: t.value }))} style={{ border: `1px solid ${form.tier === t.value ? 'var(--coral)' : 'var(--border-dark)'}`, padding: '0.85rem 0.65rem', cursor: 'pointer', background: form.tier === t.value ? 'rgba(232,82,26,0.06)' : 'transparent', transition: 'all 0.15s' }}>
                   <div style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, color: 'var(--page)', marginBottom: '0.2rem' }}>{t.label}</div>
                   <div style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', marginBottom: '0.5rem' }}>{t.price}</div>
                   {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--sans)', fontSize: '0.65rem', color: 'rgba(247,245,240,0.35)', lineHeight: 1.5 }}>· {p}</div>)}
                 </div>
               ))}
             </div>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', marginTop: '0.6rem', letterSpacing: '0.04em' }}>
-              Video profile is exclusive to Pro + Video tier.
-            </p>
+            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', marginTop: '0.6rem', letterSpacing: '0.04em' }}>Video profile is exclusive to Pro + Video tier.</p>
           </div>
-
-          {/* Fields */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
@@ -114,24 +94,11 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
               <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Tell us about your work</label>
               <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="What kind of AI systems have you built?" rows={4} style={{ ...inp, resize: 'vertical', minHeight: '96px' }} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'var(--border-dark)'} />
             </div>
-
-            {error && (
-              <p style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: '#f87171', padding: '0.65rem 1rem', border: '1px solid rgba(248,113,113,0.3)', background: 'rgba(248,113,113,0.06)', margin: 0 }}>
-                {error}
-              </p>
-            )}
-
-            <button
-              onClick={handleSubmit}
-              disabled={loading || !form.name || !form.email}
-              style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: (!form.name || !form.email || loading) ? 'rgba(232,82,26,0.4)' : 'var(--coral)', color: '#fff', border: 'none', padding: '1rem', cursor: (!form.name || !form.email || loading) ? 'not-allowed' : 'pointer', width: '100%', transition: 'background 0.15s' }}
-            >
+            {error && <p style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: '#f87171', padding: '0.65rem 1rem', border: '1px solid rgba(248,113,113,0.3)', background: 'rgba(248,113,113,0.06)', margin: 0 }}>{error}</p>}
+            <button onClick={handleSubmit} disabled={loading || !form.name || !form.email} style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: (!form.name || !form.email || loading) ? 'rgba(232,82,26,0.4)' : 'var(--coral)', color: '#fff', border: 'none', padding: '1rem', cursor: (!form.name || !form.email || loading) ? 'not-allowed' : 'pointer', width: '100%' }}>
               {loading ? 'Redirecting to checkout...' : 'Continue to Payment →'}
             </button>
-
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', textAlign: 'center', letterSpacing: '0.06em', lineHeight: 1.6, margin: 0 }}>
-              Secure checkout via Stripe · Cancel anytime
-            </p>
+            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', textAlign: 'center', letterSpacing: '0.06em', lineHeight: 1.6, margin: 0 }}>Secure checkout via Stripe · Cancel anytime</p>
           </div>
         </div>
       </div>
@@ -141,9 +108,27 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
 
 // ── Navbar ────────────────────────────────────────────────────────
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [applyOpen, setApplyOpen] = useState(false)
+  const router = useRouter()
+  const [scrolled,    setScrolled]    = useState(false)
+  const [menuOpen,    setMenuOpen]    = useState(false)
+  const [applyOpen,   setApplyOpen]   = useState(false)
+  const [session,     setSession]     = useState<any>(null)
+  const [sessionLoaded, setSessionLoaded] = useState(false)
+  const [isAdmin,     setIsAdmin]     = useState(false)
+
+  // Load session
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+      setIsAdmin(session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL)
+      setSessionLoaded(true)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setSession(session)
+      setIsAdmin(session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -152,9 +137,7 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
-    if (!applyOpen) {
-      document.body.style.overflow = menuOpen ? 'hidden' : ''
-    }
+    if (!applyOpen) document.body.style.overflow = menuOpen ? 'hidden' : ''
   }, [menuOpen, applyOpen])
 
   const openApply = () => { setMenuOpen(false); setApplyOpen(true) }
@@ -167,6 +150,14 @@ export default function Navbar() {
       window.location.href = '/#contact'
     }
   }
+
+  const handleSignOut = async () => {
+    setMenuOpen(false)
+    await supabase.auth.signOut()
+    router.push('/')
+  }
+
+  const dashboardHref = isAdmin ? '/admin' : '/dashboard'
 
   return (
     <>
@@ -183,12 +174,7 @@ export default function Navbar() {
       }}>
 
         {/* Logo */}
-        <Link href="/" onClick={() => setMenuOpen(false)} style={{
-          fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.88rem',
-          letterSpacing: '0.06em', textTransform: 'uppercase',
-          color: 'var(--page)', textDecoration: 'none',
-          display: 'flex', alignItems: 'center', gap: '0.5rem',
-        }}>
+        <Link href="/" onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.88rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--page)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <span style={{ width: 7, height: 7, background: 'var(--coral)', borderRadius: '50%', display: 'inline-block', animation: 'pulse-dot 2.5s infinite' }} />
           DFYAI
         </Link>
@@ -197,11 +183,7 @@ export default function Navbar() {
         <ul className="nav-links-desktop" style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }}>
           {NAV_LINKS.map(item => (
             <li key={item.label}>
-              <Link href={item.href} style={{
-                fontFamily: 'var(--mono)', fontSize: '0.68rem', letterSpacing: '0.12em',
-                textTransform: 'uppercase', textDecoration: 'none', transition: 'color 0.2s',
-                color: item.href === '/marketplace' ? 'var(--coral)' : 'rgba(247,245,240,0.45)',
-              }}
+              <Link href={item.href} style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: item.href === '/marketplace' ? 'var(--coral)' : 'rgba(247,245,240,0.45)', textDecoration: 'none', transition: 'color 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
                 onMouseLeave={e => e.currentTarget.style.color = item.href === '/marketplace' ? 'var(--coral)' : 'rgba(247,245,240,0.45)'}
               >{item.label}</Link>
@@ -211,30 +193,40 @@ export default function Navbar() {
 
         {/* Desktop CTAs */}
         <div className="nav-cta-desktop" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <button onClick={openApply} style={{
-            fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
-            letterSpacing: '0.1em', textTransform: 'uppercase',
-            color: 'var(--coral)', background: 'transparent',
-            border: '1px solid var(--coral-border)', padding: '0.5rem 1rem',
-            cursor: 'pointer', transition: 'all 0.2s',
-          }}
-            onMouseEnter={e => e.currentTarget.style.background = 'rgba(232,82,26,0.08)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            Join as Expert
-          </button>
-          <button onClick={handleBookCall} style={{
-            fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600,
-            letterSpacing: '0.1em', textTransform: 'uppercase',
-            color: 'var(--page)', background: 'var(--coral)',
-            border: '1px solid var(--coral)', padding: '0.5rem 1.25rem',
-            cursor: 'pointer', transition: 'opacity 0.2s',
-          }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            Book a Call
-          </button>
+          {sessionLoaded && (
+            session ? (
+              // Logged in
+              <>
+                <Link href={dashboardHref} style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.5)', textDecoration: 'none', transition: 'color 0.15s' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--page)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'rgba(247,245,240,0.5)'}
+                >
+                  {isAdmin ? 'Admin' : 'Dashboard'}
+                </Link>
+                <button onClick={handleSignOut} style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--page)', background: 'transparent', border: '1px solid var(--border-dark)', padding: '0.5rem 1rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(247,245,240,0.4)' }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border-dark)' }}
+                >Log Out</button>
+              </>
+            ) : (
+              // Logged out
+              <>
+                <button onClick={openApply} style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', background: 'transparent', border: '1px solid var(--coral-border)', padding: '0.5rem 1rem', cursor: 'pointer', transition: 'all 0.2s' }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(232,82,26,0.08)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >Join as Expert</button>
+                <Link href="/login" style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--page)', background: 'var(--coral)', border: '1px solid var(--coral)', padding: '0.5rem 1.25rem', textDecoration: 'none', transition: 'opacity 0.2s', display: 'block' }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+                  onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+                >Sign In</Link>
+              </>
+            )
+          )}
+          {/* Book a Call always visible */}
+          <button onClick={handleBookCall} style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--page)', background: 'transparent', border: '1px solid rgba(247,245,240,0.2)', padding: '0.5rem 1rem', cursor: 'pointer', transition: 'all 0.2s' }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(247,245,240,0.5)' }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(247,245,240,0.2)' }}
+          >Book a Call</button>
         </div>
 
         {/* Hamburger */}
@@ -257,35 +249,38 @@ export default function Navbar() {
         transition: 'transform 0.3s ease',
       }}>
         {NAV_LINKS.map(item => (
-          <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{
-            fontFamily: 'var(--mono)', fontSize: '0.9rem', letterSpacing: '0.18em',
-            textTransform: 'uppercase', textDecoration: 'none',
-            color: item.href === '/marketplace' ? 'var(--coral)' : 'var(--page)',
-          }}>
+          <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--mono)', fontSize: '0.9rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: item.href === '/marketplace' ? 'var(--coral)' : 'var(--page)', textDecoration: 'none' }}>
             {item.label}
           </Link>
         ))}
 
         <div style={{ width: 40, height: 1, background: 'var(--border-dark)' }} />
 
-        {/* Join as Expert — opens modal */}
-        <button onClick={openApply} style={{
-          fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600,
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: 'var(--coral)', background: 'transparent',
-          border: '1px solid var(--coral-border)', padding: '0.85rem 2.5rem',
-          cursor: 'pointer',
-        }}>
-          Join as Expert
-        </button>
+        {sessionLoaded && (
+          session ? (
+            // Logged in mobile
+            <>
+              <Link href={dashboardHref} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--mono)', fontSize: '0.78rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.5)', textDecoration: 'none' }}>
+                {isAdmin ? 'Admin Panel' : 'My Dashboard'}
+              </Link>
+              <button onClick={handleSignOut} style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--page)', background: 'transparent', border: '1px solid var(--border-dark)', padding: '0.85rem 2.5rem', cursor: 'pointer' }}>
+                Log Out
+              </button>
+            </>
+          ) : (
+            // Logged out mobile
+            <>
+              <button onClick={openApply} style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', background: 'transparent', border: '1px solid var(--coral-border)', padding: '0.85rem 2.5rem', cursor: 'pointer' }}>
+                Join as Expert
+              </button>
+              <Link href="/login" onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--page)', background: 'var(--coral)', padding: '0.85rem 2.5rem', textDecoration: 'none', display: 'block' }}>
+                Sign In
+              </Link>
+            </>
+          )
+        )}
 
-        {/* Book a Call */}
-        <button onClick={handleBookCall} style={{
-          fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 600,
-          letterSpacing: '0.1em', textTransform: 'uppercase',
-          color: 'var(--page)', background: 'var(--coral)',
-          border: 'none', padding: '0.85rem 2.5rem', cursor: 'pointer',
-        }}>
+        <button onClick={handleBookCall} style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)', background: 'transparent', border: '1px solid var(--border-dark)', padding: '0.85rem 2.5rem', cursor: 'pointer' }}>
           Book a Call
         </button>
       </div>
