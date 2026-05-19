@@ -1,8 +1,8 @@
-'use client'
+ï»¿'use client'
 
 const testimonials = [
   {
-    quote: 'They built an AI system that handles our entire customer intake process. What used to take my team 3 hours a day now happens automatically — and better than before.',
+    quote: 'They built an AI system that handles our entire customer intake process. What used to take my team 3 hours a day now happens automatically -- and better than before.',
     name: 'Sarah M.',
     role: 'Founder, boutique marketing agency',
   },
@@ -72,7 +72,7 @@ export default function Testimonials() {
         </div>
       </section>
 
-      {/* Mobile carousel — outside section to escape overflow clipping */}
+      {/* Mobile carousel -- outside section to escape overflow clipping */}
       <div className="testimonials-mobile">
         <div className="testimonials-track">
           {testimonials.map((t, i) => (
