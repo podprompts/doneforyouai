@@ -6,7 +6,7 @@ import Link from 'next/link'
 const projects = [
   {
     id: 1,
-    name: 'DoneForYouAI',
+    name: 'Done For You AI',
     url: 'doneforyouai.com',
     href: 'https://doneforyouai.com',
     tag: 'AI Services',
@@ -30,7 +30,7 @@ const projects = [
   },
   {
     id: 3,
-    name: 'LiveReselling',
+    name: 'Live Reselling',
     url: 'livereselling.com',
     href: 'https://livereselling.com',
     tag: 'Live Commerce',
