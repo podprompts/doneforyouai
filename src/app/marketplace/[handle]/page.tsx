@@ -26,7 +26,6 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
   const thumbnail = getVideoThumbnail(source)
 
   if (source.type === 'youtube') {
-    // Build autoplay src only after user clicks play
     const embedSrc = `${source.src}${source.src.includes('?') ? '&' : '?'}autoplay=1&rel=0&modestbranding=1&controls=1&color=white`
 
     return (
@@ -56,10 +55,6 @@ function VideoPlayer({ source }: { source: NonNullable<ReturnType<typeof resolve
               style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
               title="Expert video"
             />
-            {/*
-              Click-blocker covers ONLY the top ~10% (title bar area).
-              Controls live at the bottom — NOT blocked so pause/seek work.
-            */}
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0,
               height: '10%',
@@ -103,10 +98,14 @@ export default function ExpertProfilePage() {
   const [op, setOp]           = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
+  const [user, setUser]       = useState<any>(null)
 
   useEffect(() => {
     if (!handle) return
     const fetchOp = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
+
       const { data, error } = await supabase
         .from('operators')
         .select('*')
@@ -137,6 +136,7 @@ export default function ExpertProfilePage() {
     )
   }
 
+  const loggedIn    = !!user
   const avatarColor = AVATAR_COLORS[op.avatar] || COLOR_POOL[0]
   const tier        = TIER_CONFIG[op.tier] || TIER_CONFIG.pro
   const videoSource = resolveVideoSource({ r2Key: op.r2_key, muxPlaybackId: op.mux_playback_id, youtubeUrl: op.youtube_url })
@@ -199,8 +199,30 @@ export default function ExpertProfilePage() {
             </div>
           </div>
 
-          {/* Rating row — rate hidden */}
-          <div className="profile-rate-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'wrap', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid var(--border-dark)' }}>
+          {/* Rate + rating row */}
+          <div className="profile-rate-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid var(--border-dark)' }}>
+
+            {/* Rate — blurred for logged-out users */}
+            {loggedIn ? (
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                <span style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.4rem, 4vw, 2rem)', fontWeight: 400, color: 'var(--page)' }}>{op.rate}</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: 'rgba(247,245,240,0.3)' }}>{op.rate_type}</span>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div style={{ position: 'relative' }}>
+                  <span style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.4rem, 4vw, 2rem)', fontWeight: 400, color: 'var(--page)', filter: 'blur(6px)', userSelect: 'none', pointerEvents: 'none' }}>$•••/hr</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span style={{ fontSize: '0.8rem' }}>🔒</span>
+                  <Link href="/login" style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--coral)', textDecoration: 'none', borderBottom: '1px solid var(--coral-border)', paddingBottom: '1px' }}>Sign in</Link>
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>or</span>
+                  <Link href="/signup" style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--coral)', textDecoration: 'none', borderBottom: '1px solid var(--coral-border)', paddingBottom: '1px' }}>Sign up</Link>
+                  <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>to see rate</span>
+                </div>
+              </div>
+            )}
+
             <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: '#3ecf8e' }}>★ {op.rating} ({op.reviews} reviews)</span>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: op.available ? '#3ecf8e' : 'rgba(247,245,240,0.3)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
@@ -299,7 +321,28 @@ export default function ExpertProfilePage() {
         <div className="profile-sidebar" style={{ position: 'sticky', top: '72px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
           <div style={{ border: '1px solid var(--border-dark)', padding: '1.5rem', background: 'rgba(255,255,255,0.02)' }}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-dark)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-dark)' }}>
+
+              {/* Rate — blurred for logged-out users */}
+              {loggedIn ? (
+                <div>
+                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Rate</p>
+                  <p style={{ fontFamily: 'var(--serif)', fontSize: '2rem', color: 'var(--page)', lineHeight: 1 }}>{op.rate}</p>
+                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.3)' }}>{op.rate_type}</p>
+                </div>
+              ) : (
+                <div>
+                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Rate</p>
+                  <p style={{ fontFamily: 'var(--serif)', fontSize: '2rem', color: 'var(--page)', lineHeight: 1, filter: 'blur(6px)', userSelect: 'none', pointerEvents: 'none' }}>$•••</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.35rem' }}>
+                    <span style={{ fontSize: '0.7rem' }}>🔒</span>
+                    <Link href="/login" style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--coral)', textDecoration: 'none', borderBottom: '1px solid var(--coral-border)', paddingBottom: '1px' }}>Sign in</Link>
+                    <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', color: 'rgba(247,245,240,0.25)' }}>/</span>
+                    <Link href="/signup" style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--coral)', textDecoration: 'none', borderBottom: '1px solid var(--coral-border)', paddingBottom: '1px' }}>Sign up</Link>
+                  </div>
+                </div>
+              )}
+
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: '#3ecf8e' }}>★ {op.rating}</p>
                 <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.3)' }}>{op.reviews} reviews</p>
