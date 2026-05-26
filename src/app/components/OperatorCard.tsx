@@ -1,8 +1,10 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { resolveVideoSource } from '@/lib/media'
+import { supabase } from '@/lib/supabase'
 
 export interface ExpertCardData {
   id: string
@@ -36,17 +38,10 @@ const TIER_CONFIG: Record<string, { label: string; color: string; border: string
   pro_video: { label: 'Pro+Video', color: '#3ecf8e',              border: 'rgba(62,207,142,0.3)'   },
 }
 
-// ── Video player ──────────────────────────────────────────────────
-// - Autoplays immediately when mounted (card expands)
-// - YouTube: iframe with autoplay=1, mute=0, controls=1 so user can pause
-// - Native video: autoPlay + controls
-// - Click-blocker covers only the very top bar (title/channel) — NOT the controls
 function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVideoSource>> }) {
   if (source.type === 'youtube') {
-    // Build URL: autoplay on, audio on, controls visible so user can pause
     const embedId = source.embedId
     const src = `https://www.youtube-nocookie.com/embed/${embedId}?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&playsinline=1&fs=0&color=white`
-
     return (
       <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', background: '#000', overflow: 'hidden' }}>
         <iframe
@@ -56,20 +51,7 @@ function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVi
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
           title="Expert video"
         />
-        {/*
-          Click-blocker covers ONLY the top ~12% of the iframe:
-          - Blocks: channel name, video title (top bar)
-          - Does NOT block: play/pause, volume, progress bar (bottom controls)
-          This lets the user pause/seek without being redirected to YouTube
-        */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0,
-          height: '12%',
-          zIndex: 2,
-          background: 'transparent',
-          cursor: 'default',
-          pointerEvents: 'auto',
-        }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '12%', zIndex: 2, background: 'transparent', cursor: 'default', pointerEvents: 'auto' }} />
       </div>
     )
   }
@@ -80,7 +62,7 @@ function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVi
         <video
           autoPlay
           controls
-          playsInline  // required for iOS autoplay
+          playsInline
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
           poster={source.poster}
         >
@@ -99,7 +81,6 @@ function AutoVideo({ source }: { source: NonNullable<ReturnType<typeof resolveVi
   return null
 }
 
-// ── Expert Card ─────────────────────────────────────────────────
 export function ExpertCard({
   op,
   active,
@@ -114,6 +95,18 @@ export function ExpertCard({
   featured?: boolean
 }) {
   const router      = useRouter()
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setIsSignedIn(!!data.session)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
   const videoSource = resolveVideoSource({
     r2Key:         op.r2_key         || undefined,
     muxPlaybackId: op.mux_playback_id || undefined,
@@ -202,9 +195,58 @@ export function ExpertCard({
         </div>
 
         {/* Rate + rating + chevron */}
-        <div style={{ textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.1rem,3vw,1.4rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, color: 'rgba(247,245,240,0.3)', marginBottom: '0.25rem' }}>{op.rate_type}</div>
+        {/* Rate + rating + chevron */}
+        <div style={{ textAlign: 'right', flexShrink: 0, minWidth: 0, maxWidth: 'clamp(80px, 22vw, 120px)' }}>
+
+          {/* ── Blurred rate block ── */}
+          <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+            <div style={{
+              filter: isSignedIn ? 'none' : 'blur(6px)',
+              userSelect: isSignedIn ? 'auto' : 'none',
+              transition: 'filter 0.3s',
+              pointerEvents: isSignedIn ? 'auto' : 'none',
+            }}>
+              <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.1rem,3vw,1.4rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, color: 'rgba(247,245,240,0.3)', marginBottom: '0.25rem' }}>{op.rate_type}</div>
+            </div>
+
+            {/* Lock tooltip — only when signed out */}
+            {!isSignedIn && (
+              <div
+                onClick={e => { e.stopPropagation(); router.push('/login') }}
+                title="Sign in to view rate"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  zIndex: 2,
+                }}
+              >
+                <span style={{
+                  fontFamily: 'var(--mono)',
+                  fontSize: '0.5rem',
+                  fontWeight: 300,
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  color: 'var(--coral)',
+                  border: '1px solid var(--coral-border)',
+                  padding: '0.15rem 0.3rem',
+                  background: 'var(--ink)',
+                  whiteSpace: 'nowrap',
+                  display: 'block',
+                  textAlign: 'center',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}>
+                  🔒 Sign in
+                </span>
+              </div>
+            )}
+          </div>
+
           <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, color: '#3ecf8e' }}>★ {op.rating} ({op.reviews})</div>
           <span style={{
             color: 'rgba(247,245,240,0.25)', fontSize: '0.65rem', marginTop: '0.25rem',
@@ -217,11 +259,7 @@ export function ExpertCard({
       {/* ── Expanded panel ── */}
       {active && (
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-
-          {/* Video — autoplays, controls visible so user can pause/seek */}
           {hasVideo && videoSource && <AutoVideo source={videoSource} />}
-
-          {/* Bio · Deliverables · CTAs */}
           <div style={{
             padding: 'clamp(1rem, 4vw, 1.5rem)',
             display: 'grid',
@@ -241,7 +279,6 @@ export function ExpertCard({
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.3)' }}>Connect</span>
-
               <button
                 onClick={e => goToContact(e, 'book')}
                 disabled={!op.available}
@@ -251,7 +288,6 @@ export function ExpertCard({
               >
                 {op.available ? 'Book a Strategy Call →' : 'Currently Unavailable'}
               </button>
-
               {op.available && (
                 <button
                   onClick={e => goToContact(e, 'message')}
@@ -262,7 +298,6 @@ export function ExpertCard({
                   Send a message →
                 </button>
               )}
-
               {showViewProfile && (
                 <Link
                   href={`/marketplace/${op.handle}`}
@@ -274,7 +309,6 @@ export function ExpertCard({
                   View Full Profile →
                 </Link>
               )}
-
               <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.06em', color: 'rgba(247,245,240,0.18)', lineHeight: 1.6 }}>
                 All inquiries handled by<br />the DoneForYouAI team.
               </div>

@@ -8,7 +8,7 @@ const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_HERO_MUX_PLAYBACK_ID || ''
 const projects = [
   { id: 1, name: 'DoneForYouAI',        url: 'doneforyouai.com',      href: 'https://doneforyouai.com',      tag: 'AI Services',         screenshot: '/screenshots/doneforyouai.png',      light: false },
   { id: 2, name: 'AI News Clips',       url: 'ainewsclips.com',       href: 'https://ainewsclips.com',       tag: 'Media',               screenshot: '/screenshots/ainewsclips.png',       light: false },
-  { id: 3, name: 'LiveReselling',       url: 'livereselling.com',     href: 'https://livereselling.com',     tag: 'Live Commerce',       screenshot: '/screenshots/livereselling.png',     light: true  },
+  { id: 3, name: 'Live Reselling',       url: 'livereselling.com',     href: 'https://livereselling.com',     tag: 'Live Commerce',       screenshot: '/screenshots/livereselling.png',     light: true  },
   { id: 4, name: 'UGC Affiliates',      url: 'ugcaffiliates.com',     href: 'https://ugcaffiliates.com',     tag: 'Marketplace',         screenshot: '/screenshots/ugcaffiliates.png',     light: true  },
   { id: 5, name: 'AI Print on Demand',  url: 'aiprintondemand.com',   href: 'https://aiprintondemand.com',   tag: 'AI + E-commerce',     screenshot: '/screenshots/aipod.png',             light: true  },
   { id: 6, name: 'Vintage Garage Sale', url: 'vintagegaragesale.com', href: 'https://vintagegaragesale.com', tag: 'Marketplace',         screenshot: '/screenshots/vintagegaragesale.png', light: false },

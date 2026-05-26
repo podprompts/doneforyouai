@@ -34,6 +34,17 @@ const PULSE_FEED = [
 // ── Featured Expert Spotlight ─────────────────────────────────────
 function FeaturedSpotlight({ op }: { op: any }) {
   const router = useRouter()
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setIsSignedIn(!!data.session)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsSignedIn(!!session)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   const goToContact = () => {
     try {
@@ -61,9 +72,39 @@ function FeaturedSpotlight({ op }: { op: any }) {
           <div style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.88rem', color: 'var(--page)', marginBottom: '0.1rem' }}>{op.name}</div>
           <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.4)' }}>{op.title}</div>
         </div>
-        <div style={{ marginLeft: 'auto', textAlign: 'right', flexShrink: 0 }}>
-          <div style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', color: 'rgba(247,245,240,0.3)' }}>{op.rate_type}</div>
+        <div style={{ marginLeft: 'auto', textAlign: 'right', flexShrink: 0, position: 'relative', minWidth: 0, maxWidth: 'clamp(70px, 20vw, 110px)' }}>
+          <div style={{
+            filter: isSignedIn ? 'none' : 'blur(6px)',
+            userSelect: isSignedIn ? 'auto' : 'none',
+            transition: 'filter 0.3s',
+            pointerEvents: isSignedIn ? 'auto' : 'none',
+          }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: '1.1rem', color: 'var(--page)', lineHeight: 1 }}>{op.rate}</div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', color: 'rgba(247,245,240,0.3)' }}>{op.rate_type}</div>
+          </div>
+          {!isSignedIn && (
+            <div
+              onClick={() => router.push('/login')}
+              style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 2 }}
+            >
+              <span style={{
+                fontFamily: 'var(--mono)',
+                fontSize: '0.5rem',
+                fontWeight: 300,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                color: 'var(--coral)',
+                border: '1px solid var(--coral-border)',
+                padding: '0.15rem 0.3rem',
+                background: 'var(--ink)',
+                whiteSpace: 'nowrap',
+                display: 'block',
+                textAlign: 'center',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}>🔒 Sign in</span>
+            </div>
+          )}
         </div>
       </div>
       <p style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', color: 'rgba(247,245,240,0.5)', lineHeight: 1.6, marginBottom: '0.85rem' }}>

@@ -199,12 +199,8 @@ export default function ExpertProfilePage() {
             </div>
           </div>
 
-          {/* Rate + rating row — below on mobile, inline on desktop */}
-          <div className="profile-rate-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid var(--border-dark)' }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-              <span style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.4rem, 4vw, 2rem)', fontWeight: 400, color: 'var(--page)' }}>{op.rate}</span>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: 'rgba(247,245,240,0.3)' }}>{op.rate_type}</span>
-            </div>
+          {/* Rating row — rate hidden */}
+          <div className="profile-rate-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flexWrap: 'wrap', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid var(--border-dark)' }}>
             <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: '#3ecf8e' }}>★ {op.rating} ({op.reviews} reviews)</span>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: op.available ? '#3ecf8e' : 'rgba(247,245,240,0.3)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
@@ -303,12 +299,7 @@ export default function ExpertProfilePage() {
         <div className="profile-sidebar" style={{ position: 'sticky', top: '72px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
 
           <div style={{ border: '1px solid var(--border-dark)', padding: '1.5rem', background: 'rgba(255,255,255,0.02)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-dark)' }}>
-              <div>
-                <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '0.25rem' }}>Rate</p>
-                <p style={{ fontFamily: 'var(--serif)', fontSize: '2rem', color: 'var(--page)', lineHeight: 1 }}>{op.rate}</p>
-                <p style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.3)' }}>{op.rate_type}</p>
-              </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid var(--border-dark)' }}>
               <div style={{ textAlign: 'right' }}>
                 <p style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: '#3ecf8e' }}>★ {op.rating}</p>
                 <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.3)' }}>{op.reviews} reviews</p>
