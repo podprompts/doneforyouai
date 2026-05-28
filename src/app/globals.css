@@ -7,19 +7,20 @@
 }
 
 :root {
-  --ink:         #0f0f0e;
-  --ink-2:       #1c1c1a;
-  --ink-3:       #2a2a27;
-  --page:        #f7f5f0;
-  --page-2:      #efecea;
-  --coral:       #e8521a;
-  --coral-dim:   rgba(232, 82, 26, 0.08);
-  --coral-border:rgba(232, 82, 26, 0.28);
-  --white:       #ffffff;
-  --muted-light: rgba(15, 15, 14, 0.42);
-  --muted-dark:  rgba(247, 245, 240, 0.42);
-  --border-light:rgba(15, 15, 14, 0.1);
-  --border-dark: rgba(255, 255, 255, 0.09);
+  /* ── LIGHT THEME COLORS ── */
+  --ink:         #f5f4f0;       /* was #0f0f0e  — now warm off-white page bg */
+  --ink-2:       #eceae4;       /* was #1c1c1a  — now secondary surface */
+  --ink-3:       #d8d5ce;       /* was #2a2a27  — now borders/dividers */
+  --page:        #0f0f0e;       /* was #f7f5f0  — now primary text (near-black) */
+  --page-2:      #555550;       /* was #efecea  — now secondary/muted text */
+  --coral:       #e8521a;       /* unchanged    — brand accent kept identical */
+  --coral-dim:   rgba(232, 82, 26, 0.08);   /* unchanged */
+  --coral-border:rgba(232, 82, 26, 0.28);   /* unchanged */
+  --white:       #ffffff;       /* unchanged */
+  --muted-light: rgba(15, 15, 14, 0.42);    /* unchanged — text muting on light bg */
+  --muted-dark:  rgba(15, 15, 14, 0.28);    /* was white-based — now dark-based for light bg */
+  --border-light:rgba(15, 15, 14, 0.1);     /* unchanged */
+  --border-dark: rgba(15, 15, 14, 0.08);    /* was white-based — now subtle dark border */
   --serif:       'Instrument Serif', Georgia, serif;
   --sans:        'Syne', system-ui, sans-serif;
   --mono:        'DM Mono', 'Courier New', monospace;
@@ -27,14 +28,13 @@
 
 html {
   overflow-x: hidden;
-  overflow-x: hidden;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background: var(--ink);
-  color: var(--page);
+  background: var(--ink);       /* now renders as warm off-white */
+  color: var(--page);           /* now renders as near-black text */
   font-family: var(--sans);
   font-weight: 400;
   line-height: 1.6;
@@ -43,7 +43,7 @@ body {
 
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-track { background: var(--ink-2); }
 ::-webkit-scrollbar-thumb { background: var(--ink-3); border-radius: 2px; }
 
 /* ── SELECTION ── */
@@ -69,6 +69,7 @@ body {
 .animate-fade-in {
   animation: fade-in 0.6s ease both;
 }
+
 .delay-1 { animation-delay: 0.1s; }
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.35s; }
@@ -76,45 +77,30 @@ body {
 .delay-5 { animation-delay: 0.65s; }
 
 /* ── RESPONSIVE GRID OVERRIDES ── */
-/* These override inline-style grids on mobile */
-
 @media (max-width: 680px) {
-
-  /* Audience section */
   #audience-grid {
     grid-template-columns: 1fr !important;
     gap: 1.5rem !important;
   }
-
-  /* Contact section */
   #contact-grid {
     grid-template-columns: 1fr !important;
     gap: 3rem !important;
   }
-
-  /* Contact name/company row */
   #contact-name-row {
     grid-template-columns: 1fr !important;
     gap: 1rem !important;
   }
-
-  /* Services / Process grids */
   [data-mobile-stack] {
     grid-template-columns: 1fr !important;
     gap: 2rem !important;
   }
-
-  /* Global section padding on mobile */
   section {
     padding-left: 1.25rem !important;
     padding-right: 1.25rem !important;
   }
-
-  /* Prevent anything from bleeding outside viewport */
   * {
     max-width: 100%;
   }
-
   img, video, iframe {
     width: 100% !important;
     height: auto !important;

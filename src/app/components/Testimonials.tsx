@@ -22,57 +22,69 @@ export default function Testimonials() {
   return (
     <>
       <section id="results" style={{
-        background: 'var(--page)',
-        color: 'var(--ink)',
-        padding: '7rem 2.5rem',
+        background: '#ffffff',
+        color: '#0f0f0e',
+        padding: '6rem 2.5rem',
+        borderTop: '1px solid rgba(15,15,14,0.1)',
+        borderBottom: '1px solid rgba(15,15,14,0.1)',
       }}>
+        {/* Section header — bigger, darker, visible */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '1rem',
-          fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-          letterSpacing: '0.15em', textTransform: 'uppercase',
-          color: 'var(--muted-light)', marginBottom: '3rem',
+          display: 'flex', alignItems: 'center', gap: '1.5rem',
+          marginBottom: '3.5rem',
         }}>
-          What clients say
-          <span style={{ flex: 1, height: 1, background: 'var(--border-light)', display: 'block' }} />
+          <h2 style={{
+            fontFamily: 'var(--serif)',
+            fontSize: 'clamp(1.8rem, 3vw, 2.5rem)',
+            fontWeight: 400,
+            color: '#0f0f0e',
+            letterSpacing: '-0.02em',
+            whiteSpace: 'nowrap',
+            margin: 0,
+          }}>What clients say</h2>
+          <span style={{ flex: 1, height: '1px', background: 'rgba(15,15,14,0.12)', display: 'block' }} />
         </div>
 
-        {/* Desktop grid */}
+        {/* Desktop grid — with visible card outlines */}
         <div className="testimonials-desktop" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          border: '1px solid var(--border-light)',
+          gap: '1.5rem',
         }}>
           {testimonials.map((t, i) => (
             <div key={i} style={{
               padding: '2.25rem',
-              borderRight: i < testimonials.length - 1 ? '1px solid var(--border-light)' : 'none',
+              border: '1px solid rgba(15,15,14,0.12)',
+              borderRadius: '10px',
+              background: '#f5f4f0',
               position: 'relative',
             }}>
               <span style={{
                 position: 'absolute', top: '1rem', right: '1.5rem',
                 fontFamily: 'var(--serif)', fontSize: '3.5rem',
-                color: 'var(--coral)', opacity: 0.2, lineHeight: 1,
+                color: 'var(--coral)', opacity: 0.25, lineHeight: 1,
                 pointerEvents: 'none',
               }}>&ldquo;</span>
               <p style={{
                 fontFamily: 'var(--serif)', fontSize: '1.05rem',
-                lineHeight: 1.65, color: 'var(--ink)', marginBottom: '2rem',
+                lineHeight: 1.65, color: '#0f0f0e', marginBottom: '2rem',
               }}>{t.quote}</p>
               <div style={{ width: '2rem', height: '2px', background: 'var(--coral)', marginBottom: '1rem' }} />
               <strong style={{
                 display: 'block', fontFamily: 'var(--sans)', fontWeight: 500,
-                fontSize: '0.75rem', color: 'var(--ink)', marginBottom: '0.15rem',
+                fontSize: '0.82rem', color: '#0f0f0e', marginBottom: '0.15rem',
               }}>{t.name}</strong>
               <span style={{
                 fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300,
-                letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted-light)',
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+                color: 'rgba(15,15,14,0.5)',
               }}>{t.role}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Mobile carousel -- outside section to escape overflow clipping */}
+      {/* Mobile carousel */}
       <div className="testimonials-mobile">
         <div className="testimonials-track">
           {testimonials.map((t, i) => (
@@ -98,7 +110,7 @@ export default function Testimonials() {
             display: block;
             width: 100vw;
             margin-left: calc(-50vw + 50%);
-            background: var(--page);
+            background: #ffffff;
             padding-bottom: 4rem;
           }
 
@@ -118,8 +130,9 @@ export default function Testimonials() {
           .testi-card {
             flex: 0 0 78vw;
             scroll-snap-align: start;
-            border: 1px solid var(--border-light);
-            background: var(--page);
+            border: 1px solid rgba(15,15,14,0.12);
+            border-radius: 10px;
+            background: #f5f4f0;
             padding: 1.75rem 1.5rem;
             display: flex;
             flex-direction: column;
@@ -129,12 +142,12 @@ export default function Testimonials() {
           .testi-quote {
             position: absolute; top: 0.75rem; right: 1.25rem;
             font-family: var(--serif); font-size: 3rem;
-            color: var(--coral); opacity: 0.2; line-height: 1;
+            color: var(--coral); opacity: 0.25; line-height: 1;
             pointer-events: none;
           }
           .testi-text {
             font-family: var(--serif); font-size: 1rem;
-            line-height: 1.65; color: var(--ink);
+            line-height: 1.65; color: #0f0f0e;
             margin: 0 0 1.5rem; flex: 1;
           }
           .testi-rule {
@@ -144,12 +157,12 @@ export default function Testimonials() {
           .testi-name {
             display: block; font-family: var(--sans);
             font-size: 0.75rem; font-weight: 500;
-            color: var(--ink); margin-bottom: 0.2rem;
+            color: #0f0f0e; margin-bottom: 0.2rem;
           }
           .testi-role {
             font-family: var(--mono); font-size: 0.62rem;
             font-weight: 300; letter-spacing: 0.08em;
-            text-transform: uppercase; color: var(--muted-light);
+            text-transform: uppercase; color: rgba(15,15,14,0.5);
           }
         }
       `}</style>

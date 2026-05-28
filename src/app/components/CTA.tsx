@@ -3,12 +3,12 @@
 export default function CTA() {
   return (
     <section style={{
-      background: 'var(--ink)',
+      background: '#0f0f0e',
       padding: '9rem 2.5rem',
       textAlign: 'center',
       position: 'relative',
       overflow: 'hidden',
-      borderTop: '1px solid var(--border-dark)',
+      borderTop: '1px solid rgba(255,255,255,0.09)',
     }}>
       {/* Ghost watermark */}
       <span style={{
@@ -32,6 +32,7 @@ export default function CTA() {
           fontFamily: 'var(--serif)',
           fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
           fontWeight: 400, lineHeight: 1.08,
+          color: '#f7f5f0',
           maxWidth: '20ch', margin: '0 auto 1.5rem',
         }}>
           Stop experimenting.<br />
@@ -53,7 +54,7 @@ export default function CTA() {
           style={{
             fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 600,
             letterSpacing: '0.1em', textTransform: 'uppercase',
-            background: 'var(--coral)', color: 'var(--white)',
+            background: 'var(--coral)', color: '#ffffff',
             border: 'none', padding: '1.1rem 3rem',
             cursor: 'pointer', transition: 'opacity 0.2s, transform 0.15s',
           }}
@@ -74,4 +75,3 @@ export default function CTA() {
     </section>
   )
 }
-

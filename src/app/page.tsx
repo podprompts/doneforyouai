@@ -3,7 +3,7 @@ import Hero from './components/Hero'
 import Ticker from './components/Ticker'
 import Problem from './components/Problem'
 import Services from './components/Services'
-import FeaturedAndPulse from './components/FeaturedAndPulse'
+// import FeaturedAndPulse from './components/FeaturedAndPulse'
 import VideoShowcase from './components/VideoShowcase'
 import Process from './components/Process'
 import Testimonials from './components/Testimonials'
@@ -21,7 +21,7 @@ export default function Home() {
         <Ticker />
         <Problem />
         <Services />
-        <FeaturedAndPulse />
+        {/* <FeaturedAndPulse /> */}
         <VideoShowcase mode="embed" />
         <Process />
         <Testimonials />

@@ -41,27 +41,28 @@ export default function Services() {
   return (
     <>
       <section id="services" style={{
-        background: 'var(--page)',
-        color: 'var(--ink)',
+        background: '#f5f4f0',
+        color: '#0f0f0e',
         padding: '0 2.5rem 7rem',
       }}>
         <div style={{
           display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
           padding: '5rem 0 3rem',
-          borderBottom: '1px solid var(--border-light)',
+          borderBottom: '1px solid rgba(15,15,14,0.1)',
           flexWrap: 'wrap', gap: '0.5rem',
         }}>
           <h2 style={{
             fontFamily: 'var(--serif)',
             fontSize: 'clamp(2rem, 3.5vw, 3rem)',
             fontWeight: 400, lineHeight: 1.1,
+            color: '#0f0f0e',
           }}>
             Six ways we put<br />
             AI to work <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>for you</em>
           </h2>
           <span style={{
             fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-            color: 'var(--muted-light)', letterSpacing: '0.1em', paddingBottom: '0.25rem',
+            color: 'rgba(15,15,14,0.42)', letterSpacing: '0.1em', paddingBottom: '0.25rem',
           }}>06 Services</span>
         </div>
 
@@ -77,19 +78,34 @@ export default function Services() {
                 alignItems: 'center',
                 gap: '2rem',
                 padding: '1.75rem 2.5rem',
-                borderBottom: '1px solid var(--border-light)',
-                background: hovered === i ? 'var(--page-2)' : 'transparent',
+                borderBottom: '1px solid rgba(15,15,14,0.1)',
+                background: hovered === i ? 'rgba(232,82,26,0.06)' : 'transparent',
                 margin: '0 -2.5rem',
                 cursor: 'default',
                 transition: 'background 0.2s',
               }}
             >
-              <span style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, color: 'var(--muted-light)', letterSpacing: '0.05em' }}>{s.num}</span>
-              <span style={{ fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.95rem', color: 'var(--ink)' }}>{s.name}</span>
-              <span style={{ fontSize: '0.83rem', color: 'var(--muted-light)', lineHeight: 1.65 }}>{s.desc}</span>
+              <span style={{
+                fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
+                color: hovered === i ? 'var(--coral)' : 'rgba(15,15,14,0.35)',
+                letterSpacing: '0.05em',
+                transition: 'color 0.2s',
+              }}>{s.num}</span>
+              <span style={{
+                fontFamily: 'var(--sans)', fontWeight: 600,
+                fontSize: '1.1rem',
+                color: '#0f0f0e',
+                transition: 'color 0.2s',
+              }}>{s.name}</span>
+              <span style={{
+                fontSize: '0.83rem',
+                color: hovered === i ? 'rgba(15,15,14,0.7)' : 'rgba(15,15,14,0.5)',
+                lineHeight: 1.65,
+                transition: 'color 0.2s',
+              }}>{s.desc}</span>
               <span style={{
                 fontSize: '1rem',
-                color: hovered === i ? 'var(--coral)' : 'rgba(15,15,14,0.18)',
+                color: hovered === i ? 'var(--coral)' : 'rgba(15,15,14,0.2)',
                 transform: hovered === i ? 'translateX(4px)' : 'translateX(0)',
                 transition: 'color 0.2s, transform 0.2s', textAlign: 'right',
               }}>→</span>
@@ -98,7 +114,7 @@ export default function Services() {
         </div>
       </section>
 
-      {/* Mobile carousel rendered outside section so overflow:hidden can't clip it */}
+      {/* Mobile carousel */}
       <div className="services-mobile">
         <div className="services-track">
           {services.map((s, i) => (
@@ -124,7 +140,7 @@ export default function Services() {
             display: block;
             width: 100vw;
             margin-left: calc(-50vw + 50%);
-            background: var(--page);
+            background: #f5f4f0;
             padding-bottom: 3rem;
           }
 
@@ -144,8 +160,8 @@ export default function Services() {
           .svc-card {
             flex: 0 0 78vw;
             scroll-snap-align: start;
-            border: 1px solid var(--border-light);
-            background: var(--page);
+            border: 1px solid rgba(15,15,14,0.1);
+            background: #ffffff;
             padding: 1.75rem 1.5rem;
             display: flex;
             flex-direction: column;
@@ -154,15 +170,15 @@ export default function Services() {
           }
           .svc-num {
             font-family: var(--mono); font-size: 0.65rem;
-            font-weight: 300; color: var(--muted-light); letter-spacing: 0.08em;
+            font-weight: 300; color: rgba(15,15,14,0.35); letter-spacing: 0.08em;
           }
           .svc-name {
-            font-family: var(--sans); font-size: 1rem;
-            font-weight: 600; color: var(--ink); line-height: 1.3; margin: 0;
+            font-family: var(--sans); font-size: 1.05rem;
+            font-weight: 600; color: #0f0f0e; line-height: 1.3; margin: 0;
           }
           .svc-desc {
             font-family: var(--sans); font-size: 0.83rem;
-            color: var(--muted-light); line-height: 1.65; flex: 1; margin: 0;
+            color: rgba(15,15,14,0.5); line-height: 1.65; flex: 1; margin: 0;
           }
           .svc-arrow { font-size: 1rem; color: var(--coral); align-self: flex-end; }
         }

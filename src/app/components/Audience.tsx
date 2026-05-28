@@ -1,61 +1,95 @@
 'use client'
 
 const audiences = [
-  'Agency Owners', 'E-Commerce Brands', 'Service Businesses',
-  'Consultants & Coaches', 'B2B Companies', 'Real Estate Professionals',
-  'Healthcare Practices', 'Professional Services', 'SaaS Startups', 'Local Businesses',
+  { label: 'Agency Owners' },
+  { label: 'E-Commerce Brands' },
+  { label: 'Service Businesses' },
+  { label: 'Consultants & Coaches' },
+  { label: 'B2B Companies' },
+  { label: 'Real Estate Professionals' },
+  { label: 'Healthcare Practices' },
+  { label: 'Professional Services' },
+  { label: 'SaaS Startups' },
+  { label: 'Local Businesses' },
+  { label: 'Handmade Businesses' },
+  { label: 'Small Businesses' },
+  { label: 'Coaches & Course Creators' },
+  { label: 'Restaurants & Hospitality' },
 ]
 
 export default function Audience() {
   return (
     <section style={{
-      background: 'var(--page-2)',
-      color: 'var(--ink)',
-      padding: '5rem 2.5rem',
-      borderTop: '1px solid var(--border-light)',
-      borderBottom: '1px solid var(--border-light)',
+      background: '#f5f4f0',
+      padding: '6rem 2.5rem',
+      borderTop: '1px solid rgba(15,15,14,0.1)',
+      borderBottom: '1px solid rgba(15,15,14,0.1)',
     }}>
-      <div id="audience-grid" style={{
-        display: 'grid',
-        gridTemplateColumns: '240px 1fr',
-        gap: '4rem',
-        alignItems: 'center',
-      }}>
-        <h3 style={{
-          fontFamily: 'var(--serif)',
-          fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)',
-          fontWeight: 400, lineHeight: 1.25,
-        }}>
-          Built for businesses that{' '}
-          <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>mean it.</em>
-        </h3>
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem' }}>
-          {audiences.map((a) => (
-            <span
-              key={a}
-              style={{
-                fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-                letterSpacing: '0.08em',
-                padding: '0.5rem 1rem',
-                border: '1px solid var(--border-light)',
-                color: 'var(--ink)',
-                background: 'var(--page)',
-                cursor: 'default',
-                transition: 'border-color 0.2s, color 0.2s',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'var(--coral)'
-                e.currentTarget.style.color = 'var(--coral)'
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'var(--border-light)'
-                e.currentTarget.style.color = 'var(--ink)'
-              }}
-            >{a}</span>
-          ))}
-        </div>
+      <div style={{ marginBottom: '3rem' }}>
+        <span style={{
+          fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300,
+          letterSpacing: '0.2em', textTransform: 'uppercase',
+          color: 'var(--coral)', display: 'block', marginBottom: '0.75rem',
+        }}>Who we work with</span>
+        <h2 style={{
+          fontFamily: 'var(--serif)',
+          fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+          fontWeight: 400, lineHeight: 1.1,
+          color: '#0f0f0e', letterSpacing: '-0.02em', margin: 0,
+        }}>
+          Moving your business {' '}
+          <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>forward with AI.</em>
+        </h2>
       </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+        gap: '12px',
+      }}>
+        {audiences.map((a) => (
+          <div
+            key={a.label}
+            style={{
+              background: '#ffffff',
+              border: '1px solid rgba(15,15,14,0.1)',
+              borderRadius: '10px',
+              padding: '1.25rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              cursor: 'default',
+              transition: 'border-color 0.2s, box-shadow 0.2s, transform 0.2s',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget
+              el.style.borderColor = 'var(--coral)'
+              el.style.boxShadow = '0 4px 20px rgba(232,82,26,0.1)'
+              el.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget
+              el.style.borderColor = 'rgba(15,15,14,0.1)'
+              el.style.boxShadow = 'none'
+              el.style.transform = 'translateY(0)'
+            }}
+          >
+            <span style={{ color: 'var(--coral)', fontSize: '0.6rem', flexShrink: 0 }}>◆</span>
+            <span style={{ fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 500, color: '#0f0f0e', lineHeight: 1.3 }}>{a.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <style>{`
+        @media (max-width: 680px) {
+          section { padding: 4rem 1.25rem !important; }
+          section > div:last-child {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 8px !important;
+          }
+        }
+      `}</style>
     </section>
   )
 }

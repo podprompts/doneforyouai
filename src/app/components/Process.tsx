@@ -20,12 +20,13 @@ const steps = [
 
 export default function Process() {
   return (
+    /* Pinned dark — same treatment as FeaturedAndPulse and CTA */
     <section id="process" style={{
-      background: 'var(--ink)',
-      color: 'var(--page)',
+      background: '#0f0f0e',
+      color: '#f7f5f0',
       padding: '7rem 2.5rem',
-      borderTop: '1px solid var(--border-dark)',
-      borderBottom: '1px solid var(--border-dark)',
+      borderTop: '1px solid rgba(255,255,255,0.09)',
+      borderBottom: '1px solid rgba(255,255,255,0.09)',
     }}>
       <div style={{
         display: 'grid',
@@ -44,13 +45,14 @@ export default function Process() {
             fontFamily: 'var(--serif)',
             fontSize: 'clamp(2rem, 3.5vw, 3rem)',
             fontWeight: 400, lineHeight: 1.1, marginBottom: '1.5rem',
+            color: '#f7f5f0',
           }}>
             How it works.<br />
             <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>Simply.</em>
           </h2>
           <p style={{
             fontFamily: 'var(--sans)', fontSize: '0.88rem',
-            color: 'rgba(247,245,240,0.42)', lineHeight: 1.75,
+            color: 'rgba(247,245,240,0.55)', lineHeight: 1.75,
             maxWidth: '36ch',
           }}>
             No long onboarding. No confusing tech. We've built a process that
@@ -68,8 +70,8 @@ export default function Process() {
               gap: '1.5rem',
               alignItems: 'start',
               padding: '1.75rem 0',
-              borderBottom: i < steps.length - 1 ? '1px solid var(--border-dark)' : 'none',
-              borderTop: i === 0 ? '1px solid var(--border-dark)' : 'none',
+              borderBottom: i < steps.length - 1 ? '1px solid rgba(255,255,255,0.09)' : 'none',
+              borderTop: i === 0 ? '1px solid rgba(255,255,255,0.09)' : 'none',
             }}>
               <div style={{
                 width: 36, height: 36,
@@ -81,11 +83,12 @@ export default function Process() {
               <div>
                 <h4 style={{
                   fontFamily: 'var(--sans)', fontWeight: 600, fontSize: '0.9rem',
-                  letterSpacing: '0.02em', marginBottom: '0.5rem', color: 'var(--page)',
+                  letterSpacing: '0.02em', marginBottom: '0.5rem',
+                  color: '#f7f5f0',
                 }}>{s.title}</h4>
                 <p style={{
                   fontFamily: 'var(--sans)', fontSize: '0.83rem',
-                  color: 'rgba(247,245,240,0.42)', lineHeight: 1.7,
+                  color: 'rgba(247,245,240,0.55)', lineHeight: 1.7,
                 }}>{s.body}</p>
               </div>
             </div>
@@ -102,4 +105,3 @@ export default function Process() {
     </section>
   )
 }
-

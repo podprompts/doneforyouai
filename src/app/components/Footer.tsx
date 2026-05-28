@@ -3,8 +3,8 @@
 export default function Footer() {
   return (
     <footer style={{
-      background: 'var(--ink-2)',
-      borderTop: '1px solid var(--border-dark)',
+      background: '#1c1c1a',
+      borderTop: '1px solid rgba(255,255,255,0.09)',
       padding: '2rem 2.5rem',
       display: 'grid',
       gridTemplateColumns: '1fr auto 1fr',
@@ -35,12 +35,10 @@ export default function Footer() {
       </span>
 
       {/* Links */}
-      <div style={{
-        display: 'flex', justifyContent: 'flex-end', gap: '1.5rem',
-      }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1.5rem' }}>
         {[
           { label: 'Privacy', href: '/privacy' },
-          { label: 'Terms', href: '/terms' },
+          { label: 'Terms',   href: '/terms'   },
           { label: 'hello@doneforyouai.com', href: 'mailto:hello@doneforyouai.com' },
         ].map(link => (
           <a
@@ -69,4 +67,3 @@ export default function Footer() {
     </footer>
   )
 }
-
