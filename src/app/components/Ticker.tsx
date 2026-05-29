@@ -6,7 +6,6 @@ const items = [
   'Done For You', 'Workflow Design', 'Prompt Engineering',
 ]
 
-/* 4 full copies so the loop never shows a gap on any screen width */
 const repeated = [...items, ...items, ...items, ...items]
 
 export default function Ticker() {
@@ -19,33 +18,34 @@ export default function Ticker() {
       overflow: 'hidden',
       position: 'relative',
     }}>
-      <div className="ticker-track">
-        {repeated.map((item, i) => (
-          <span key={i} className="ticker-item">
-            {item}
-            <span className="ticker-dot">◆</span>
-          </span>
-        ))}
+      <div className="ticker-outer">
+        <div className="ticker-track">
+          {repeated.map((item, i) => (
+            <span key={i} className="ticker-item">
+              {item}
+              <span className="ticker-dot">◆</span>
+            </span>
+          ))}
+        </div>
       </div>
 
       <style>{`
+        .ticker-outer {
+          overflow: hidden;
+          width: 100%;
+        }
+
         .ticker-track {
-          display: flex;
-          flex-direction: row;
+          display: inline-flex;
           flex-wrap: nowrap;
-          width: max-content;
-          /* 
-            Pure CSS animation — no JS measurement.
-            Each of the 4 copies is 25% of the total width.
-            We animate -25% which is exactly one copy.
-            Duration is fixed at 18s = same pixel speed on every device.
-            'linear' ensures constant velocity. Hardware-accelerated via GPU.
-          */
-          animation: ticker-move 18s linear infinite;
           will-change: transform;
-          transform: translate3d(0, 0, 0);
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
+          animation: ticker-scroll 25s linear infinite;
+        }
+
+        @media (max-width: 768px) {
+          .ticker-track {
+            animation: ticker-scroll 5s linear infinite;
+          }
         }
 
         .ticker-item {
@@ -68,12 +68,11 @@ export default function Ticker() {
           font-size: 0.5rem;
         }
 
-        @keyframes ticker-move {
-          from { transform: translate3d(0, 0, 0); }
-          to   { transform: translate3d(-25%, 0, 0); }
+        @keyframes ticker-scroll {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
 
-        /* Pause on hover for accessibility */
         .ticker-track:hover {
           animation-play-state: paused;
         }

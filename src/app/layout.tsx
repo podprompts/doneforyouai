@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import Script from 'next/script'
 
 export const metadata: Metadata = {
   title: 'DoneForYouAI — AI Implementation Partner',
@@ -18,7 +19,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ overflowX: 'hidden' }}>{children}</body>
+      <body style={{ overflowX: 'hidden' }}>
+        {children}
+        <div dangerouslySetInnerHTML={{ __html: '<elevenlabs-convai agent-id="agent_7101ksrc9n2cen9ab11x17c1m2ks"></elevenlabs-convai>' }} />
+        <Script
+          src="https://unpkg.com/@elevenlabs/convai-widget-embed"
+          strategy="afterInteractive"
+        />
+      </body>
     </html>
   )
 }

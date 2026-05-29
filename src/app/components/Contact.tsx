@@ -220,7 +220,7 @@ export default function Contact() {
               {status === 'error' && (
                 <p style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: '#e53e3e', letterSpacing: '0.06em' }}>
                   Something went wrong. Email us at{' '}
-                  <a href="mailto:hello@doneforyouai.com" style={{ color: '#e53e3e' }}>hello@doneforyouai.com</a>
+                  <span style={{ color: '#e53e3e' }}>hire@doneforyouai.com</span>
                 </p>
               )}
             </div>
