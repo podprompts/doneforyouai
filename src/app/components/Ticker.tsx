@@ -6,7 +6,8 @@ const items = [
   'Done For You', 'Workflow Design', 'Prompt Engineering',
 ]
 
-const repeated = [...items, ...items, ...items, ...items]
+// Only 2 copies needed — we animate exactly -50% for a perfect seamless loop
+const repeated = [...items, ...items]
 
 export default function Ticker() {
   return (
@@ -39,12 +40,15 @@ export default function Ticker() {
           display: inline-flex;
           flex-wrap: nowrap;
           will-change: transform;
-          animation: ticker-scroll 25s linear infinite;
+          animation: ticker-scroll 22s linear infinite;
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
 
         @media (max-width: 768px) {
           .ticker-track {
-            animation: ticker-scroll 5s linear infinite;
+            animation: ticker-scroll 3s linear infinite;
           }
         }
 
@@ -69,8 +73,8 @@ export default function Ticker() {
         }
 
         @keyframes ticker-scroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0%   { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
         }
 
         .ticker-track:hover {

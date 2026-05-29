@@ -3,16 +3,36 @@ import './globals.css'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  title: 'DoneForYouAI — AI Implementation Partner',
-  description:
-    'We build and deploy custom AI systems inside your business — automations, assistants, content engines, and more. Done for you.',
   metadataBase: new URL('https://doneforyouai.com'),
+  title: {
+    default: 'DoneForYouAI.com',
+    template: '%s | DoneForYouAI.com',
+  },
+  description:
+    'Hire vetted AI experts to build automations, assistants, and content engines — deployed inside your business.',
   openGraph: {
-    title: 'DoneForYouAI — AI Implementation Partner',
-    description: 'Custom AI systems built and deployed inside your business. No learning curve.',
+    title: 'DoneForYouAI.com — AI Expert Marketplace',
+    description:
+      'Hire vetted AI experts to build automations, assistants, and content engines — deployed inside your business.',
     url: 'https://doneforyouai.com',
-    siteName: 'DoneForYouAI',
+    siteName: 'DoneForYouAI.com',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'DoneForYouAI.com — Your business. Powered by AI. Done for you.',
+      },
+    ],
+    locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DoneForYouAI.com — AI Expert Marketplace',
+    description:
+      'Hire vetted AI experts to build automations, assistants, and content engines — deployed inside your business.',
+    images: ['/og-image.png'],
   },
 }
 
