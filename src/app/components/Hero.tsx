@@ -261,7 +261,8 @@ export default function Hero() {
       </div>
 
       {/* Left */}
-      <div style={{ position: 'relative', zIndex: 1, minWidth: 0 }}>
+      {/* Left */}
+      <div className="hero-left" style={{ position: 'relative', zIndex: 1, minWidth: 0 }}>
         <div className="animate-fade-up delay-1" style={{
           display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
           fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
@@ -329,9 +330,15 @@ export default function Hero() {
         @media (max-width: 768px) {
           section {
             grid-template-columns: 1fr !important;
-            padding: 100px 1.5rem 60px 1.5rem !important;
+            padding: 130px 1.5rem 60px 1.5rem !important;
             gap: 2rem !important;
             align-items: start !important;
+          }
+          .hero-left {
+            padding-top: 1.5rem;
+          }
+          .hero-left {
+            padding-top: 1.5rem;
           }
           .hero-right {
             padding-top: 0 !important;

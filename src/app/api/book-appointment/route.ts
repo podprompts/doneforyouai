@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
+    const firstName = name.split(' ')[0]
+
     const auth = new google.auth.GoogleAuth({
       credentials: {
         client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest) {
     })
 
     await resend.emails.send({
-      from: 'DoneForYouAI.com <aria@doneforyouai.com>',
+      from: 'DoneForYouAI.com <adrien@doneforyouai.com>',
       to: 'adrien1@gmail.com',
       subject: `New Strategy Call Booked — ${name}`,
       html: `
@@ -63,16 +65,16 @@ export async function POST(req: NextRequest) {
     })
 
     await resend.emails.send({
-      from: 'DoneForYouAI.com <aria@doneforyouai.com>',
+      from: 'DoneForYouAI.com <adrien@doneforyouai.com>',
       to: email,
       subject: 'Your Strategy Call is Confirmed — Done For You AI',
       html: `
-        <h2>Hi ${name},</h2>
-        <p>Great news — your free 30-minute strategy call with DoneForYouAI is confirmed!</p>
+        <h2>Hi ${firstName},</h2>
+        <p>Great news — your free 30-minute strategy call with Done For You AI is confirmed!</p>
         <p><strong>Your call is scheduled for: ${startLabel}</strong></p>
         <p>We're excited to learn about your business and map out exactly where AI can move the needle for you.</p>
         <br/>
-        <p>Talk soon,<br/>The DFYAI Team<br/>doneforyouai.com</p>
+        <p>Talk soon,<br/>DFYAI & Team<br/>doneforyouai.com</p>
       `,
     })
 

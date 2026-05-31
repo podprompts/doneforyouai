@@ -1,10 +1,10 @@
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Ticker from './components/Ticker'
+import VideoShowcase from './components/VideoShowcase'
 import Problem from './components/Problem'
 import Services from './components/Services'
 // import FeaturedAndPulse from './components/FeaturedAndPulse'
-import VideoShowcase from './components/VideoShowcase'
 import Process from './components/Process'
 import Testimonials from './components/Testimonials'
 import Audience from './components/Audience'
@@ -19,10 +19,10 @@ export default function Home() {
       <main>
         <Hero />
         <Ticker />
+        <VideoShowcase mode="embed" />   {/* ← moved here, directly under Ticker */}
         <Problem />
         <Services />
         {/* <FeaturedAndPulse /> */}
-        <VideoShowcase mode="embed" />
         <Process />
         <Testimonials />
         <Audience />
