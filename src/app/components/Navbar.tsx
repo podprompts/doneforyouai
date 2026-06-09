@@ -2,21 +2,22 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 /* Experts link removed from nav */
 const NAV_LINKS = [
-  { label: 'Services', href: '/#services'   },
-  { label: 'Process',  href: '/#process'    },
-  { label: 'Our Work',     href: '/work'        },
-  { label: 'Contact',  href: '/#contact'   },
+  { label: 'Services', href: '/#services' },
+  { label: 'Process',  href: '/#process'  },
+  { label: 'Our Work', href: '/work'       },
+  { label: 'Blog',     href: '/blog'       },
+  { label: 'Contact',  href: '/#contact'  },
 ]
 
 const TIERS = [
-  { value: 'basic',     label: 'Basic',       price: '$79/mo', perks: ['Listed profile', 'No leads routed'] },
-{ value: 'pro',       label: 'Pro',         price: '$149/mo', perks: ['Leads routed', 'Priority placement'] },
-{ value: 'pro_video', label: 'Pro + Video', price: '$249/mo', perks: ['Everything in Pro', 'Video profile'] },
+  { value: 'basic',     label: 'Basic',       price: '$79/mo',  perks: ['Listed profile', 'No leads routed'] },
+  { value: 'pro',       label: 'Pro',         price: '$149/mo', perks: ['Leads routed', 'Priority placement'] },
+  { value: 'pro_video', label: 'Pro + Video', price: '$249/mo', perks: ['Everything in Pro', 'Video profile'] },
 ]
 
 function ApplyModal({ onClose }: { onClose: () => void }) {
@@ -117,7 +118,8 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
 }
 
 export default function Navbar() {
-  const router = useRouter()
+  const router   = useRouter()
+  const pathname = usePathname()
   const [scrolled,      setScrolled]      = useState(false)
   const [menuOpen,      setMenuOpen]      = useState(false)
   const [applyOpen,     setApplyOpen]     = useState(false)
@@ -147,6 +149,9 @@ export default function Navbar() {
   useEffect(() => {
     if (!applyOpen) document.body.style.overflow = menuOpen ? 'hidden' : ''
   }, [menuOpen, applyOpen])
+
+  // Close menu on route change
+  useEffect(() => { setMenuOpen(false) }, [pathname])
 
   const openApply = () => { setMenuOpen(false); setApplyOpen(true) }
 
@@ -204,9 +209,9 @@ export default function Navbar() {
             <li key={item.label}>
               <Link
                 href={item.href}
-                style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: linkColor, textDecoration: 'none', transition: 'color 0.2s' }}
+                style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: pathname.startsWith('/blog') && item.href === '/blog' ? 'var(--coral)' : linkColor, textDecoration: 'none', transition: 'color 0.2s' }}
                 onMouseEnter={e => e.currentTarget.style.color = linkHover}
-                onMouseLeave={e => e.currentTarget.style.color = linkColor}
+                onMouseLeave={e => e.currentTarget.style.color = pathname.startsWith('/blog') && item.href === '/blog' ? 'var(--coral)' : linkColor}
               >{item.label}</Link>
             </li>
           ))}
@@ -255,7 +260,7 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile drawer — always dark */}
+      {/* Mobile drawer */}
       <div style={{
         position: 'fixed', top: '60px', left: 0, right: 0, bottom: 0,
         background: 'rgba(15,15,14,0.98)', backdropFilter: 'blur(16px)',
@@ -265,7 +270,7 @@ export default function Navbar() {
         transition: 'transform 0.3s ease',
       }}>
         {NAV_LINKS.map(item => (
-          <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--mono)', fontSize: '0.9rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#f7f5f0', textDecoration: 'none' }}>
+          <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--mono)', fontSize: '0.9rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: pathname.startsWith('/blog') && item.href === '/blog' ? 'var(--coral)' : '#f7f5f0', textDecoration: 'none' }}>
             {item.label}
           </Link>
         ))}
