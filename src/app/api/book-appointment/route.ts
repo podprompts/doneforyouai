@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         <p><strong>Your call is scheduled for: ${startLabel}</strong></p>
         <p>We're excited to learn about your business and map out exactly where AI can move the needle for you.</p>
         <br/>
-        <p>Talk soon,<br/>DFYAI & Team<br/>doneforyouai.com</p>
+        <p>Talk soon,<br/>Adrien<br/>doneforyouai.com</p>
       `,
     })
 

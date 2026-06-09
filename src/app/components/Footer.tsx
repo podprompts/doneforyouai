@@ -1,6 +1,44 @@
 'use client'
 
 export default function Footer() {
+  const scrollToContact = () => {
+    const contact = document.getElementById('contact')
+    if (contact) {
+      contact.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
+  const linkStyle: React.CSSProperties = {
+    fontFamily: 'var(--mono)',
+    fontSize: '0.6rem',
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: 'rgba(247,245,240,0.22)',
+    textDecoration: 'none',
+    transition: 'color 0.2s',
+  }
+
+  const btnStyle: React.CSSProperties = {
+    fontFamily: 'var(--mono)',
+    fontSize: '0.6rem',
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+    color: 'rgba(247,245,240,0.22)',
+    background: 'none',
+    border: 'none',
+    padding: 0,
+    cursor: 'pointer',
+    transition: 'color 0.2s',
+  }
+
+  const hoverOn = (e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.color = 'rgba(247,245,240,0.55)'
+  }
+
+  const hoverOff = (e: React.MouseEvent<HTMLElement>) => {
+    e.currentTarget.style.color = 'rgba(247,245,240,0.22)'
+  }
+
   return (
     <footer style={{
       background: '#1c1c1a',
@@ -11,51 +49,51 @@ export default function Footer() {
       alignItems: 'center',
       gap: '2rem',
     }}>
+
       {/* Logo */}
       <div style={{
-        fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.82rem',
-        letterSpacing: '0.06em', textTransform: 'uppercase',
+        fontFamily: 'var(--sans)',
+        fontWeight: 800,
+        fontSize: '0.82rem',
+        letterSpacing: '0.06em',
+        textTransform: 'uppercase',
         color: 'rgba(247,245,240,0.35)',
-        display: 'flex', alignItems: 'center', gap: '0.4rem',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.4rem',
       }}>
         <span style={{
-          width: 5, height: 5, background: 'var(--coral)',
-          borderRadius: '50%', display: 'inline-block',
+          width: 5,
+          height: 5,
+          background: 'var(--coral)',
+          borderRadius: '50%',
+          display: 'inline-block',
         }} />
         DoneForYouAI
       </div>
 
-      {/* Center */}
+      {/* Center copyright */}
       <span style={{
-        fontFamily: 'var(--mono)', fontSize: '0.6rem',
-        letterSpacing: '0.1em', color: 'rgba(247,245,240,0.18)',
+        fontFamily: 'var(--mono)',
+        fontSize: '0.6rem',
+        letterSpacing: '0.1em',
+        color: 'rgba(247,245,240,0.18)',
         textAlign: 'center',
       }}>
         © 2026 DoneForYouAI.com · All rights reserved
       </span>
 
-      {/* Links */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1.5rem' }}>
-        {[
-          { label: 'Privacy', href: '/privacy' },
-          { label: 'Terms',   href: '/terms'   },
-          { label: 'hello@doneforyouai.com', href: 'mailto:hello@doneforyouai.com' },
-        ].map(link => (
-          <a
-            key={link.label}
-            href={link.href}
-            style={{
-              fontFamily: 'var(--mono)', fontSize: '0.6rem',
-              letterSpacing: '0.08em', textTransform: 'uppercase',
-              color: 'rgba(247,245,240,0.22)', textDecoration: 'none',
-              transition: 'color 0.2s',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'rgba(247,245,240,0.55)')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(247,245,240,0.22)')}
-          >
-            {link.label}
-          </a>
-        ))}
+      {/* Right links */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1.5rem', alignItems: 'center' }}>
+        <a href="/privacy" style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+          Privacy
+        </a>
+        <a href="/terms" style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+          Terms
+        </a>
+        <button onClick={scrollToContact} style={btnStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+          hire@doneforyouai.com
+        </button>
       </div>
 
       <style>{`

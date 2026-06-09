@@ -5,7 +5,7 @@ export default function Problem() {
     <section style={{
       background: '#f5f4f0',
       color: '#0f0f0e',
-      padding: '7rem 2.5rem',
+      padding: '3.5rem 2.5rem 7rem',
       borderBottom: '1px solid rgba(15,15,14,0.1)',
       display: 'grid',
       gridTemplateColumns: '260px 1fr',
@@ -44,7 +44,7 @@ export default function Problem() {
       </div>
       <style>{`
         @media (max-width: 680px) {
-          section { grid-template-columns: 1fr !important; gap: 1.5rem !important; padding: 4rem 1.25rem !important; }
+          section { grid-template-columns: 1fr !important; gap: 1.5rem !important; padding: 2.5rem 1.25rem 4rem !important; }
         }
       `}</style>
     </section>

@@ -1,9 +1,8 @@
 'use client'
 
 // ── Video config ─────────────────────────────────────────────────────────────
-const SHOW_VIDEO      = true                        // ← set false to hide section
-const YOUTUBE_ID      = 'ImELyyXCo8g'              // ← YouTube video ID
-const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_SHOWCASE_MUX_PLAYBACK_ID || ''
+const SHOW_VIDEO  = true
+const VIDEO_SRC   = 'https://cdn.livereselling.com/videos/Untitled_Video.mp4'
 // ─────────────────────────────────────────────────────────────────────────────
 
 interface Props {
@@ -13,39 +12,6 @@ interface Props {
 export default function VideoShowcase({ mode = 'embed' }: Props) {
   if (!SHOW_VIDEO) return null
 
-  const hasMux     = Boolean(MUX_PLAYBACK_ID)
-  const hasYoutube = Boolean(YOUTUBE_ID)
-  const hasVideo   = hasMux || hasYoutube
-
-  if (mode === 'bg') {
-    return (
-      <section id="work" style={{ position: 'relative', minHeight: '70vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', borderTop: '1px solid var(--border-dark)', borderBottom: '1px solid var(--border-dark)', textAlign: 'center', padding: '8rem 2.5rem' }}>
-        {hasMux ? (
-          <>
-            <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.2 }}>
-              <source src={`https://stream.mux.com/${MUX_PLAYBACK_ID}.m3u8`} type="application/x-mpegURL" />
-              <source src={`https://stream.mux.com/${MUX_PLAYBACK_ID}/high.mp4`} type="video/mp4" />
-            </video>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(15,15,14,0.88), rgba(15,15,14,0.72), rgba(15,15,14,0.88))' }} />
-          </>
-        ) : (
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, rgba(232,82,26,0.07) 0%, var(--ink) 70%)' }} />
-        )}
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '700px' }}>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '1.5rem' }}>How We Work</span>
-          <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 400, lineHeight: 1.1, color: 'var(--page)', marginBottom: '1.5rem' }}>
-            Watch what it looks like<br />
-            <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>inside your business.</em>
-          </h2>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '0.9rem', color: 'rgba(247,245,240,0.45)', lineHeight: 1.75 }}>
-            In 3 minutes, we'll show you exactly how we implement AI inside a real business.
-          </p>
-        </div>
-      </section>
-    )
-  }
-
-  // ── mode === 'embed' ──────────────────────────────────────────────────────
   return (
     <section id="work">
 
@@ -74,26 +40,15 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           <div className="vs-corner vs-corner-br" />
 
           <div className="vs-frame">
-            {hasMux && (
-              <video playsInline className="vs-player">
-                <source src={`https://stream.mux.com/${MUX_PLAYBACK_ID}.m3u8`} type="application/x-mpegURL" />
-                <source src={`https://stream.mux.com/${MUX_PLAYBACK_ID}/high.mp4`} type="video/mp4" />
-              </video>
-            )}
-            {!hasMux && hasYoutube && (
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?rel=0&modestbranding=1&controls=0&disablekb=1`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="vs-player"
-                title="DoneForYouAI — Welcome"
-              />
-            )}
-            {!hasVideo && (
-              <div className="vs-placeholder">
-                <span>Set YOUTUBE_ID at the top of this file</span>
-              </div>
-            )}
+            <video
+              controls
+              playsInline
+              className="vs-player"
+              preload="metadata"
+              poster="https://cdn.livereselling.com/item-images/image%20-%202026-05-31T094738.323.png"
+            >
+              <source src={VIDEO_SRC} type="video/mp4" />
+            </video>
           </div>
 
           <div className="vs-caption">
@@ -273,15 +228,16 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           }
 
           .vs-text {
-            padding: 2rem 1.25rem 2.5rem;
-          }
+  padding: 1.25rem 1.25rem 0;
+}
 
           .vs-heading {
             font-size: clamp(1.5rem, 6vw, 1.9rem);
+            margin-bottom: 0.75rem;
           }
 
-          .vs-body {
-            font-size: 0.85rem;
+          .vs-rule:last-child {
+            display: none;
           }
         }
       `}</style>

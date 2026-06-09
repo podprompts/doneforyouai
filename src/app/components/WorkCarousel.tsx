@@ -4,104 +4,29 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 
 const projects = [
-  {
-    id: 1,
-    name: 'DoneForYouAI',
-    url: 'doneforyouai.com',
-    href: 'https://doneforyouai.com',
-    tag: 'AI Services',
-    description: 'AI implementation agency with expert marketplace and operator network.',
-    screenshot: '/screenshots/doneforyouai.png',
-    light: false,
-  },
-  {
-    id: 2,
-    name: 'AI News Clips',
-    url: 'ainewsclips.com',
-    href: 'https://ainewsclips.com',
-    tag: 'Media',
-    description: 'AI news publication covering tech, agents, jobs, and innovation.',
-    screenshot: '/screenshots/ainewsclips.png',
-    light: false,
-  },
-  {
-    id: 3,
-    name: 'Live Reselling',
-    url: 'livereselling.com',
-    href: 'https://livereselling.com',
-    tag: 'Live Commerce',
-    description: 'Live-stream reselling platform. Go live, drop items, buyers claim in real time.',
-    screenshot: '/screenshots/livereselling.png',
-    light: true,
-  },
-  {
-    id: 4,
-    name: 'UGC Affiliates',
-    url: 'ugcaffiliates.com',
-    href: 'https://ugcaffiliates.com',
-    tag: 'Marketplace',
-    description: 'Affiliate marketplace connecting UGC creators with vendors.',
-    screenshot: '/screenshots/ugcaffiliates.png',
-    light: true,
-  },
-  {
-    id: 5,
-    name: 'AI Print on Demand',
-    url: 'aiprintondemand.com',
-    href: 'https://aiprintondemand.com',
-    tag: 'AI + E-commerce',
-    description: 'Generate AI designs and push them directly to Printify products — instantly.',
-    screenshot: '/screenshots/aipod.png',
-    light: true,
-  },
-  {
-    id: 6,
-    name: 'Vintage Garage Sale',
-    url: 'vintagegaragesale.com',
-    href: 'https://vintagegaragesale.com',
-    tag: 'Marketplace',
-    description: 'Curated vintage & thrifted marketplace. Buy now or name your price.',
-    screenshot: '/screenshots/vintagegaragesale.png',
-    light: false,
-  },
-  {
-    id: 7,
-    name: 'AI Digital Products',
-    url: 'aidigitalproducts.com',
-    href: 'https://aidigitalproducts.com',
-    tag: 'Digital Marketplace',
-    description: 'Ready-made AI products that work out of the box. Deployed in minutes.',
-    screenshot: '/screenshots/aidigitalproducts.png',
-    light: true,
-  },
-  {
-    id: 8,
-    name: 'Home Service Agents',
-    url: 'homeserviceagents.com',
-    href: 'https://homeserviceagents.com',
-    tag: 'AI + Home Services',
-    description: 'AI matches homeowners with vetted agents for home services — instantly.',
-    screenshot: '/screenshots/homeserviceagents.png',
-    light: true,
-  },
+  { id: 1, name: 'DoneForYouAI',         url: 'doneforyouai.com',       href: 'https://doneforyouai.com',       tag: 'AI Services',         description: 'AI implementation agency with expert marketplace and operator network.',                                         screenshot: '/screenshots/doneforyouai.png',       light: false },
+  { id: 2, name: 'AI News Clips',         url: 'ainewsclips.com',        href: 'https://ainewsclips.com',        tag: 'Media',               description: 'AI news publication covering tech, agents, jobs, and innovation.',                                                screenshot: '/screenshots/ainewsclips.png',        light: false },
+  { id: 3, name: 'Live Reselling',        url: 'livereselling.com',      href: 'https://livereselling.com',      tag: 'Live Commerce',       description: 'Live-stream reselling platform. Go live, drop items, buyers claim in real time.',                                 screenshot: '/screenshots/livereselling.png',      light: true  },
+  { id: 4, name: 'UGC Affiliates',        url: 'ugcaffiliates.com',      href: 'https://ugcaffiliates.com',      tag: 'Marketplace',         description: 'Affiliate marketplace connecting UGC creators with vendors.',                                                     screenshot: '/screenshots/ugcaffiliates.png',      light: true  },
+  { id: 5, name: 'AI Print on Demand',    url: 'aiprintondemand.com',    href: 'https://aiprintondemand.com',    tag: 'AI + E-commerce',     description: 'Generate AI designs and push them directly to Printify products — instantly.',                                     screenshot: '/screenshots/aipod.png',              light: true  },
+  { id: 6, name: 'Vintage Garage Sale',   url: 'vintagegaragesale.com',  href: 'https://vintagegaragesale.com',  tag: 'Marketplace',         description: 'Curated vintage & thrifted marketplace. Buy now or name your price.',                                              screenshot: '/screenshots/vintagegaragesale.png',  light: false },
+  { id: 7, name: 'AI Digital Products',   url: 'aidigitalproducts.com',  href: 'https://aidigitalproducts.com',  tag: 'Digital Marketplace', description: 'Ready-made AI products that work out of the box. Deployed in minutes.',                                            screenshot: '/screenshots/aidigitalproducts.png',  light: true  },
+  { id: 8, name: 'Home Service Agents',   url: 'homeserviceagents.com',  href: 'https://homeserviceagents.com',  tag: 'AI + Home Services',  description: 'AI matches homeowners with vetted agents for home services — instantly.',                                          screenshot: '/screenshots/homeserviceagents.png',  light: true  },
+  { id: 9, name: 'Free AI Receptionist',  url: 'freeaireceptionist.com', href: 'https://freeaireceptionist.com', tag: 'Voice AI',            description: 'AI receptionist that answers calls 24/7 — captures leads, books appointments, and routes callers automatically.',   screenshot: '/screenshots/freeaireceptionist.png', light: true  },
 ]
 
-// Clone count on each side for infinite illusion
 const CLONES = 3
 const total = projects.length
 
-// Build: [...last CLONES, ...all, ...first CLONES]
 const clonedProjects = [
   ...projects.slice(total - CLONES),
   ...projects,
   ...projects.slice(0, CLONES),
 ]
 
-// Real items start at index CLONES in the cloned array
 const OFFSET = CLONES
 
 export default function WorkCarousel() {
-  // index into clonedProjects, starts at first real item
   const [index, setIndex] = useState(OFFSET)
   const [animated, setAnimated] = useState(true)
   const [dragStart, setDragStart] = useState<number | null>(null)
@@ -111,7 +36,6 @@ export default function WorkCarousel() {
   const autoRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const jumpRef = useRef(false)
 
-  // Active real index (0-based) for dots
   const realIndex = ((index - OFFSET) % total + total) % total
 
   const goTo = useCallback((newIndex: number, withAnimation = true) => {
@@ -122,25 +46,20 @@ export default function WorkCarousel() {
   const next = useCallback(() => goTo(index + 1), [index, goTo])
   const prev = useCallback(() => goTo(index - 1), [index, goTo])
 
-  // After a transition, silently jump from clone zone to real zone
   useEffect(() => {
     if (!animated) return
     const timer = setTimeout(() => {
-      const clonedLen = clonedProjects.length
       if (index >= total + OFFSET) {
-        // Went past the end clones — jump to start
         jumpRef.current = true
         goTo(index - total, false)
       } else if (index < OFFSET) {
-        // Went past the start clones — jump to end
         jumpRef.current = true
         goTo(index + total, false)
       }
-    }, 450) // match transition duration
+    }, 450)
     return () => clearTimeout(timer)
   }, [index, animated, goTo])
 
-  // Re-enable animation after silent jump
   useEffect(() => {
     if (!animated && jumpRef.current) {
       const t = setTimeout(() => {
@@ -168,7 +87,6 @@ export default function WorkCarousel() {
   const handleNext = () => { next(); resetAuto() }
   const handleDot  = (i: number) => { goTo(i + OFFSET); resetAuto() }
 
-  // Pointer drag
   const onPointerDown = (e: React.PointerEvent) => {
     setDragStart(e.clientX)
     setDragDelta(0)
@@ -190,7 +108,6 @@ export default function WorkCarousel() {
     setIsDragging(false)
   }
 
-  // Card width in CSS — 72vw capped at 640px
   const cardW = 'min(72vw, 640px)'
   const gap = 'clamp(0.75rem, 2vw, 1.25rem)'
 
@@ -280,7 +197,6 @@ export default function WorkCarousel() {
                 onClick={e => { if (isDragging || Math.abs(dragDelta) > 8) e.preventDefault() }}
                 style={{ display: 'block', textDecoration: 'none' }}
               >
-                {/* Browser mockup */}
                 <div style={{
                   borderRadius: '12px',
                   overflow: 'hidden',
@@ -290,7 +206,6 @@ export default function WorkCarousel() {
                     : '0 8px 24px rgba(0,0,0,0.3)',
                   transition: 'box-shadow 0.4s ease, border-color 0.4s ease',
                 }}>
-                  {/* Chrome */}
                   <div style={{ height: 34, background: '#222', display: 'flex', alignItems: 'center', padding: '0 12px', gap: '6px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#ff5f57', flexShrink: 0 }} />
                     <span style={{ width: 9, height: 9, borderRadius: '50%', background: '#febc2e', flexShrink: 0 }} />
@@ -299,7 +214,6 @@ export default function WorkCarousel() {
                       {p.url}
                     </div>
                   </div>
-                  {/* Screenshot */}
                   <div style={{ width: '100%', aspectRatio: '16/9', background: p.light ? '#f0f0f0' : '#1a1a1a', overflow: 'hidden' }}>
                     <img
                       src={p.screenshot}
@@ -316,7 +230,6 @@ export default function WorkCarousel() {
                   </div>
                 </div>
 
-                {/* Info below card */}
                 <div style={{ padding: '1rem 0.25rem 0', opacity: isActive ? 1 : 0.2, transition: 'opacity 0.4s ease' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', marginBottom: '0.35rem' }}>
                     <h3 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)', fontWeight: 400, color: 'var(--page)', lineHeight: 1 }}>{p.name}</h3>

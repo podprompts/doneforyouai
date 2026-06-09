@@ -5,14 +5,15 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_HERO_MUX_PLAYBACK_ID || ''
 
 const projects = [
-  { id: 1, name: 'DoneForYouAI.com',        url: 'doneforyouai.com',      href: 'https://doneforyouai.com',      tag: 'AI Services',         screenshot: '/screenshots/doneforyouai.png',      light: false },
-  { id: 2, name: 'AINewsClips.com',       url: 'ainewsclips.com',       href: 'https://ainewsclips.com',       tag: 'Media',               screenshot: '/screenshots/ainewsclips.png',       light: false },
-  { id: 3, name: 'LiveReselling.com',      url: 'livereselling.com',     href: 'https://livereselling.com',     tag: 'Live Commerce',       screenshot: '/screenshots/livereselling.png',     light: true  },
-  { id: 4, name: 'UGCAffiliates.com',      url: 'ugcaffiliates.com',     href: 'https://ugcaffiliates.com',     tag: 'Marketplace',         screenshot: '/screenshots/ugcaffiliates.png',     light: true  },
-  { id: 5, name: 'AIPrintOnDemand.com',  url: 'aiprintondemand.com',   href: 'https://aiprintondemand.com',   tag: 'AI + E-commerce',     screenshot: '/screenshots/aipod.png',             light: true  },
-  { id: 6, name: 'VintageGarageSale.com', url: 'vintagegaragesale.com', href: 'https://vintagegaragesale.com', tag: 'Marketplace',         screenshot: '/screenshots/vintagegaragesale.png', light: false },
-  { id: 7, name: 'AIDigitalProducts.com', url: 'aidigitalproducts.com', href: 'https://aidigitalproducts.com', tag: 'Digital Marketplace', screenshot: '/screenshots/aidigitalproducts.png', light: true  },
-  { id: 8, name: 'HomeServiceAgents.com', url: 'homeserviceagents.com', href: 'https://homeserviceagents.com', tag: 'AI + Home Services',  screenshot: '/screenshots/homeserviceagents.png', light: true  },
+  { id: 1, name: 'DoneForYouAI.com',        url: 'doneforyouai.com',        href: 'https://doneforyouai.com',        tag: 'AI Services',         screenshot: '/screenshots/doneforyouai.png',        light: false },
+  { id: 2, name: 'AINewsClips.com',          url: 'ainewsclips.com',         href: 'https://ainewsclips.com',         tag: 'Media',               screenshot: '/screenshots/ainewsclips.png',         light: false },
+  { id: 3, name: 'LiveReselling.com',        url: 'livereselling.com',       href: 'https://livereselling.com',       tag: 'Live Commerce',       screenshot: '/screenshots/livereselling.png',       light: true  },
+  { id: 4, name: 'UGCAffiliates.com',        url: 'ugcaffiliates.com',       href: 'https://ugcaffiliates.com',       tag: 'Marketplace',         screenshot: '/screenshots/ugcaffiliates.png',       light: true  },
+  { id: 5, name: 'AIPrintOnDemand.com',      url: 'aiprintondemand.com',     href: 'https://aiprintondemand.com',     tag: 'AI + E-commerce',     screenshot: '/screenshots/aipod.png',               light: true  },
+  { id: 6, name: 'VintageGarageSale.com',    url: 'vintagegaragesale.com',   href: 'https://vintagegaragesale.com',   tag: 'Marketplace',         screenshot: '/screenshots/vintagegaragesale.png',   light: false },
+  { id: 7, name: 'AIDigitalProducts.com',    url: 'aidigitalproducts.com',   href: 'https://aidigitalproducts.com',   tag: 'Digital Marketplace', screenshot: '/screenshots/aidigitalproducts.png',   light: true  },
+  { id: 8, name: 'HomeServiceAgents.com',    url: 'homeserviceagents.com',   href: 'https://homeserviceagents.com',   tag: 'AI + Home Services',  screenshot: '/screenshots/homeserviceagents.png',   light: true  },
+  { id: 9, name: 'FreeAIReceptionist.com',   url: 'freeaireceptionist.com',  href: 'https://freeaireceptionist.com',  tag: 'Voice AI',            screenshot: '/screenshots/freeaireceptionist.png',  light: true  },
 ]
 
 const CLONES = 3
@@ -23,7 +24,7 @@ const OFFSET = CLONES
 function HeroCarousel() {
   const [index,    setIndex]    = useState(OFFSET)
   const [animated, setAnimated] = useState(true)
-  const [slideW,   setSlideW]   = useState(0)   // actual px width of one slide
+  const [slideW,   setSlideW]   = useState(0)
   const [dragDelta, setDragDelta] = useState(0)
 
   const dragStartRef  = useRef<number | null>(null)
@@ -31,11 +32,10 @@ function HeroCarousel() {
   const isDraggingRef = useRef(false)
   const autoRef       = useRef<ReturnType<typeof setInterval> | null>(null)
   const jumpRef       = useRef(false)
-  const viewportRef   = useRef<HTMLDivElement>(null)  // the clipping viewport
+  const viewportRef   = useRef<HTMLDivElement>(null)
 
   const realIndex = ((index - OFFSET) % total + total) % total
 
-  /* Measure the viewport width → that's one slide width */
   useEffect(() => {
     const measure = () => {
       if (viewportRef.current) setSlideW(viewportRef.current.offsetWidth)
@@ -106,7 +106,6 @@ function HeroCarousel() {
 
   const p = cloned[index]
 
-  /* px-based offset — works correctly on every screen size */
   const offsetPx = slideW > 0 ? -(index * slideW) + dragDelta : 0
 
   return (
@@ -140,7 +139,7 @@ function HeroCarousel() {
         </div>
       </div>
 
-      {/* Viewport — clips overflow, measures slide width */}
+      {/* Viewport */}
       <div
         ref={viewportRef}
         style={{ flex: 1, overflow: 'hidden', position: 'relative', cursor: dragDelta !== 0 ? 'grabbing' : 'grab', userSelect: 'none', minHeight: 0 }}
@@ -149,16 +148,12 @@ function HeroCarousel() {
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
       >
-        {/*
-          Track: px-wide row of all slides.
-          slideW > 0 guard prevents a flash before measurement.
-        */}
         {slideW > 0 && (
           <div style={{
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'nowrap',
-            width: `${slideW * cloned.length}px`,   // exact px total width
+            width: `${slideW * cloned.length}px`,
             height: '100%',
             transform: `translate3d(${offsetPx}px, 0, 0)`,
             transition: animated ? 'transform 0.4s cubic-bezier(0.22,1,0.36,1)' : 'none',
@@ -170,7 +165,7 @@ function HeroCarousel() {
                 <div
                   key={i}
                   style={{
-                    width: `${slideW}px`,   // exact px per slide
+                    width: `${slideW}px`,
                     flexShrink: 0,
                     flexGrow: 0,
                     height: '100%',
@@ -261,7 +256,6 @@ export default function Hero() {
       </div>
 
       {/* Left */}
-      {/* Left */}
       <div className="hero-left" style={{ position: 'relative', zIndex: 1, minWidth: 0 }}>
         <div className="animate-fade-up delay-1" style={{
           display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
@@ -333,9 +327,6 @@ export default function Hero() {
             padding: 130px 1.5rem 60px 1.5rem !important;
             gap: 2rem !important;
             align-items: start !important;
-          }
-          .hero-left {
-            padding-top: 1.5rem;
           }
           .hero-left {
             padding-top: 1.5rem;

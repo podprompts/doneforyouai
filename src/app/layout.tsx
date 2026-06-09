@@ -3,25 +3,53 @@ import './globals.css'
 import Script from 'next/script'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://doneforyouai.com'),
+  metadataBase: new URL('https://www.doneforyouai.com'),
   title: {
-    default: 'DoneForYouAI.com',
-    template: '%s | DoneForYouAI.com',
+    default: 'Done For You AI — AI Expert Marketplace',
+    template: '%s | Done For You AI',
   },
   description:
-    'Hire vetted AI experts to build automations, assistants, and content engines — deployed inside your business.',
+    'Hire vetted AI experts to build automations, assistants, and content engines — deployed inside your business. No guesswork, no wasted months.',
+  keywords: [
+    'done for you AI',
+    'AI implementation',
+    'AI automation services',
+    'custom AI assistants',
+    'AI experts for hire',
+    'business AI solutions',
+    'AI chatbot development',
+    'AI content systems',
+    'AI workflow automation',
+    'AI strategy consulting',
+  ],
+  authors: [{ name: 'DoneForYouAI.com' }],
+  creator: 'HONNYDO LLC',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://www.doneforyouai.com',
+  },
   openGraph: {
-    title: 'DoneForYouAI.com — AI Expert Marketplace',
+    title: 'Done For You AI — AI Expert Marketplace',
     description:
       'Hire vetted AI experts to build automations, assistants, and content engines — deployed inside your business.',
-    url: 'https://doneforyouai.com',
-    siteName: 'DoneForYouAI.com',
+    url: 'https://www.doneforyouai.com',
+    siteName: 'Done For You AI',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'DoneForYouAI.com — Your business. Powered by AI. Done for you.',
+        alt: 'Done For You AI — Your business. Powered by AI. Done for you.',
       },
     ],
     locale: 'en_US',
@@ -29,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'DoneForYouAI.com — AI Expert Marketplace',
+    title: 'Done For You AI — AI Expert Marketplace',
     description:
       'Hire vetted AI experts to build automations, assistants, and content engines — deployed inside your business.',
     images: ['/og-image.png'],
