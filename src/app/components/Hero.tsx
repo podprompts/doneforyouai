@@ -5,15 +5,16 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 const MUX_PLAYBACK_ID = process.env.NEXT_PUBLIC_HERO_MUX_PLAYBACK_ID || ''
 
 const projects = [
-  { id: 1, name: 'DoneForYouAI.com',        url: 'doneforyouai.com',        href: 'https://doneforyouai.com',        tag: 'AI Services',         screenshot: '/screenshots/doneforyouai.png',        light: false },
-  { id: 2, name: 'AINewsClips.com',          url: 'ainewsclips.com',         href: 'https://ainewsclips.com',         tag: 'Media',               screenshot: '/screenshots/ainewsclips.png',         light: false },
-  { id: 3, name: 'LiveReselling.com',        url: 'livereselling.com',       href: 'https://livereselling.com',       tag: 'Live Commerce',       screenshot: '/screenshots/livereselling.png',       light: true  },
-  { id: 4, name: 'UGCAffiliates.com',        url: 'ugcaffiliates.com',       href: 'https://ugcaffiliates.com',       tag: 'Marketplace',         screenshot: '/screenshots/ugcaffiliates.png',       light: true  },
-  { id: 5, name: 'AIPrintOnDemand.com',      url: 'aiprintondemand.com',     href: 'https://aiprintondemand.com',     tag: 'AI + E-commerce',     screenshot: '/screenshots/aipod.png',               light: true  },
-  { id: 6, name: 'VintageGarageSale.com',    url: 'vintagegaragesale.com',   href: 'https://vintagegaragesale.com',   tag: 'Marketplace',         screenshot: '/screenshots/vintagegaragesale.png',   light: false },
-  { id: 7, name: 'AIDigitalProducts.com',    url: 'aidigitalproducts.com',   href: 'https://aidigitalproducts.com',   tag: 'Digital Marketplace', screenshot: '/screenshots/aidigitalproducts.png',   light: true  },
-  { id: 8, name: 'HomeServiceAgents.com',    url: 'homeserviceagents.com',   href: 'https://homeserviceagents.com',   tag: 'AI + Home Services',  screenshot: '/screenshots/homeserviceagents.png',   light: true  },
-  { id: 9, name: 'FreeAIReceptionist.com',   url: 'freeaireceptionist.com',  href: 'https://freeaireceptionist.com',  tag: 'Voice AI',            screenshot: '/screenshots/freeaireceptionist.png',  light: true  },
+  { id: 1,  name: 'DoneForYouAI.com',         url: 'doneforyouai.com',         href: 'https://doneforyouai.com',         tag: 'AI Services',          screenshot: '/screenshots/doneforyouai.png',         light: false },
+  { id: 2,  name: 'AINewsClips.com',           url: 'ainewsclips.com',          href: 'https://ainewsclips.com',          tag: 'Media',                screenshot: '/screenshots/ainewsclips.png',          light: false },
+  { id: 3,  name: 'LiveReselling.com',         url: 'livereselling.com',        href: 'https://livereselling.com',        tag: 'Live Commerce',        screenshot: '/screenshots/livereselling.png',        light: true  },
+  { id: 4,  name: 'UGCAffiliates.com',         url: 'ugcaffiliates.com',        href: 'https://ugcaffiliates.com',        tag: 'Marketplace',          screenshot: '/screenshots/ugcaffiliates.png',        light: true  },
+  { id: 5,  name: 'AIPrintOnDemand.com',       url: 'aiprintondemand.com',      href: 'https://aiprintondemand.com',      tag: 'AI + E-commerce',      screenshot: '/screenshots/aipod.png',                light: true  },
+  { id: 6,  name: 'VintageGarageSale.com',     url: 'vintagegaragesale.com',    href: 'https://vintagegaragesale.com',    tag: 'Marketplace',          screenshot: '/screenshots/vintagegaragesale.png',    light: false },
+  { id: 7,  name: 'AIDigitalProducts.com',     url: 'aidigitalproducts.com',    href: 'https://aidigitalproducts.com',    tag: 'Digital Marketplace',  screenshot: '/screenshots/aidigitalproducts.png',    light: true  },
+  { id: 8,  name: 'HomeServiceAgents.com',     url: 'homeserviceagents.com',    href: 'https://homeserviceagents.com',    tag: 'AI + Home Services',   screenshot: '/screenshots/homeserviceagents.png',    light: true  },
+  { id: 9,  name: 'FreeAIReceptionist.com',    url: 'freeaireceptionist.com',   href: 'https://freeaireceptionist.com',   tag: 'Voice AI',             screenshot: '/screenshots/freeaireceptionist.png',   light: true  },
+  { id: 10, name: 'HireAIReceptionist.com',    url: 'hireaireceptionist.com',   href: 'https://hireaireceptionist.com',   tag: 'Business Automation',  screenshot: '/screenshots/hireaireceptionist.png',   light: false },
 ]
 
 const CLONES = 3
@@ -118,7 +119,7 @@ function HeroCarousel() {
             fontFamily: 'var(--mono)', fontSize: '0.9rem', fontWeight: 400,
             letterSpacing: '0.18em', textTransform: 'uppercase',
             color: 'var(--coral)', display: 'block', marginBottom: '0.25rem',
-          }}>What we've built</span>
+          }}>My Latest Work</span>
           <span style={{
             fontFamily: 'var(--mono)', fontSize: '0.65rem',
             color: 'rgba(15,15,14,0.4)', letterSpacing: '0.08em',

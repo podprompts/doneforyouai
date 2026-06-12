@@ -9,7 +9,7 @@ import { supabase } from '@/lib/supabase'
 const NAV_LINKS = [
   { label: 'Services', href: '/#services' },
   { label: 'Process',  href: '/#process'  },
-  { label: 'Our Work', href: '/work'       },
+  { label: 'My Work', href: '/work'       },
   { label: 'Blog',     href: '/blog'       },
   { label: 'Contact',  href: '/#contact'  },
 ]

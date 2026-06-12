@@ -2,14 +2,14 @@ import { Metadata } from 'next'
 import WorkPageClient from './WorkPageClient'
 
 export const metadata: Metadata = {
-  title: 'Our Work — Full-Stack AI Platforms Built from Scratch',
-  description: 'Explore 9 live platforms built solo by DoneForYouAI — from AI automation tools to live commerce, marketplaces, and voice AI. Full-stack, zero to production.',
+  title: 'My Work — Full-Stack AI Platforms Built from Scratch',
+  description: 'Explore 10 live platforms built solo by DoneForYouAI — from AI automation tools to live commerce, marketplaces, and voice AI. Full-stack, zero to production.',
   alternates: {
     canonical: 'https://www.doneforyouai.com/work',
   },
   openGraph: {
-    title: 'Our Work — Full-Stack AI Platforms Built from Scratch',
-    description: 'Explore 9 live platforms built solo by DoneForYouAI — from AI automation tools to live commerce, marketplaces, and voice AI.',
+    title: 'My Work — Full-Stack AI Platforms Built from Scratch',
+    description: 'Explore 10 live platforms built solo by DoneForYouAI — from AI automation tools to live commerce, marketplaces, and voice AI.',
     url: 'https://www.doneforyouai.com/work',
     siteName: 'Done For You AI',
     images: [
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Our Work — Full-Stack AI Platforms Built from Scratch',
-    description: 'Explore 9 live platforms built solo by DoneForYouAI — from AI automation tools to live commerce, marketplaces, and voice AI.',
+    title: 'My Work — Full-Stack AI Platforms Built from Scratch',
+    description: 'Explore 10 live platforms built solo by DoneForYouAI — from AI automation tools to live commerce, marketplaces, and voice AI.',
     images: ['/og-image.png'],
   },
 }
