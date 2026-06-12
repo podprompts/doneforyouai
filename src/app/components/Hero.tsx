@@ -14,7 +14,7 @@ const projects = [
   { id: 7,  name: 'AIDigitalProducts.com',     url: 'aidigitalproducts.com',    href: 'https://aidigitalproducts.com',    tag: 'Digital Marketplace',  screenshot: '/screenshots/aidigitalproducts.png',    light: true  },
   { id: 8,  name: 'HomeServiceAgents.com',     url: 'homeserviceagents.com',    href: 'https://homeserviceagents.com',    tag: 'AI + Home Services',   screenshot: '/screenshots/homeserviceagents.png',    light: true  },
   { id: 9,  name: 'FreeAIReceptionist.com',    url: 'freeaireceptionist.com',   href: 'https://freeaireceptionist.com',   tag: 'Voice AI',             screenshot: '/screenshots/freeaireceptionist.png',   light: true  },
-  { id: 10, name: 'HireAIReceptionist.com',    url: 'hireaireceptionist.com',   href: 'https://hireaireceptionist.com',   tag: 'Business Automation',  screenshot: '/screenshots/hireaireceptionist.png',   light: false },
+  { id: 10, name: 'HireAIReceptionist.com',    url: 'hireaireceptionist.com',   href: 'https://hireaireceptionist.com',   tag: 'Business Automation',  screenshot: '/screenshots/hireaireceptionist.webp',   light: false },
 ]
 
 const CLONES = 3
