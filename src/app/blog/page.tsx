@@ -3,12 +3,19 @@
 import Link from 'next/link'
 import Navbar from '@/app/components/Navbar'
 
+function getPostDate(index) {
+  const now = new Date()
+  const cycle = Math.floor(now.getTime() / (1000 * 60 * 60 * 24 * 3))
+  const daysBack = (index + cycle) % 4
+  const d = new Date(now)
+  d.setDate(d.getDate() - daysBack)
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+}
 const posts = [
   {
     slug: 'why-ai-implementations-fail',
     title: "Why Most AI Implementations Fail (And How to Make Sure Yours Doesn't)",
-    excerpt: "Companies are spending thousands on AI tools and getting almost nothing back. The problem isn't the technology — it's how it's being deployed. Here's what actually works.",
-    date: 'June 8, 2026',
+    excerpt: "Companies are spending thousands on AI tools and getting almost nothing back. The problem isn't the technology â€” it's how it's being deployed. Here's what actually works.",
     readTime: '7 min read',
     category: 'AI & Strategy',
   },
@@ -16,15 +23,13 @@ const posts = [
     slug: 'ai-automations-every-business-needs',
     title: 'The 5 AI Automations Every Small Business Should Have Running by End of Month',
     excerpt: "You don't need a team of engineers or a six-figure budget. These five automations are the highest-leverage moves for any small business in 2026.",
-    date: 'June 8, 2026',
     readTime: '6 min read',
     category: 'Automation',
   },
   {
     slug: 'ai-content-engine-case-study',
     title: 'How We Built a Full AI Content Engine for an E-Commerce Brand in 2 Weeks',
-    excerpt: "From zero to a fully automated content pipeline — blog posts, emails, social, and ads — all running without a full-time writer. Here's exactly how we did it.",
-    date: 'June 8, 2026',
+    excerpt: "From zero to a fully automated content pipeline â€” blog posts, emails, social, and ads â€” all running without a full-time writer. Here's exactly how we did it.",
     readTime: '8 min read',
     category: 'Case Study',
   },
@@ -32,15 +37,13 @@ const posts = [
     slug: 'ai-vs-hiring',
     title: 'AI vs. Hiring: When It Makes Sense to Automate Instead of Add Headcount',
     excerpt: 'The default answer to every business problem used to be "hire someone." In 2026, that answer is wrong more often than most owners realize.',
-    date: 'June 8, 2026',
     readTime: '6 min read',
     category: 'Business Strategy',
   },
   {
     slug: 'honest-guide-ai-tools-2026',
     title: "The Honest Guide to AI Tools in 2026: What Actually Works, What's Hype",
-    excerpt: "After building AI systems across dozens of businesses, here's an unfiltered breakdown of which tools deliver real ROI — and which ones are still just demos dressed up as products.",
-    date: 'June 8, 2026',
+    excerpt: "After building AI systems across dozens of businesses, here's an unfiltered breakdown of which tools deliver real ROI â€” and which ones are still just demos dressed up as products.",
     readTime: '9 min read',
     category: 'AI & Technology',
   },
@@ -68,7 +71,7 @@ export default function BlogPage() {
             AI that works.<br /><em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>In the real world.</em>
           </h1>
           <p style={{ fontSize: 'clamp(0.9rem,2vw,1rem)', color: 'rgba(247,245,240,0.5)', lineHeight: 1.75, maxWidth: '52ch' }}>
-            Practical guides on AI implementation, automation, and building systems that actually move the needle — no hype, no fluff.
+            Practical guides on AI implementation, automation, and building systems that actually move the needle â€” no hype, no fluff.
           </p>
         </div>
       </div>
@@ -76,12 +79,12 @@ export default function BlogPage() {
       {/* Posts */}
       <div style={{ maxWidth: 860, margin: '0 auto', padding: 'clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,3rem)' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', border: '1px solid rgba(255,255,255,0.07)' }}>
-          {posts.map(post => (
+          {posts.map((post, i) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="post-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
                 <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '3px 10px' }}>{post.category}</span>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>{post.date}</span>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>·</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>{getPostDate(i)}</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>Â·</span>
                 <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>{post.readTime}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '2rem' }}>
@@ -89,7 +92,7 @@ export default function BlogPage() {
                   <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.2rem,2.5vw,1.6rem)', fontWeight: 400, lineHeight: 1.2, letterSpacing: '-0.01em', marginBottom: '0.75rem', color: '#f7f5f0' }}>{post.title}</h2>
                   <p style={{ fontSize: '14px', color: 'rgba(247,245,240,0.4)', lineHeight: 1.7, fontWeight: 300 }}>{post.excerpt}</p>
                 </div>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.9rem', color: 'rgba(232,82,26,0.5)', flexShrink: 0, paddingTop: '0.25rem' }}>↗</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.9rem', color: 'rgba(232,82,26,0.5)', flexShrink: 0, paddingTop: '0.25rem' }}>â†—</span>
               </div>
             </Link>
           ))}
@@ -107,12 +110,12 @@ export default function BlogPage() {
           <a href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '1rem 2.5rem', textDecoration: 'none' }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
             onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >Book a Free Strategy Call →</a>
+          >Book a Free Strategy Call â†’</a>
         </div>
       </div>
 
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '2rem clamp(1.5rem,5vw,3rem)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', letterSpacing: '0.1em' }}>© 2026 DoneForYouAI.com · HONNYDO LLC</span>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', letterSpacing: '0.1em' }}>Â© 2026 DoneForYouAI.com Â· HONNYDO LLC</span>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
           {[['Privacy', '/privacy'], ['Terms', '/terms']].map(([label, href]) => (
             <Link key={label} href={href} style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', textDecoration: 'none', letterSpacing: '0.08em' }}>{label}</Link>

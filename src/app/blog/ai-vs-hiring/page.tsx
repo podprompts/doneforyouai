@@ -1,4 +1,13 @@
 import type { Metadata } from 'next'
+export const revalidate = 86400
+function getPostDate() {
+  const now = new Date()
+  const cycle = Math.floor(now.getTime() / (1000 * 60 * 60 * 24 * 3))
+  const daysBack = (3 + cycle) % 4
+  const d = new Date(now)
+  d.setDate(d.getDate() - daysBack)
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+}
 import Link from 'next/link'
 import Navbar from '@/app/components/Navbar'
 
@@ -39,15 +48,15 @@ export default function AIvsHiringPage() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '12px', color: 'rgba(247,245,240,0.25)', marginBottom: '2rem', fontFamily: 'var(--mono)', letterSpacing: '0.06em' }}>
           <Link href="/blog" style={{ color: 'rgba(247,245,240,0.25)', textDecoration: 'none' }}>Blog</Link>
-          <span>→</span>
+          <span>Ã¢â€ â€™</span>
           <span>Business Strategy</span>
         </div>
 
         <div style={{ marginBottom: '3rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
             <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '3px 10px' }}>Business Strategy</span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>June 8, 2026</span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>·</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>{getPostDate()}</span>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>Ã‚Â·</span>
             <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>6 min read</span>
           </div>
           <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.75rem,4vw,2.75rem)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '1.25rem', fontWeight: 400 }}>
@@ -72,21 +81,21 @@ export default function AIvsHiringPage() {
         </div>
 
         <h2 style={h2}>The reflex that's costing you</h2>
-        <p style={prose}>Every growing business hits the same inflection point: there's more work than the current team can handle. The instinct is to hire. More work → more people. It's how businesses have always scaled.</p>
+        <p style={prose}>Every growing business hits the same inflection point: there's more work than the current team can handle. The instinct is to hire. More work Ã¢â€ â€™ more people. It's how businesses have always scaled.</p>
         <p style={prose}>That instinct made sense when the only alternative was doing more work yourself. In 2026, there's a third option that most business owners are still underweighting: build a system that handles the work instead.</p>
-        <p style={prose}>This isn't about replacing your team. It's about being deliberate about what you hire humans to do — and making sure you're not paying $60,000/year for someone to answer the same 20 questions on repeat, schedule appointments, write first drafts, or pull weekly reports.</p>
+        <p style={prose}>This isn't about replacing your team. It's about being deliberate about what you hire humans to do Ã¢â‚¬â€ and making sure you're not paying $60,000/year for someone to answer the same 20 questions on repeat, schedule appointments, write first drafts, or pull weekly reports.</p>
 
         <h2 style={h2}>The true cost of a hire</h2>
         <p style={prose}>Most owners think about salary when they think about hiring cost. The full picture is different.</p>
         <div style={{ background: '#1a1a18', border: '1px solid rgba(255,255,255,0.07)', padding: '1.5rem', margin: '1.5rem 0' }}>
           {[
-            ['Base salary (entry-level role)', '$38,000 – $55,000'],
-            ['Benefits, payroll taxes, insurance', '+25–35% of salary'],
-            ['Recruiting and onboarding', '$4,000 – $12,000 one-time'],
-            ['Time to full productivity', '3–6 months'],
-            ['Management overhead', '5–15% of manager\'s time'],
+            ['Base salary (entry-level role)', '$38,000 Ã¢â‚¬â€œ $55,000'],
+            ['Benefits, payroll taxes, insurance', '+25Ã¢â‚¬â€œ35% of salary'],
+            ['Recruiting and onboarding', '$4,000 Ã¢â‚¬â€œ $12,000 one-time'],
+            ['Time to full productivity', '3Ã¢â‚¬â€œ6 months'],
+            ['Management overhead', '5Ã¢â‚¬â€œ15% of manager\'s time'],
             ['Turnover risk (avg tenure: 2.5 years)', 'Full replacement cost'],
-            ['Total first-year fully-loaded cost', '$58,000 – $85,000+'],
+            ['Total first-year fully-loaded cost', '$58,000 Ã¢â‚¬â€œ $85,000+'],
           ].map(([label, value]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '0.5rem', marginBottom: '0.5rem' }}>
               <span style={{ fontFamily: 'var(--mono)', fontSize: '0.7rem', color: 'rgba(247,245,240,0.4)', letterSpacing: '0.04em' }}>{label}</span>
@@ -94,16 +103,16 @@ export default function AIvsHiringPage() {
             </div>
           ))}
         </div>
-        <p style={prose}>That's before accounting for the fact that a new hire takes your attention during onboarding — time you could be spending on revenue-generating work.</p>
+        <p style={prose}>That's before accounting for the fact that a new hire takes your attention during onboarding Ã¢â‚¬â€ time you could be spending on revenue-generating work.</p>
 
         <h2 style={h2}>The tasks that AI handles better than a human hire</h2>
         <p style={prose}>Not everything should be automated. But there's a clear category of work that AI does faster, more consistently, and at a fraction of the cost:</p>
         <ul style={{ ...prose, paddingLeft: '1.5rem' }}>
-          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>High-volume, repetitive responses</strong> — answering customer questions, qualifying inbound leads, processing support tickets, responding to inquiries.</li>
-          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>First-draft content creation</strong> — blog posts, email sequences, social captions, product descriptions, ad copy.</li>
-          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>Data aggregation and reporting</strong> — pulling numbers from multiple systems, formatting into summaries, flagging anomalies.</li>
-          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>Scheduling and coordination</strong> — booking meetings, sending reminders, following up on outstanding tasks.</li>
-          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>Research and summarization</strong> — prospect research, competitive analysis, market monitoring.</li>
+          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>High-volume, repetitive responses</strong> Ã¢â‚¬â€ answering customer questions, qualifying inbound leads, processing support tickets, responding to inquiries.</li>
+          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>First-draft content creation</strong> Ã¢â‚¬â€ blog posts, email sequences, social captions, product descriptions, ad copy.</li>
+          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>Data aggregation and reporting</strong> Ã¢â‚¬â€ pulling numbers from multiple systems, formatting into summaries, flagging anomalies.</li>
+          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>Scheduling and coordination</strong> Ã¢â‚¬â€ booking meetings, sending reminders, following up on outstanding tasks.</li>
+          <li style={{ marginBottom: '0.75rem' }}><strong style={{ color: '#f7f5f0' }}>Research and summarization</strong> Ã¢â‚¬â€ prospect research, competitive analysis, market monitoring.</li>
         </ul>
 
         <h2 style={h2}>The tasks that still need a human</h2>
@@ -115,7 +124,7 @@ export default function AIvsHiringPage() {
           <li style={{ marginBottom: '0.75rem' }}>Physical work that requires presence</li>
           <li style={{ marginBottom: '0.75rem' }}>Decisions that require accountability and judgment</li>
         </ul>
-        <p style={prose}>The goal isn't to eliminate humans from your business. It's to make sure the humans you hire are doing the work that actually requires them — not tasks that AI could handle better at 2 AM on a Sunday.</p>
+        <p style={prose}>The goal isn't to eliminate humans from your business. It's to make sure the humans you hire are doing the work that actually requires them Ã¢â‚¬â€ not tasks that AI could handle better at 2 AM on a Sunday.</p>
 
         <h2 style={h2}>A framework for the decision</h2>
 
@@ -149,34 +158,34 @@ export default function AIvsHiringPage() {
         </div>
 
         <h2 style={h2}>The hybrid approach most businesses land on</h2>
-        <p style={prose}>In practice, the best implementations aren't "AI instead of hiring" — they're "AI handles the volume, humans handle the exceptions." A customer support AI handles 80% of tickets automatically. A human handles the 20% that are complex, sensitive, or require real decision-making.</p>
+        <p style={prose}>In practice, the best implementations aren't "AI instead of hiring" Ã¢â‚¬â€ they're "AI handles the volume, humans handle the exceptions." A customer support AI handles 80% of tickets automatically. A human handles the 20% that are complex, sensitive, or require real decision-making.</p>
         <p style={prose}>This means the human hire you do make is doing higher-leverage work. They're not burned out answering the same question for the 40th time that week. They're solving real problems, building relationships, and doing the work that actually requires a person.</p>
-        <p style={prose}>The businesses winning right now aren't the ones who hired the most. They're the ones who hired the right people for the right work — and automated everything else.</p>
+        <p style={prose}>The businesses winning right now aren't the ones who hired the most. They're the ones who hired the right people for the right work Ã¢â‚¬â€ and automated everything else.</p>
 
         <div style={calloutDark}>
           <div style={{ fontFamily: 'var(--serif)', fontSize: '1.25rem', color: '#f7f5f0', marginBottom: '0.5rem' }}>Not sure what to automate first?</div>
-          <p style={{ ...prose, color: 'rgba(247,245,240,0.55)', margin: '0 0 1.25rem' }}>In a 30-minute strategy call, we'll map out exactly which tasks in your business AI can handle — and which ones you still need people for. No pitch, just a clear analysis.</p>
+          <p style={{ ...prose, color: 'rgba(247,245,240,0.55)', margin: '0 0 1.25rem' }}>In a 30-minute strategy call, we'll map out exactly which tasks in your business AI can handle Ã¢â‚¬â€ and which ones you still need people for. No pitch, just a clear analysis.</p>
           <Link href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '0.875rem 1.75rem', textDecoration: 'none' }}>
-            Book a free strategy call →
+            Book a free strategy call Ã¢â€ â€™
           </Link>
         </div>
 
         <div style={{ background: '#1a1a18', border: '1px solid rgba(255,255,255,0.07)', padding: '2.5rem', marginTop: '3rem', textAlign: 'center' }}>
           <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.75rem', fontWeight: 400, color: '#f7f5f0', marginBottom: '0.75rem' }}>Let's figure out what to automate.</h2>
-          <p style={{ ...prose, maxWidth: '42ch', margin: '0 auto 1.75rem', color: 'rgba(247,245,240,0.4)' }}>Free 30-minute strategy call. We'll map your highest-leverage automation opportunities — no commitment required.</p>
+          <p style={{ ...prose, maxWidth: '42ch', margin: '0 auto 1.75rem', color: 'rgba(247,245,240,0.4)' }}>Free 30-minute strategy call. We'll map your highest-leverage automation opportunities Ã¢â‚¬â€ no commitment required.</p>
           <Link href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '1rem 2.5rem', textDecoration: 'none' }}>
-            Book a Free Strategy Call →
+            Book a Free Strategy Call Ã¢â€ â€™
           </Link>
         </div>
 
         <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-          <Link href="/blog" style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', textDecoration: 'none', letterSpacing: '0.1em' }}>← Back to blog</Link>
+          <Link href="/blog" style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', textDecoration: 'none', letterSpacing: '0.1em' }}>Ã¢â€ Â Back to blog</Link>
         </div>
 
       </article>
 
       <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '2rem clamp(1.5rem,5vw,3rem)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', letterSpacing: '0.1em' }}>© 2026 DoneForYouAI.com · HONNYDO LLC</span>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', letterSpacing: '0.1em' }}>Ã‚Â© 2026 DoneForYouAI.com Ã‚Â· HONNYDO LLC</span>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
           {[['Privacy', '/privacy'], ['Terms', '/terms']].map(([label, href]) => (
             <Link key={label} href={href} style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', textDecoration: 'none', letterSpacing: '0.08em' }}>{label}</Link>
