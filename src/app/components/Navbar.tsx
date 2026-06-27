@@ -15,9 +15,9 @@ const NAV_LINKS = [
 ]
 
 const TIERS = [
-  { value: 'basic',     label: 'Basic',       price: '$79/mo',  perks: ['Listed profile', 'No leads routed'] },
-  { value: 'pro',       label: 'Pro',         price: '$149/mo', perks: ['Leads routed', 'Priority placement'] },
-  { value: 'pro_video', label: 'Pro + Video', price: '$249/mo', perks: ['Everything in Pro', 'Video profile'] },
+  { value: 'basic',     label: 'Basic',       price: '$499/mo',  perks: ['Listed profile', 'No leads routed'] },
+  { value: 'pro',       label: 'Pro',         price: '$649/mo', perks: ['Leads routed', 'Priority placement'] },
+  { value: 'pro_video', label: 'Pro + Video', price: '$1499/mo', perks: ['Everything in Pro', 'Video profile'] },
 ]
 
 function ApplyModal({ onClose }: { onClose: () => void }) {
@@ -314,3 +314,4 @@ export default function Navbar() {
     </>
   )
 }
+

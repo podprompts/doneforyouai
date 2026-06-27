@@ -112,7 +112,7 @@ const schemaOrg = {
       image: 'https://www.doneforyouai.com/og-image.png',
       description:
         'We build and deploy custom AI systems inside your business — automations, assistants, content engines, and more.',
-      priceRange: '$79 - $249/month',
+      priceRange: '$499 - $1499/month',
       areaServed: 'Worldwide',
       hasOfferCatalog: {
         '@type': 'OfferCatalog',

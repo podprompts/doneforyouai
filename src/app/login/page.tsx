@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
 const TIERS = [
-  { value: 'basic',     label: 'Basic',       price: '$29/mo', perks: ['Listed profile', 'No leads routed'] },
-  { value: 'pro',       label: 'Pro',         price: '$49/mo', perks: ['Leads routed', 'Priority placement'] },
-  { value: 'pro_video', label: 'Pro + Video', price: '$79/mo', perks: ['Everything in Pro', 'Video profile'] },
+  { value: 'basic',     label: 'Basic',       price: '$499/mo', perks: ['Listed profile', 'No leads routed'] },
+  { value: 'pro',       label: 'Pro',         price: '$649/mo', perks: ['Leads routed', 'Priority placement'] },
+  { value: 'pro_video', label: 'Pro + Video', price: '$1499/mo', perks: ['Everything in Pro', 'Video profile'] },
 ]
 
 /* Inline Apply modal — self-contained so it works on the login page */
@@ -232,3 +232,4 @@ export default function LoginPage() {
     </div>
   )
 }
+
