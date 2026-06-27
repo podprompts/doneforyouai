@@ -1,4 +1,4 @@
-'use client'
+ï»¿'use client'
 
 const items = [
   'AI Automation', 'Custom Chatbots', 'Content Systems',
@@ -6,7 +6,7 @@ const items = [
   'Done For You', 'Workflow Design', 'Prompt Engineering',
 ]
 
-// Only 2 copies needed — we animate exactly -50% for a perfect seamless loop
+// Only 2 copies needed ? we animate exactly -50% for a perfect seamless loop
 const repeated = [...items, ...items]
 
 export default function AudienceTicker() {
