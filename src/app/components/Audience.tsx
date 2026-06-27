@@ -35,7 +35,7 @@ export default function Audience() {
             onMouseEnter={e => { e.currentTarget.style.borderColor = '#e8521a'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(232,82,26,0.1)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(15,15,14,0.1)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateY(0)' }}
           >
-            <span style={{ color: 'var(--coral)', fontSize: '0.6rem', flexShrink: 0 }}>Ã¢â€”â€ </span>
+            {/* dot */}<span style={{ color: "var(--coral)", fontSize: "0.6rem", flexShrink: 0 }}>{"\u25C6"}</span>
             <span style={{ fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 500, color: '#0f0f0e', lineHeight: 1.3 }}>{a.label}</span>
           </div>
         ))}
