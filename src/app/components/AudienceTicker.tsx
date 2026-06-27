@@ -1,14 +1,12 @@
 ﻿'use client'
-
 const items = [
-  'AI Automation', 'Custom Chatbots', 'Content Systems',
-  'Lead Generation', 'AI Strategy', 'Tool Stack Setup',
-  'Done For You', 'Workflow Design', 'Prompt Engineering',
+  'Agency Owners', 'E-Commerce Brands', 'Service Businesses',
+  'Consultants & Coaches', 'B2B Companies', 'Real Estate Professionals',
+  'Healthcare Practices', 'Professional Services', 'SaaS Startups',
+  'Local Businesses', 'Handmade Businesses', 'Small Businesses',
+  'Coaches & Course Creators', 'Restaurants & Hospitality',
 ]
-
-// Only 2 copies needed ? we animate exactly -50% for a perfect seamless loop
 const repeated = [...items, ...items]
-
 export default function AudienceTicker() {
   return (
     <div style={{
@@ -19,67 +17,23 @@ export default function AudienceTicker() {
       overflow: 'hidden',
       position: 'relative',
     }}>
-      <div className="aticker-outer">
-        <div className="aticker-track">
+      <div className="at-outer">
+        <div className="at-track">
           {repeated.map((item, i) => (
-            <span key={i} className="aticker-item">
+            <span key={i} className="at-item">
               {item}
-              <span className="aticker-dot">?</span>
+              <span className="at-dot">{String.fromCharCode(9670)}</span>
             </span>
           ))}
         </div>
       </div>
-
-      <style>{`
-        .aticker-outer {
-          overflow: hidden;
-          width: 100%;
-        }
-
-        .aticker-track {
-          display: inline-flex;
-          flex-wrap: nowrap;
-          will-change: transform;
-          animation: aticker-scroll 22s linear infinite;
-          transform: translate3d(0, 0, 0);
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-        }
-
-        @media (max-width: 768px) {
-          .aticker-track {
-            animation: aticker-scroll 3s linear infinite;
-          }
-        }
-
-        .aticker-item {
-          display: inline-flex;
-          align-items: center;
-          gap: 1.5rem;
-          font-family: var(--mono);
-          font-size: 0.68rem;
-          font-weight: 300;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          color: rgba(247, 245, 240, 0.55);
-          padding-right: 1.5rem;
-          white-space: nowrap;
-          flex-shrink: 0;
-        }
-
-        .aticker-dot {
-          color: #e8521a;
-          font-size: 0.5rem;
-        }
-
-        @keyframes aticker-scroll {
-          0%   { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
-        }
-
-        .aticker-track:hover {
-          animation-play-state: paused;
-        }
+      <style>{`        .at-outer { overflow: hidden; width: 100%; }
+        .at-track { display: inline-flex; flex-wrap: nowrap; will-change: transform; animation: at-scroll 22s linear infinite; transform: translate3d(0, 0, 0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        @media (max-width: 768px) { .at-track { animation: at-scroll 3s linear infinite; } }
+        .at-item { display: inline-flex; align-items: center; gap: 1.5rem; font-family: var(--mono); font-size: 0.68rem; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(247, 245, 240, 0.55); padding-right: 1.5rem; white-space: nowrap; flex-shrink: 0; }
+        .at-dot { color: #e8521a; font-size: 0.5rem; }
+        @keyframes at-scroll { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+        .at-track:hover { animation-play-state: paused; }
       `}</style>
     </div>
   )
