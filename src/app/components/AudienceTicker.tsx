@@ -28,8 +28,9 @@ export default function AudienceTicker() {
         .aticker-dot { color: #e8521a; font-size: 0.5rem; }
         @keyframes aticker-scroll { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
         .aticker-track:hover { animation-play-state: paused; }
-      \}</style>
+      `}</style>
     </div>
   )
 }
+
 
