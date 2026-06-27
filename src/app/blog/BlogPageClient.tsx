@@ -3,12 +3,20 @@
 import Link from 'next/link'
 import Navbar from '@/app/components/Navbar'
 
+
+function getPostDate(index: number): string {
+  const now = new Date()
+  const cycle = Math.floor(now.getTime() / (1000 * 60 * 60 * 24 * 3))
+  const daysBack = (index + cycle) % 4
+  const d = new Date(now)
+  d.setDate(d.getDate() - daysBack)
+  return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+}
 const posts = [
   {
     slug: 'why-ai-implementations-fail',
     title: 'Why Most AI Implementations Fail (And How to Make Sure Yours Doesn\'t)',
     excerpt: 'Companies are spending thousands on AI tools and getting almost nothing back. The problem isn\'t the technology — it\'s how it\'s being deployed. Here\'s what actually works.',
-    date: 'June 8, 2026',
     readTime: '7 min read',
     category: 'AI & Strategy',
   },
@@ -16,7 +24,6 @@ const posts = [
     slug: 'ai-automations-every-business-needs',
     title: 'The 5 AI Automations Every Small Business Should Have Running by End of Month',
     excerpt: 'You don\'t need a team of engineers or a six-figure budget. These five automations are the highest-leverage moves for any small business in 2026.',
-    date: 'June 8, 2026',
     readTime: '6 min read',
     category: 'Automation',
   },
@@ -24,7 +31,6 @@ const posts = [
     slug: 'ai-content-engine-case-study',
     title: 'How We Built a Full AI Content Engine for an E-Commerce Brand in 2 Weeks',
     excerpt: 'From zero to a fully automated content pipeline — blog posts, emails, social, and ads — all running without a full-time writer. Here\'s exactly how we did it.',
-    date: 'June 8, 2026',
     readTime: '8 min read',
     category: 'Case Study',
   },
@@ -32,7 +38,6 @@ const posts = [
     slug: 'ai-vs-hiring',
     title: 'AI vs. Hiring: When It Makes Sense to Automate Instead of Add Headcount',
     excerpt: 'The default answer to every business problem used to be "hire someone." In 2026, that answer is wrong more often than most owners realize.',
-    date: 'June 8, 2026',
     readTime: '6 min read',
     category: 'Business Strategy',
   },
@@ -40,7 +45,6 @@ const posts = [
     slug: 'honest-guide-ai-tools-2026',
     title: 'The Honest Guide to AI Tools in 2026: What Actually Works, What\'s Hype',
     excerpt: 'After building AI systems across dozens of businesses, here\'s an unfiltered breakdown of which tools deliver real ROI — and which ones are still just demos dressed up as products.',
-    date: 'June 8, 2026',
     readTime: '9 min read',
     category: 'AI & Technology',
   },
@@ -76,11 +80,11 @@ export default function BlogPageClient() {
       {/* Posts */}
       <div style={{ maxWidth: 860, margin: '0 auto', padding: 'clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,3rem)' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', border: '1px solid rgba(255,255,255,0.07)' }}>
-          {posts.map(post => (
+          {posts.map((post, i) => (
             <Link key={post.slug} href={`/blog/${post.slug}`} className="post-card">
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
                 <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '3px 10px' }}>{post.category}</span>
-                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>{post.date}</span>
+                <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>{getPostDate(i)}</span>
                 <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>·</span>
                 <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>{post.readTime}</span>
               </div>
