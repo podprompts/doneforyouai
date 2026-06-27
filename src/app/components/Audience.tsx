@@ -18,7 +18,7 @@ const audiences = [
 ]
 export default function Audience() {
   const [current, setCurrent] = useState(0)
-  const timerRef = useRef(null)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const perPage = 3
   const total = Math.ceil(audiences.length / perPage)
   const next = () => setCurrent(c => (c + 1) % total)
@@ -69,6 +69,7 @@ export default function Audience() {
     </section>
   )
 }
+
 
 
 
