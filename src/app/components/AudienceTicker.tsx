@@ -15,7 +15,7 @@ export default function AudienceTicker() {
           {repeated.map((item, i) => (
             <span key={i} className="at-item">
               {item}
-              <span className="at-dot">◆</span>
+              <span className="at-dot">{String.fromCodePoint(9670)}</span>
             </span>
           ))}
         </div>
