@@ -32,14 +32,14 @@ export default function Audience() {
   const visible = audiences.slice(current * perPage, current * perPage + perPage)
   return (
     <section style={{ background: '#f5f4f0', padding: '6rem 2.5rem', borderTop: '1px solid rgba(15,15,14,0.1)', borderBottom: '1px solid rgba(15,15,14,0.1)' }}>
-      <style>{\
+      <style>{`
         .aud-card { background:#ffffff; border:1px solid rgba(15,15,14,0.1); border-radius:10px; padding:1.25rem; display:flex; align-items:center; gap:0.75rem; transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s; cursor:default; flex:1; }
         .aud-card:hover { border-color:#e8521a; box-shadow:0 4px 20px rgba(232,82,26,0.1); transform:translateY(-2px); }
         .aud-dot { width:8px; height:8px; border-radius:50%; background:rgba(15,15,14,0.15); border:none; cursor:pointer; padding:0; transition:background 0.2s; }
         .aud-dot.active { background:#e8521a; }
         .aud-arrow { background:transparent; border:1px solid rgba(15,15,14,0.15); border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:0.9rem; color:rgba(15,15,14,0.5); transition:border-color 0.2s,color 0.2s; flex-shrink:0; }
         .aud-arrow:hover { border-color:#e8521a; color:#e8521a; }
-      \}</style>
+      `}</style>
       <div style={{ marginBottom: '3rem' }}>
         <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', fontWeight: 300, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.75rem' }}>Who we work with</span>
         <h2 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2rem,3.5vw,3rem)', fontWeight: 400, lineHeight: 1.1, color: '#0f0f0e', letterSpacing: '-0.02em', margin: 0 }}>
@@ -69,3 +69,6 @@ export default function Audience() {
     </section>
   )
 }
+
+
+
