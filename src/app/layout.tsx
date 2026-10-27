@@ -141,11 +141,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{ overflowX: 'hidden' }}>
         {children}
+        {/* ElevenLabs AI Agent widget - hidden for now
         <div dangerouslySetInnerHTML={{ __html: '<elevenlabs-convai agent-id="agent_7101ksrc9n2cen9ab11x17c1m2ks"></elevenlabs-convai>' }} />
         <Script
           src="https://unpkg.com/@elevenlabs/convai-widget-embed"
           strategy="afterInteractive"
         />
+        */}
       </body>
     </html>
   )
