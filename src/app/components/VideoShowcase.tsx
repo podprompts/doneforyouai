@@ -182,7 +182,7 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           padding: 0 0.5rem;
         }
 
-        .vs-caption-label {
+        .vs-caption { display: none !important; } .vs-caption-label {
           font-family: var(--f-body);
           font-size: 0.82rem;
           font-weight: 500;
