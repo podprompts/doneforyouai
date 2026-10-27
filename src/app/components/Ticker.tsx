@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 const items = [
   'AI Automation', 'Custom Chatbots', 'Content Systems',
@@ -12,10 +12,8 @@ const repeated = [...items, ...items]
 export default function Ticker() {
   return (
     <div style={{
-      background: '#eceae4',
-      borderBottom: '1px solid rgba(15,15,14,0.1)',
-      borderTop: '1px solid rgba(15,15,14,0.1)',
-      padding: '1.1rem 0',
+      background: 'var(--text)',
+      padding: '1.6rem 0',
       overflow: 'hidden',
       position: 'relative',
     }}>
@@ -40,7 +38,7 @@ export default function Ticker() {
           display: inline-flex;
           flex-wrap: nowrap;
           will-change: transform;
-          animation: ticker-scroll 22s linear infinite;
+          animation: ticker-scroll 40s linear infinite;
           transform: translate3d(0, 0, 0);
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
@@ -48,28 +46,31 @@ export default function Ticker() {
 
         @media (max-width: 768px) {
           .ticker-track {
-            animation: ticker-scroll 3s linear infinite;
+            animation: ticker-scroll 20s linear infinite;
           }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .ticker-track { animation: none; }
         }
 
         .ticker-item {
           display: inline-flex;
           align-items: center;
           gap: 1.5rem;
-          font-family: var(--mono);
-          font-size: 0.68rem;
-          font-weight: 300;
-          letter-spacing: 0.15em;
-          text-transform: uppercase;
-          color: rgba(15, 15, 14, 0.55);
+          font-family: var(--f-display);
+          font-size: 1.15rem;
+          font-weight: 500;
+          letter-spacing: -0.01em;
+          color: #ffffff;
           padding-right: 1.5rem;
           white-space: nowrap;
           flex-shrink: 0;
         }
 
         .ticker-dot {
-          color: #e8521a;
-          font-size: 0.5rem;
+          color: #8FA0FF;
+          font-size: 0.6rem;
         }
 
         @keyframes ticker-scroll {

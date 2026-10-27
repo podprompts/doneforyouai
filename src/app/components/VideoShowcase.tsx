@@ -15,13 +15,11 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
   return (
     <section id="work">
 
-      <div className="vs-rule" />
-
       <div className="vs-outer">
 
         {/* ── Left: text ── */}
         <div className="vs-text">
-          <span className="vs-eyebrow">See It In Action</span>
+          <span className="dfy-eyebrow vs-eyebrow">See It In Action</span>
           <h2 className="vs-heading">
             Built by us.<br />
             <em>Owned by you.</em>
@@ -34,21 +32,23 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
 
         {/* ── Right: video ── */}
         <div className="vs-video-col">
-          <div className="vs-corner vs-corner-tl" />
-          <div className="vs-corner vs-corner-tr" />
-          <div className="vs-corner vs-corner-bl" />
-          <div className="vs-corner vs-corner-br" />
+          <div className="vs-shell">
+            <div className="vs-chrome">
+              <span className="vs-dot" /><span className="vs-dot" /><span className="vs-dot" />
+              <span className="vs-url">doneforyouai.com</span>
+            </div>
 
-          <div className="vs-frame">
-            <video
-              controls
-              playsInline
-              className="vs-player"
-              preload="metadata"
-              poster="https://cdn.livereselling.com/item-images/image%20-%202026-05-31T094738.323.png"
-            >
-              <source src={VIDEO_SRC} type="video/mp4" />
-            </video>
+            <div className="vs-frame">
+              <video
+                controls
+                playsInline
+                className="vs-player"
+                preload="metadata"
+                poster="https://cdn.livereselling.com/item-images/image%20-%202026-05-31T094738.323.png"
+              >
+                <source src={VIDEO_SRC} type="video/mp4" />
+              </video>
+            </div>
           </div>
 
           <div className="vs-caption">
@@ -59,17 +59,9 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
 
       </div>
 
-      <div className="vs-rule" />
-
       <style>{`
         #work {
-          background: var(--ink);
-        }
-
-        .vs-rule {
-          width: 100%;
-          height: 1px;
-          background: var(--border-dark);
+          background: var(--bg);
         }
 
         .vs-outer {
@@ -79,7 +71,7 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           gap: 4rem;
           max-width: 1200px;
           margin: 0 auto;
-          padding: 5rem 2.5rem;
+          padding: 7rem 2rem;
         }
 
         .vs-text {
@@ -88,55 +80,65 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
         }
 
         .vs-eyebrow {
-          font-family: var(--mono);
-          font-size: 0.65rem;
-          font-weight: 300;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-          color: var(--coral);
-          display: block;
+          color: var(--accent);
           margin-bottom: 1.25rem;
         }
 
         .vs-heading {
-          font-family: var(--serif);
-          font-size: clamp(1.9rem, 3vw, 2.8rem);
-          font-weight: 400;
-          line-height: 1.1;
-          color: var(--page);
+          font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+          line-height: 1.04;
+          color: var(--text);
           margin: 0 0 1.5rem 0;
         }
 
         .vs-heading em {
-          font-style: italic;
-          color: var(--coral);
+          color: var(--accent);
         }
 
         .vs-body {
-          font-family: var(--sans);
-          font-size: 0.88rem;
-          color: rgba(247,245,240,0.42);
-          line-height: 1.8;
+          font-family: var(--f-body);
+          font-size: 1.1rem;
+          color: var(--text-2);
+          line-height: 1.65;
           margin: 0;
         }
 
         .vs-video-col {
           position: relative;
-          padding: 10px;
         }
 
-        .vs-corner {
-          position: absolute;
-          width: 14px;
-          height: 14px;
-          border-color: var(--coral);
-          border-style: solid;
-          opacity: 0.5;
+        .vs-shell {
+          background: var(--text);
+          border-radius: 24px;
+          padding: 12px;
+          box-shadow: 0 40px 80px rgba(21, 22, 26, 0.22);
         }
-        .vs-corner-tl { top: 0; left: 0; border-width: 1px 0 0 1px; }
-        .vs-corner-tr { top: 0; right: 0; border-width: 1px 1px 0 0; }
-        .vs-corner-bl { bottom: 22px; left: 0; border-width: 0 0 1px 1px; }
-        .vs-corner-br { bottom: 22px; right: 0; border-width: 0 1px 1px 0; }
+
+        .vs-chrome {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 6px 10px 12px;
+        }
+
+        .vs-dot {
+          width: 11px;
+          height: 11px;
+          border-radius: 50%;
+          background: #4A4B52;
+          display: inline-block;
+        }
+
+        .vs-url {
+          margin-left: 12px;
+          padding: 5px 16px;
+          border-radius: 999px;
+          background: #26272D;
+          color: #C9C9CF;
+          font-family: var(--f-body);
+          font-size: 0.78rem;
+          font-weight: 500;
+        }
 
         .vs-frame {
           position: relative;
@@ -144,9 +146,24 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           padding-bottom: 56.25%;
           height: 0;
           overflow: hidden;
-          background: var(--ink);
-          border: 1px solid var(--border-dark);
+          background: #000;
+          border-radius: 14px;
         }
+
+        /* Mask a thin edge line baked into the video file (top + bottom) */
+        .vs-frame::before,
+        .vs-frame::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 6px;
+          background: var(--text);
+          z-index: 2;
+          pointer-events: none;
+        }
+        .vs-frame::before { top: 0; }
+        .vs-frame::after  { bottom: 0; }
 
         .vs-player {
           position: absolute !important;
@@ -157,87 +174,48 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           display: block !important;
         }
 
-        .vs-placeholder {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .vs-placeholder span {
-          font-family: var(--mono);
-          font-size: 0.65rem;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: rgba(247,245,240,0.18);
-        }
-
         .vs-caption {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-top: 0.75rem;
-          padding-top: 0.75rem;
-          border-top: 1px solid var(--border-dark);
+          margin-top: 1rem;
+          padding: 0 0.5rem;
         }
 
         .vs-caption-label {
-          font-family: var(--mono);
-          font-size: 0.6rem;
-          font-weight: 300;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: rgba(247,245,240,0.18);
+          font-family: var(--f-body);
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: var(--text-3);
         }
 
         .vs-caption-url {
-          font-family: var(--mono);
-          font-size: 0.6rem;
-          color: var(--coral);
-          letter-spacing: 0.08em;
-          opacity: 0.7;
+          font-family: var(--f-body);
+          font-size: 0.82rem;
+          font-weight: 600;
+          color: var(--accent);
         }
 
-        /* ── MOBILE: edge-to-edge video, stacked layout ── */
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .vs-outer {
             grid-template-columns: 1fr;
-            padding: 0;
-            gap: 0;
-            max-width: 100%;
+            gap: 2.5rem;
+            padding: 4rem 1.25rem;
           }
+        }
 
+        /* ── MOBILE: stacked, video first ── */
+        @media (max-width: 768px) {
           .vs-video-col {
             order: -1;
-            padding: 0;
             width: 100%;
           }
-
-          .vs-corner { display: none; }
-
-          .vs-frame {
-            border-left: none;
-            border-right: none;
-            border-top: none;
-          }
-
-          .vs-caption {
-            padding: 0.6rem 1.25rem;
-            margin-top: 0;
-          }
-
-          .vs-text {
-  padding: 1.25rem 1.25rem 0;
-}
-
+          .vs-chrome { display: none; }
+          .vs-shell { padding: 6px; border-radius: 18px; }
+          .vs-frame { border-radius: 12px; }
           .vs-heading {
-            font-size: clamp(1.5rem, 6vw, 1.9rem);
+            font-size: clamp(1.9rem, 8vw, 2.4rem);
             margin-bottom: 0.75rem;
-          }
-
-          .vs-rule:last-child {
-            display: none;
           }
         }
       `}</style>

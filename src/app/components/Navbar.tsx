@@ -45,71 +45,63 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
     }
   }
 
-  const inp: React.CSSProperties = {
-    width: '100%',
-    background: '#1c1c1a',
-    border: '1px solid rgba(255,255,255,0.09)',
-    padding: '0.75rem 1rem',
-    fontFamily: 'var(--sans)',
-    fontSize: '0.85rem',
-    color: '#f7f5f0',
-    outline: 'none',
-    transition: 'border-color 0.2s',
-    boxSizing: 'border-box',
+  const labelStyle: React.CSSProperties = {
+    fontFamily: 'var(--f-body)', fontSize: '0.8rem', fontWeight: 600,
+    color: 'var(--text)', display: 'block', marginBottom: '0.4rem',
   }
 
   return (
-    <div onClick={e => { if (e.target === e.currentTarget) onClose() }} style={{ position: 'fixed', inset: 0, background: 'rgba(15,15,14,0.88)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(10px)' }}>
-      <div style={{ background: '#0f0f0e', border: '1px solid rgba(255,255,255,0.09)', width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}>
-        <div style={{ background: '#1c1c1a', padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.09)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+    <div onClick={e => { if (e.target === e.currentTarget) onClose() }} style={{ position: 'fixed', inset: 0, background: 'rgba(21,22,26,0.55)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(8px)' }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 28, width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 40px 80px rgba(21,22,26,0.25)' }}>
+        <div style={{ padding: '1.75rem 1.75rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.35rem' }}>Join the network</span>
-            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 400, color: '#f7f5f0', margin: 0 }}>Apply as an Expert</h3>
+            <span className="dfy-eyebrow" style={{ color: 'var(--accent)', display: 'block', marginBottom: '0.5rem' }}>Join the network</span>
+            <h3 style={{ fontSize: '1.6rem', color: 'var(--text)', margin: 0, lineHeight: 1.1 }}>Apply as an Expert</h3>
           </div>
-          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgba(247,245,240,0.35)', cursor: 'pointer', fontSize: '1.2rem', padding: '0.25rem', lineHeight: 1 }}>✕</button>
+          <button onClick={onClose} aria-label="Close" style={{ background: 'var(--bg)', border: 'none', color: 'var(--text-2)', cursor: 'pointer', fontSize: '1rem', width: 40, height: 40, borderRadius: '50%', lineHeight: 1 }}>✕</button>
         </div>
-        <div style={{ padding: '1.5rem' }}>
+        <div style={{ padding: '0 1.75rem 1.75rem' }}>
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.75rem' }}>Choose your plan</label>
+            <label style={labelStyle}>Choose your plan</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
               {TIERS.map(t => (
-                <div key={t.value} onClick={() => setForm(f => ({ ...f, tier: t.value }))} style={{ border: `1px solid ${form.tier === t.value ? 'var(--coral)' : 'rgba(255,255,255,0.09)'}`, padding: '0.85rem 0.65rem', cursor: 'pointer', background: form.tier === t.value ? 'rgba(232,82,26,0.06)' : 'transparent', transition: 'all 0.15s' }}>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, color: '#f7f5f0', marginBottom: '0.2rem' }}>{t.label}</div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', marginBottom: '0.5rem' }}>{t.price}</div>
-                  {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--sans)', fontSize: '0.65rem', color: 'rgba(247,245,240,0.35)', lineHeight: 1.5 }}>· {p}</div>)}
+                <div key={t.value} onClick={() => setForm(f => ({ ...f, tier: t.value }))} style={{ border: `1.5px solid ${form.tier === t.value ? 'var(--accent)' : 'var(--line-2)'}`, borderRadius: 16, padding: '0.9rem 0.7rem', cursor: 'pointer', background: form.tier === t.value ? 'var(--accent-tint)' : '#fff', transition: 'all 0.15s' }}>
+                  <div style={{ fontFamily: 'var(--f-body)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.2rem' }}>{t.label}</div>
+                  <div style={{ fontFamily: 'var(--f-body)', fontSize: '0.78rem', fontWeight: 600, color: 'var(--accent)', marginBottom: '0.5rem' }}>{t.price}</div>
+                  {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--f-body)', fontSize: '0.7rem', color: 'var(--text-3)', lineHeight: 1.5 }}>· {p}</div>)}
                 </div>
               ))}
             </div>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', marginTop: '0.6rem', letterSpacing: '0.04em' }}>Video profile is exclusive to Pro + Video tier.</p>
+            <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.72rem', color: 'var(--text-3)', marginTop: '0.6rem' }}>Video profile is exclusive to Pro + Video tier.</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
-                <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Name *</label>
-                <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+                <label style={labelStyle}>Name *</label>
+                <input className="dfy-field" type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" />
               </div>
               <div>
-                <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Email *</label>
-                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@email.com" style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+                <label style={labelStyle}>Email *</label>
+                <input className="dfy-field" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@email.com" />
               </div>
             </div>
             <div>
-              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Website / LinkedIn</label>
-              <input type="text" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://..." style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+              <label style={labelStyle}>Website / LinkedIn</label>
+              <input className="dfy-field" type="text" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://..." />
             </div>
             <div>
-              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Your AI specialties</label>
-              <input type="text" value={form.skills} onChange={e => setForm(f => ({ ...f, skills: e.target.value }))} placeholder="e.g. Zapier, Claude, Voiceflow..." style={inp} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+              <label style={labelStyle}>Your AI specialties</label>
+              <input className="dfy-field" type="text" value={form.skills} onChange={e => setForm(f => ({ ...f, skills: e.target.value }))} placeholder="e.g. Zapier, Claude, Voiceflow..." />
             </div>
             <div>
-              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Tell us about your work</label>
-              <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="What kind of AI systems have you built?" rows={4} style={{ ...inp, resize: 'vertical', minHeight: '96px' }} onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+              <label style={labelStyle}>Tell us about your work</label>
+              <textarea className="dfy-field" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="What kind of AI systems have you built?" rows={4} style={{ resize: 'vertical', minHeight: '96px' }} />
             </div>
-            {error && <p style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: '#f87171', padding: '0.65rem 1rem', border: '1px solid rgba(248,113,113,0.3)', background: 'rgba(248,113,113,0.06)', margin: 0 }}>{error}</p>}
-            <button onClick={handleSubmit} disabled={loading || !form.name || !form.email} style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: (!form.name || !form.email || loading) ? 'rgba(232,82,26,0.4)' : 'var(--coral)', color: '#fff', border: 'none', padding: '1rem', cursor: (!form.name || !form.email || loading) ? 'not-allowed' : 'pointer', width: '100%' }}>
+            {error && <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.8rem', color: '#B42318', padding: '0.7rem 1rem', border: '1px solid rgba(180,35,24,0.3)', background: 'rgba(180,35,24,0.06)', borderRadius: 12, margin: 0 }}>{error}</p>}
+            <button className="dfy-btn dfy-btn-primary" onClick={handleSubmit} disabled={loading || !form.name || !form.email} style={{ width: '100%' }}>
               {loading ? 'Redirecting to checkout...' : 'Continue to Payment →'}
             </button>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', textAlign: 'center', letterSpacing: '0.06em', lineHeight: 1.6, margin: 0 }}>Secure checkout via Stripe · Cancel anytime</p>
+            <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.72rem', color: 'var(--text-3)', textAlign: 'center', lineHeight: 1.6, margin: 0 }}>Secure checkout via Stripe · Cancel anytime</p>
           </div>
         </div>
       </div>
@@ -172,146 +164,135 @@ export default function Navbar() {
 
   const dashboardHref = isAdmin ? '/admin' : '/dashboard'
 
-  const isDark      = scrolled || menuOpen
-  const navBg       = isDark ? 'rgba(15,15,14,0.96)' : '#ffffff'
-  const navBorder   = isDark ? '1px solid rgba(255,255,255,0.09)' : '1px solid rgba(15,15,14,0.1)'
-  const linkColor   = isDark ? 'rgba(247,245,240,0.5)' : 'rgba(15,15,14,0.5)'
-  const linkHover   = isDark ? '#f7f5f0' : '#0f0f0e'
-  const logoColor   = isDark ? '#f7f5f0' : '#0f0f0e'
-  const btnBorder   = isDark ? 'rgba(255,255,255,0.2)' : 'rgba(15,15,14,0.2)'
-  const btnHover    = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(15,15,14,0.5)'
-  const btnColor    = isDark ? '#f7f5f0' : '#0f0f0e'
-  const outlineBorder = isDark ? 'rgba(255,255,255,0.09)' : 'rgba(15,15,14,0.15)'
-  const mutedColor  = isDark ? 'rgba(247,245,240,0.5)' : 'rgba(15,15,14,0.45)'
-  const hamburgerBg = isDark ? '#f7f5f0' : '#0f0f0e'
+  const isActive = (href: string) => href === '/blog' ? pathname.startsWith('/blog') : href === '/work' ? pathname.startsWith('/work') : false
+
+  const linkStyle = (href: string): React.CSSProperties => ({
+    fontFamily: 'var(--f-body)', fontSize: '0.92rem', fontWeight: 500,
+    color: isActive(href) ? 'var(--accent)' : 'var(--text-2)',
+    textDecoration: 'none', transition: 'color 0.2s',
+  })
+
+  const smallBtn: React.CSSProperties = { minHeight: 42, padding: '0 20px', fontSize: '0.88rem' }
 
   return (
     <>
       {applyOpen && <ApplyModal onClose={() => setApplyOpen(false)} />}
 
-      <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 2.5rem', height: '60px',
-        background: navBg,
-        borderBottom: navBorder,
-        transition: 'background 0.3s, border-color 0.3s',
-        backdropFilter: isDark ? 'blur(12px)' : 'none',
-      }}>
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, padding: '14px 24px 0', pointerEvents: 'none' }}>
+        <nav aria-label="Main" style={{
+          pointerEvents: 'auto',
+          maxWidth: 1200, margin: '0 auto', boxSizing: 'border-box',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem',
+          padding: '8px 8px 8px 22px', minHeight: 60,
+          borderRadius: 999,
+          background: scrolled ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.78)',
+          border: '1px solid var(--line)',
+          boxShadow: scrolled ? '0 10px 30px rgba(21,22,26,0.10)' : '0 6px 24px rgba(21,22,26,0.05)',
+          backdropFilter: 'blur(14px)',
+          WebkitBackdropFilter: 'blur(14px)',
+          transition: 'box-shadow 0.3s, background 0.3s',
+        }}>
 
-        <Link href="/" onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.88rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: logoColor, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'color 0.3s' }}>
-          <span style={{ width: 7, height: 7, background: 'var(--coral)', borderRadius: '50%', display: 'inline-block', animation: 'pulse-dot 2.5s infinite' }} />
-          DFYAI
-        </Link>
+          <Link href="/" onClick={() => setMenuOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: 'var(--f-display)', fontWeight: 700, fontSize: '1.1rem', letterSpacing: '-0.02em', color: 'var(--text)', textDecoration: 'none' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 10, background: 'var(--text)', color: '#fff', fontSize: '0.95rem' }}>D</span>
+            DFYAI
+          </Link>
 
-        <ul className="nav-links-desktop" style={{ display: 'flex', gap: '2rem', listStyle: 'none', margin: 0, padding: 0 }}>
-          {NAV_LINKS.map(item => (
-            <li key={item.label}>
-              <Link
-                href={item.href}
-                style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: pathname.startsWith('/blog') && item.href === '/blog' ? 'var(--coral)' : linkColor, textDecoration: 'none', transition: 'color 0.2s' }}
-                onMouseEnter={e => e.currentTarget.style.color = linkHover}
-                onMouseLeave={e => e.currentTarget.style.color = pathname.startsWith('/blog') && item.href === '/blog' ? 'var(--coral)' : linkColor}
-              >{item.label}</Link>
-            </li>
-          ))}
-        </ul>
+          <ul className="nav-links-desktop" style={{ display: 'flex', gap: '1.75rem', listStyle: 'none', margin: 0, padding: 0 }}>
+            {NAV_LINKS.map(item => (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  style={linkStyle(item.href)}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--text)'}
+                  onMouseLeave={e => e.currentTarget.style.color = isActive(item.href) ? 'var(--accent)' : 'var(--text-2)'}
+                >{item.label}</Link>
+              </li>
+            ))}
+          </ul>
 
-        <div className="nav-cta-desktop" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          {sessionLoaded && (
-            session ? (
-              <>
-                <Link href={dashboardHref} style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: mutedColor, textDecoration: 'none', transition: 'color 0.15s' }}
-                  onMouseEnter={e => e.currentTarget.style.color = btnColor}
-                  onMouseLeave={e => e.currentTarget.style.color = mutedColor}
-                >
-                  {isAdmin ? 'Admin' : 'Dashboard'}
-                </Link>
-                <button onClick={handleSignOut} style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: btnColor, background: 'transparent', border: `1px solid ${outlineBorder}`, padding: '0.5rem 1rem', cursor: 'pointer', transition: 'all 0.2s' }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = btnHover }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = outlineBorder }}
-                >Log Out</button>
-              </>
-            ) : (
-              <>
-                <button onClick={openApply} style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', background: 'transparent', border: '1px solid var(--coral-border)', padding: '0.5rem 1rem', cursor: 'pointer', transition: 'all 0.2s' }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(232,82,26,0.08)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-                >Join as Expert</button>
-                <Link href="/login" style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', background: 'var(--coral)', border: '1px solid var(--coral)', padding: '0.5rem 1.25rem', textDecoration: 'none', transition: 'opacity 0.2s', display: 'block' }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-                  onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                >Sign In</Link>
-              </>
-            )
-          )}
-          <button onClick={handleBookCall} style={{ fontFamily: 'var(--sans)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: btnColor, background: 'transparent', border: `1px solid ${btnBorder}`, padding: '0.5rem 1rem', cursor: 'pointer', transition: 'all 0.2s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = btnHover }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = btnBorder }}
-          >Book a Call</button>
-        </div>
+          <div className="nav-cta-desktop" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {sessionLoaded && (
+              session ? (
+                <>
+                  <Link href={dashboardHref} style={{ ...linkStyle(''), padding: '0 12px' }}>
+                    {isAdmin ? 'Admin' : 'Dashboard'}
+                  </Link>
+                  <button className="dfy-btn dfy-btn-ghost" onClick={handleSignOut} style={smallBtn}>Log Out</button>
+                </>
+              ) : (
+                <>
+                  <button onClick={openApply} style={{ ...linkStyle(''), background: 'transparent', border: 'none', cursor: 'pointer', padding: '0 12px', color: 'var(--accent)', fontWeight: 600 }}>Join as Expert</button>
+                  <Link href="/login" className="dfy-btn dfy-btn-ghost" style={smallBtn}>Sign In</Link>
+                </>
+              )
+            )}
+            <button className="dfy-btn dfy-btn-primary" onClick={handleBookCall} style={smallBtn}>Book a Call</button>
+          </div>
 
-        <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu"
-          style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '5px', background: 'none', border: 'none', cursor: 'pointer', padding: '4px', zIndex: 300 }}
-        >
-          <span style={{ display: 'block', width: '22px', height: '2px', background: hamburgerBg, transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none', transition: 'transform 0.25s, background 0.3s' }} />
-          <span style={{ display: 'block', width: '22px', height: '2px', background: hamburgerBg, opacity: menuOpen ? 0 : 1, transition: 'opacity 0.25s, background 0.3s' }} />
-          <span style={{ display: 'block', width: '22px', height: '2px', background: hamburgerBg, transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none', transition: 'transform 0.25s, background 0.3s' }} />
-        </button>
-      </nav>
+          <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu" aria-expanded={menuOpen}
+            style={{ display: 'none', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '5px', background: 'var(--bg)', border: 'none', cursor: 'pointer', width: 44, height: 44, borderRadius: '50%', zIndex: 300 }}
+          >
+            <span style={{ display: 'block', width: '18px', height: '2px', background: 'var(--text)', transform: menuOpen ? 'translateY(7px) rotate(45deg)' : 'none', transition: 'transform 0.25s' }} />
+            <span style={{ display: 'block', width: '18px', height: '2px', background: 'var(--text)', opacity: menuOpen ? 0 : 1, transition: 'opacity 0.25s' }} />
+            <span style={{ display: 'block', width: '18px', height: '2px', background: 'var(--text)', transform: menuOpen ? 'translateY(-7px) rotate(-45deg)' : 'none', transition: 'transform 0.25s' }} />
+          </button>
+        </nav>
+      </div>
 
       {/* Mobile drawer */}
       <div style={{
-        position: 'fixed', top: '60px', left: 0, right: 0, bottom: 0,
-        background: 'rgba(15,15,14,0.98)', backdropFilter: 'blur(16px)',
+        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+        background: 'var(--bg)',
         zIndex: 190, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', gap: '2rem',
+        alignItems: 'center', justifyContent: 'center', gap: '1.5rem',
         transform: menuOpen ? 'translateX(0)' : 'translateX(100%)',
         transition: 'transform 0.3s ease',
+        visibility: menuOpen ? 'visible' : 'hidden',
       }}>
         {NAV_LINKS.map(item => (
-          <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--mono)', fontSize: '0.9rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: pathname.startsWith('/blog') && item.href === '/blog' ? 'var(--coral)' : '#f7f5f0', textDecoration: 'none' }}>
+          <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--f-display)', fontSize: '1.8rem', fontWeight: 600, letterSpacing: '-0.02em', color: isActive(item.href) ? 'var(--accent)' : 'var(--text)', textDecoration: 'none' }}>
             {item.label}
           </Link>
         ))}
 
-        <div style={{ width: 40, height: 1, background: 'rgba(255,255,255,0.09)' }} />
+        <div style={{ width: 40, height: 1, background: 'var(--line-2)' }} />
 
         {sessionLoaded && (
           session ? (
             <>
-              <Link href={dashboardHref} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--mono)', fontSize: '0.78rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.5)', textDecoration: 'none' }}>
+              <Link href={dashboardHref} onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--f-body)', fontSize: '1rem', fontWeight: 500, color: 'var(--text-2)', textDecoration: 'none' }}>
                 {isAdmin ? 'Admin Panel' : 'My Dashboard'}
               </Link>
-              <button onClick={handleSignOut} style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#f7f5f0', background: 'transparent', border: '1px solid rgba(255,255,255,0.09)', padding: '0.85rem 2.5rem', cursor: 'pointer' }}>
-                Log Out
-              </button>
+              <button className="dfy-btn dfy-btn-ghost" onClick={handleSignOut}>Log Out</button>
             </>
           ) : (
             <>
-              <button onClick={openApply} style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', background: 'transparent', border: '1px solid var(--coral-border)', padding: '0.85rem 2.5rem', cursor: 'pointer' }}>
+              <button onClick={openApply} style={{ fontFamily: 'var(--f-body)', fontSize: '1rem', fontWeight: 600, color: 'var(--accent)', background: 'transparent', border: 'none', cursor: 'pointer' }}>
                 Join as Expert
               </button>
-              <Link href="/login" onClick={() => setMenuOpen(false)} style={{ fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#fff', background: 'var(--coral)', padding: '0.85rem 2.5rem', textDecoration: 'none', display: 'block' }}>
+              <Link href="/login" onClick={() => setMenuOpen(false)} className="dfy-btn dfy-btn-ghost">
                 Sign In
               </Link>
             </>
           )
         )}
 
-        <button onClick={handleBookCall} style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.4)', background: 'transparent', border: '1px solid rgba(255,255,255,0.09)', padding: '0.85rem 2.5rem', cursor: 'pointer' }}>
+        <button className="dfy-btn dfy-btn-primary" onClick={handleBookCall}>
           Book a Call
         </button>
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
           .nav-links-desktop { display: none !important; }
           .nav-cta-desktop   { display: none !important; }
           .hamburger         { display: flex !important; }
+        }
+        @media (max-width: 680px) {
+          nav[aria-label="Main"] { padding-left: 16px !important; }
         }
       `}</style>
     </>
   )
 }
-

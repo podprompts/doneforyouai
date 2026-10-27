@@ -42,145 +42,99 @@ export default function Contact() {
     }
   }
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    background: 'transparent',
-    border: 'none',
-    borderBottom: '1px solid rgba(15,15,14,0.18)',
-    padding: '0.85rem 0',
-    fontFamily: 'var(--sans)',
-    fontSize: '0.9rem',
-    color: '#0f0f0e',
-    outline: 'none',
-    transition: 'border-color 0.2s',
-  }
-
-  const labelStyle: React.CSSProperties = {
-    fontFamily: 'var(--mono)',
-    fontSize: '0.62rem',
-    fontWeight: 300,
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase' as const,
-    color: 'rgba(15,15,14,0.5)',
-    display: 'block',
-    marginBottom: '0.25rem',
-  }
-
   return (
     <section id="contact" style={{
-      background: '#f5f4f0',
-      color: '#0f0f0e',
-      padding: '4rem 2.5rem 6rem',
-      borderTop: '1px solid rgba(15,15,14,0.1)',
+      background: 'var(--bg)',
+      color: 'var(--text)',
+      padding: '0 2rem 7rem',
     }}>
-      <div id="contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem', alignItems: 'start' }}>
+      <div id="contact-grid" style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'start' }}>
 
         {/* Left */}
         <div>
-          <span style={{
-            fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-            letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: 'var(--coral)', display: 'block', marginBottom: '1.25rem',
-          }}>Get Started</span>
+          <span className="dfy-eyebrow" style={{ color: 'var(--accent)' }}>Get Started</span>
 
           <h2 style={{
-            fontFamily: 'var(--serif)',
-            fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-            fontWeight: 400, lineHeight: 1.1, marginBottom: '1.5rem',
-            color: '#0f0f0e',
+            fontSize: 'clamp(2.2rem, 4vw, 3.6rem)',
+            lineHeight: 1.04, margin: '1rem 0 1.25rem',
+            color: 'var(--text)',
           }}>
-            Let's build something<br />
-            <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>that actually works.</em>
+            Let's build something{' '}
+            <em style={{ color: 'var(--accent)' }}>that actually works.</em>
           </h2>
 
           <p style={{
-            fontFamily: 'var(--sans)', fontSize: '0.88rem',
-            color: 'rgba(15,15,14,0.55)', lineHeight: 1.75, marginBottom: '2.5rem',
+            fontFamily: 'var(--f-body)', fontSize: '1.1rem',
+            color: 'var(--text-2)', lineHeight: 1.65, marginBottom: '2.25rem', maxWidth: '30rem',
           }}>
             Tell us about your business and what you're trying to solve.
             We'll come back within 24 hours with a clear plan — no pressure, no pitch deck.
           </p>
 
-          {[
-            { label: 'Response time', value: 'Within 24 hours' },
-            { label: 'First call',    value: '30-min strategy session' },
-            { label: 'Commitment',   value: 'None required upfront' },
-          ].map((item, i) => (
-            <div key={i} style={{
-              display: 'flex', justifyContent: 'space-between',
-              padding: '0.9rem 0',
-              borderBottom: '1px solid rgba(15,15,14,0.1)',
-            }}>
-              <span style={{
-                fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-                letterSpacing: '0.08em', textTransform: 'uppercase',
-                color: 'rgba(15,15,14,0.45)',
-              }}>{item.label}</span>
-              <span style={{
-                fontFamily: 'var(--sans)', fontSize: '0.82rem',
-                fontWeight: 500, color: '#0f0f0e',
-              }}>{item.value}</span>
-            </div>
-          ))}
+          <div style={{ borderTop: '1px solid var(--line-2)', maxWidth: '30rem' }}>
+            {[
+              { label: 'Response time', value: 'Within 24 hours' },
+              { label: 'First call',    value: '30-min strategy session' },
+              { label: 'Commitment',   value: 'None required upfront' },
+            ].map((item, i) => (
+              <div key={i} style={{
+                display: 'flex', justifyContent: 'space-between', gap: '1rem',
+                padding: '1.1rem 0',
+                borderBottom: '1px solid var(--line-2)',
+              }}>
+                <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.98rem', color: 'var(--text-3)' }}>{item.label}</span>
+                <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.98rem', fontWeight: 600, color: 'var(--text)', textAlign: 'right' }}>{item.value}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Right — Form */}
         <div>
           {status === 'success' ? (
-            <div style={{ border: '1px solid rgba(15,15,14,0.12)', padding: '3rem', textAlign: 'center', background: '#ffffff' }}>
+            <div style={{ border: '1px solid var(--line)', borderRadius: 28, padding: '3rem 2rem', textAlign: 'center', background: 'var(--surface)', boxShadow: '0 30px 60px rgba(21,22,26,0.08)' }}>
               <div style={{
-                width: 48, height: 48,
-                border: '1px solid var(--coral-border)', borderRadius: '50%',
+                width: 56, height: 56,
+                background: 'var(--accent-tint)', borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 1.5rem', color: 'var(--coral)', fontSize: '1.2rem',
+                margin: '0 auto 1.5rem', color: 'var(--accent)', fontSize: '1.4rem', fontWeight: 600,
               }}>✓</div>
-              <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.6rem', fontWeight: 400, marginBottom: '0.75rem', color: '#0f0f0e' }}>Message received.</h3>
-              <p style={{ fontFamily: 'var(--sans)', fontSize: '0.85rem', color: 'rgba(15,15,14,0.55)', lineHeight: 1.7, marginBottom: '1.5rem' }}>
+              <h3 style={{ fontSize: '1.75rem', marginBottom: '0.75rem', color: 'var(--text)' }}>Message received.</h3>
+              <p style={{ fontFamily: 'var(--f-body)', fontSize: '1rem', color: 'var(--text-2)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
                 We'll be back in touch within 24 hours. Check your inbox.
               </p>
-              <button onClick={() => setStatus('idle')} style={{
-                fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300,
-                letterSpacing: '0.1em', textTransform: 'uppercase',
-                background: 'transparent', border: '1px solid rgba(15,15,14,0.18)',
-                color: 'rgba(15,15,14,0.55)', padding: '0.65rem 1.25rem', cursor: 'pointer',
-              }}>
+              <button className="dfy-btn dfy-btn-ghost" onClick={() => setStatus('idle')} style={{ minHeight: 44 }}>
                 Send another →
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <div style={{
+              display: 'flex', flexDirection: 'column', gap: '1.25rem',
+              padding: '2.25rem', borderRadius: 28,
+              background: 'var(--surface)', border: '1px solid var(--line)',
+              boxShadow: '0 30px 60px rgba(21,22,26,0.08)',
+            }}>
 
-              <div id="contact-name-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div id="contact-name-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
                 <div>
-                  <label style={labelStyle}>Name *</label>
-                  <input type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Your name" style={inputStyle}
-                    onFocus={e => (e.target.style.borderBottomColor = 'var(--coral)')}
-                    onBlur={e => (e.target.style.borderBottomColor = 'rgba(15,15,14,0.18)')}
-                  />
+                  <label className="dfy-label" htmlFor="contact-name">Name *</label>
+                  <input id="contact-name" className="dfy-field" type="text" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Your name" />
                 </div>
                 <div>
-                  <label style={labelStyle}>Company</label>
-                  <input type="text" value={form.company} onChange={e => setForm({ ...form, company: e.target.value })} placeholder="Your company" style={inputStyle}
-                    onFocus={e => (e.target.style.borderBottomColor = 'var(--coral)')}
-                    onBlur={e => (e.target.style.borderBottomColor = 'rgba(15,15,14,0.18)')}
-                  />
+                  <label className="dfy-label" htmlFor="contact-company">Company</label>
+                  <input id="contact-company" className="dfy-field" type="text" value={form.company} onChange={e => setForm({ ...form, company: e.target.value })} placeholder="Your company" />
                 </div>
               </div>
 
               <div>
-                <label style={labelStyle}>Email *</label>
-                <input type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="your@email.com" style={inputStyle}
-                  onFocus={e => (e.target.style.borderBottomColor = 'var(--coral)')}
-                  onBlur={e => (e.target.style.borderBottomColor = 'rgba(15,15,14,0.18)')}
-                />
+                <label className="dfy-label" htmlFor="contact-email">Email *</label>
+                <input id="contact-email" className="dfy-field" type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="your@email.com" />
               </div>
 
               <div>
-                <label style={labelStyle}>I'm interested in</label>
-                <select value={form.service} onChange={e => setForm({ ...form, service: e.target.value })}
-                  style={{ ...inputStyle, cursor: 'pointer' }}
-                  onFocus={e => (e.target.style.borderBottomColor = 'var(--coral)')}
-                  onBlur={e => (e.target.style.borderBottomColor = 'rgba(15,15,14,0.18)')}
+                <label className="dfy-label" htmlFor="contact-service">I'm interested in</label>
+                <select id="contact-service" className="dfy-field" value={form.service} onChange={e => setForm({ ...form, service: e.target.value })}
+                  style={{ cursor: 'pointer' }}
                 >
                   <option value="">Select a service...</option>
                   {services.map(s => <option key={s} value={s}>{s}</option>)}
@@ -188,39 +142,31 @@ export default function Contact() {
               </div>
 
               <div>
-                <label style={labelStyle}>Tell us about your business *</label>
+                <label className="dfy-label" htmlFor="contact-message">Tell us about your business *</label>
                 <textarea
+                  id="contact-message"
+                  className="dfy-field"
                   value={form.message}
                   onChange={e => setForm({ ...form, message: e.target.value })}
                   placeholder="What does your business do, and what are you hoping AI can solve for you?"
                   rows={5}
-                  style={{ ...inputStyle, resize: 'vertical', minHeight: '120px' }}
-                  onFocus={e => (e.target.style.borderBottomColor = 'var(--coral)')}
-                  onBlur={e => (e.target.style.borderBottomColor = 'rgba(15,15,14,0.18)')}
+                  style={{ resize: 'vertical', minHeight: '130px' }}
                 />
               </div>
 
               <button
+                className="dfy-btn dfy-btn-primary"
                 onClick={handleSubmit}
                 disabled={status === 'loading'}
-                style={{
-                  fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600,
-                  letterSpacing: '0.1em', textTransform: 'uppercase',
-                  background: status === 'loading' ? 'rgba(232,82,26,0.6)' : 'var(--coral)',
-                  color: '#ffffff', border: 'none', padding: '1rem 2rem',
-                  cursor: status === 'loading' ? 'not-allowed' : 'pointer',
-                  width: '100%', transition: 'opacity 0.2s',
-                }}
-                onMouseEnter={e => { if (status !== 'loading') e.currentTarget.style.opacity = '0.85' }}
-                onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
+                style={{ width: '100%' }}
               >
                 {status === 'loading' ? 'Sending...' : 'Send Message →'}
               </button>
 
               {status === 'error' && (
-                <p style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: '#e53e3e', letterSpacing: '0.06em' }}>
+                <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.9rem', color: '#B42318' }}>
                   Something went wrong. Email us at{' '}
-                  <span style={{ color: '#e53e3e' }}>hire@doneforyouai.com</span>
+                  <span style={{ color: '#B42318', fontWeight: 600 }}>hire@doneforyouai.com</span>
                 </p>
               )}
             </div>
@@ -229,17 +175,13 @@ export default function Contact() {
       </div>
 
       <style>{`
-        @media (max-width: 680px) {
-          #contact { padding: 3rem 1.25rem 4rem !important; }
+        @media (max-width: 900px) {
           #contact-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
-          #contact-name-row { grid-template-columns: 1fr !important; gap: 1rem !important; }
         }
-        #contact input::placeholder,
-        #contact textarea::placeholder { color: rgba(15,15,14,0.3) !important; }
-        #contact select option { background: #f5f4f0; color: #0f0f0e; }
-        #contact input, #contact textarea, #contact select {
-          color: #0f0f0e !important;
-          background: transparent !important;
+        @media (max-width: 680px) {
+          #contact { padding: 0 1.25rem 4rem !important; }
+          #contact-name-row { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
+          #contact-grid > div:last-child > div { padding: 1.5rem !important; }
         }
       `}</style>
     </section>

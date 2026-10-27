@@ -120,12 +120,12 @@ To exercise any of these rights, contact us at ${EMAIL}. We will respond to your
 function SafeParagraph({ text, email }: { text: string; email: string }) {
   const parts = text.split(email)
   return (
-    <p style={{ fontFamily: 'var(--sans)', fontSize: '0.88rem', color: 'rgba(15,15,14,0.72)', lineHeight: 1.8, marginBottom: '1rem', whiteSpace: 'pre-line' }}>
+    <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.88rem', color: 'rgba(15,15,14,0.72)', lineHeight: 1.8, marginBottom: '1rem', whiteSpace: 'pre-line' }}>
       {parts.map((part, k) => (
         <span key={k}>
           {part}
           {k < parts.length - 1 && (
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.85rem', color: '#0f0f0e', userSelect: 'text' }}>{email}</span>
+            <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.85rem', color: 'var(--text)', userSelect: 'text' }}>{email}</span>
           )}
         </span>
       ))}
@@ -135,23 +135,23 @@ function SafeParagraph({ text, email }: { text: string; email: string }) {
 
 export default function PrivacyPage() {
   return (
-    <div style={{ background: '#f5f4f0', minHeight: '100vh', fontFamily: 'var(--sans)', paddingTop: '60px' }}>
+    <div className="dfy-public" style={{ background: 'var(--bg)', minHeight: '100vh', fontFamily: 'var(--f-body)' }}>
 
       {/* Hero */}
-      <div style={{ background: '#0f0f0e', padding: '5rem 2.5rem 4rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ background: 'var(--bg-2)', padding: '5rem 2.5rem 4rem', borderBottom: '1px solid var(--line-2)' }}>
         <div style={{ maxWidth: 760, margin: '0 auto' }}>
 
           {/* Logo */}
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', marginBottom: '2.5rem' }}>
-            <span style={{ width: 8, height: 8, background: '#e8521a', borderRadius: '50%', display: 'inline-block' }} />
-            <span style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.88rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#f7f5f0' }}>DFYAI</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 10, background: 'var(--text)', color: '#fff', fontFamily: 'var(--f-display)', fontWeight: 700, fontSize: '0.95rem' }}>D</span>
+            <span style={{ fontFamily: 'var(--f-display)', fontWeight: 700, fontSize: '1.1rem', letterSpacing: '-0.02em', color: 'var(--text)' }}>DFYAI</span>
           </Link>
 
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#e8521a', display: 'block', marginBottom: '1rem' }}>Legal</span>
-          <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: 400, color: '#f7f5f0', lineHeight: 1.1, marginBottom: '1rem' }}>
+          <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#2B4BFF', display: 'block', marginBottom: '1rem' }}>Legal</span>
+          <h1 style={{ fontFamily: 'var(--f-serif)', fontSize: 'clamp(2.5rem, 5vw, 4rem)', color: 'var(--text)', lineHeight: 1.05, marginBottom: '1rem' }}>
             Privacy Policy
           </h1>
-          <p style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'rgba(247,245,240,0.35)', letterSpacing: '0.06em' }}>
+          <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'var(--text-3)' }}>
             Effective date: {EFFECTIVE_DATE} · {COMPANY}
           </p>
         </div>
@@ -161,15 +161,15 @@ export default function PrivacyPage() {
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '4rem 2.5rem 6rem' }}>
 
         {/* Intro callout */}
-        <div style={{ background: '#ffffff', border: '1px solid rgba(232,82,26,0.25)', borderLeft: '3px solid #e8521a', borderRadius: '8px', padding: '1.25rem 1.5rem', marginBottom: '3rem' }}>
-          <p style={{ fontFamily: 'var(--sans)', fontSize: '0.88rem', color: '#0f0f0e', lineHeight: 1.7, margin: 0 }}>
+        <div style={{ background: 'var(--accent-tint)', border: '1px solid var(--accent-border)', borderRadius: '20px', padding: '1.25rem 1.5rem', marginBottom: '3rem' }}>
+          <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.88rem', color: 'var(--text)', lineHeight: 1.7, margin: 0 }}>
             Your privacy matters to us. This Policy explains exactly what data we collect, why we collect it, and how we protect it. We do not sell your personal information — ever.
           </p>
         </div>
 
         {sections.map((s, i) => (
-          <div key={i} style={{ marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: i < sections.length - 1 ? '1px solid rgba(15,15,14,0.08)' : 'none' }}>
-            <h2 style={{ fontFamily: 'var(--sans)', fontSize: '1rem', fontWeight: 600, color: '#0f0f0e', marginBottom: '0.85rem' }}>{s.title}</h2>
+          <div key={i} style={{ marginBottom: '2.5rem', paddingBottom: '2.5rem', borderBottom: i < sections.length - 1 ? '1px solid var(--line)' : 'none' }}>
+            <h2 style={{ fontFamily: 'var(--f-body)', fontSize: '1rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.85rem' }}>{s.title}</h2>
             {s.body.split('\n\n').map((para, j) => (
               <SafeParagraph key={j} text={para} email={EMAIL} />
             ))}

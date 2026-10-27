@@ -17,30 +17,29 @@ export const metadata: Metadata = {
 }
 
 export default function WhyAIFailsPage() {
-  const prose: React.CSSProperties = { fontSize: '16px', color: 'rgba(247,245,240,0.65)', lineHeight: 1.85, marginBottom: '1.25rem', fontWeight: 300 }
-  const h2: React.CSSProperties = { fontFamily: 'var(--serif)', fontSize: 'clamp(1.4rem,3vw,1.8rem)', fontWeight: 400, color: '#f7f5f0', margin: '2.5rem 0 0.875rem', letterSpacing: '-0.01em', lineHeight: 1.2 }
-  const h3: React.CSSProperties = { fontSize: '1rem', fontWeight: 600, color: '#f7f5f0', margin: '1.75rem 0 0.5rem', letterSpacing: '0.02em' }
-  const callout: React.CSSProperties = { background: '#1a1a18', border: '1px solid rgba(255,255,255,0.07)', borderLeft: '3px solid var(--coral)', padding: '1.5rem', margin: '2rem 0' }
-  const calloutDark: React.CSSProperties = { background: 'rgba(232,82,26,0.06)', border: '1px solid rgba(232,82,26,0.2)', padding: '1.75rem', margin: '2.5rem 0' }
+  const prose: React.CSSProperties = { fontSize: '16px', color: 'rgba(21,22,26,0.81)', lineHeight: 1.85, marginBottom: '1.25rem', fontWeight: 500 }
+  const h2: React.CSSProperties = { fontFamily: 'var(--f-serif)', fontSize: 'clamp(1.4rem,3vw,1.8rem)', fontWeight: 400, color: '#15161A', margin: '2.5rem 0 0.875rem', letterSpacing: '-0.01em', lineHeight: 1.2 }
+  const h3: React.CSSProperties = { fontSize: '1rem', fontWeight: 600, color: '#15161A', margin: '1.75rem 0 0.5rem', letterSpacing: '0.02em' }
+  const callout: React.CSSProperties = { background: 'var(--accent-tint)', border: '1px solid var(--accent-border)', borderRadius: 20, padding: '1.5rem', margin: '2rem 0' }
+  const calloutDark: React.CSSProperties = { background: 'rgba(43,75,255,0.06)', border: '1px solid rgba(43,75,255,0.2)', padding: '1.75rem', margin: '2.5rem 0', borderRadius: 20 }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0f0f0e', color: '#f7f5f0', fontFamily: 'var(--sans)' }}>
+    <div className="dfy-public" style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', fontFamily: 'var(--f-body)' }}>
       <style>{`
-        :root { --coral:#e8521a; --coral-border:rgba(232,82,26,0.3); --border-dark:rgba(255,255,255,0.09); }
         * { box-sizing:border-box; margin:0; padding:0; }
         .stat-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:2rem 0; }
-        .stat-box { background:#1a1a18; border:1px solid rgba(255,255,255,0.07); padding:1.25rem; text-align:center; }
+        .stat-box { border-radius:20px; background:#ffffff; border:1px solid rgba(21,22,26,0.10); padding:1.25rem; text-align:center; }
         @media(max-width:600px) { .stat-row { grid-template-columns:1fr !important; } }
 ;
       `}</style>
 
       <Navbar />
 
-      <article style={{ maxWidth: '740px', margin: '0 auto', padding: 'clamp(4rem,10vw,6rem) clamp(1.5rem,5vw,2.5rem) 6rem' }}>
+      <article style={{ maxWidth: '740px', margin: '0 auto', padding: 'clamp(6.5rem,10vw,8rem) clamp(1.5rem,5vw,2.5rem) 6rem' }}>
 
         {/* Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '12px', color: 'rgba(247,245,240,0.25)', marginBottom: '2rem', fontFamily: 'var(--mono)', letterSpacing: '0.06em' }}>
-          <Link href="/blog" style={{ color: 'rgba(247,245,240,0.25)', textDecoration: 'none' }}>Blog</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '12px', color: 'rgba(21,22,26,0.59)', marginBottom: '2rem', fontFamily: 'var(--f-body)', letterSpacing: '0.04em' }}>
+          <Link href="/blog" style={{ color: 'rgba(21,22,26,0.59)', textDecoration: 'none' }}>Blog</Link>
           <span>→</span>
           <span>AI & Strategy</span>
         </div>
@@ -48,15 +47,15 @@ export default function WhyAIFailsPage() {
         {/* Header */}
         <div style={{ marginBottom: '3rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.55rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--coral)', border: '1px solid var(--coral-border)', padding: '3px 10px' }}>AI & Strategy</span>
+            <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--accent)', border: '1px solid var(--accent-border)', padding: '3px 10px' }}>AI & Strategy</span>
             
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)' }}>·</span>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.25)', letterSpacing: '0.06em' }}>7 min read</span>
+            <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'rgba(21,22,26,0.59)' }}>·</span>
+            <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'rgba(21,22,26,0.59)', letterSpacing: '0.04em' }}>7 min read</span>
           </div>
-          <h1 style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(1.75rem,4vw,2.75rem)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '1.25rem', fontWeight: 400 }}>
+          <h1 style={{ fontFamily: 'var(--f-serif)', fontSize: 'clamp(1.75rem,4vw,2.75rem)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '1.25rem', fontWeight: 400 }}>
             Why Most AI Implementations Fail (And How to Make Sure Yours Doesn't)
           </h1>
-          <p style={{ fontSize: '18px', fontWeight: 300, color: 'rgba(247,245,240,0.55)', lineHeight: 1.7 }}>
+          <p style={{ fontSize: '18px', fontWeight: 500, color: 'rgba(21,22,26,0.75)', lineHeight: 1.7 }}>
             Companies are spending thousands on AI tools and getting almost nothing back. The problem isn't the technology — it's how it's being deployed. Here's what actually works.
           </p>
         </div>
@@ -69,8 +68,8 @@ export default function WhyAIFailsPage() {
             { value: '12%', label: 'of businesses report strong AI ROI' },
           ].map(s => (
             <div key={s.label} className="stat-box">
-              <div style={{ fontFamily: 'var(--serif)', fontSize: '2rem', color: 'var(--coral)', marginBottom: '0.4rem' }}>{s.value}</div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.35)', lineHeight: 1.5, letterSpacing: '0.04em' }}>{s.label}</div>
+              <div style={{ fontFamily: 'var(--f-serif)', fontSize: '2rem', color: 'var(--accent)', marginBottom: '0.4rem' }}>{s.value}</div>
+              <div style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'rgba(21,22,26,0.64)', lineHeight: 1.5, letterSpacing: '0.04em' }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -102,7 +101,7 @@ export default function WhyAIFailsPage() {
         <p style={prose}>If AI is something the consultant set up and nobody on your team understands, it will break and not get fixed. Successful implementations include a knowledge transfer — someone internal who owns the system, can modify prompts, can troubleshoot issues, and can expand the scope as the business grows.</p>
 
         <div style={callout}>
-          <p style={{ ...prose, margin: 0, color: 'rgba(247,245,240,0.8)' }}><strong style={{ color: '#f7f5f0' }}>The pattern we see most:</strong> A business spends $15,000 on an AI consultant who builds something impressive, trains nobody, and leaves. Six months later the system is broken, nobody knows how to fix it, and the business concludes "AI doesn't work for us."</p>
+          <p style={{ ...prose, margin: 0, color: 'rgba(21,22,26,0.89)' }}><strong style={{ color: '#15161A' }}>The pattern we see most:</strong> A business spends $15,000 on an AI consultant who builds something impressive, trains nobody, and leaves. Six months later the system is broken, nobody knows how to fix it, and the business concludes "AI doesn't work for us."</p>
         </div>
 
         <h2 style={h2}>What successful implementations look like</h2>
@@ -125,9 +124,9 @@ export default function WhyAIFailsPage() {
         <p style={prose}>Anyone promising transformation in 48 hours is selling you a demo. Anyone promising six months before you see results has never built one of these systems before. The real timeline is four to eight weeks from first call to working, trusted system.</p>
 
         <div style={calloutDark}>
-          <div style={{ fontFamily: 'var(--serif)', fontSize: '1.25rem', color: '#f7f5f0', marginBottom: '0.5rem' }}>We build it. We train your team. We stay.</div>
-          <p style={{ ...prose, color: 'rgba(247,245,240,0.55)', margin: '0 0 1.25rem' }}>Every implementation includes knowledge transfer and ongoing support. Your team owns it — we just make sure it keeps working.</p>
-          <Link href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '0.875rem 1.75rem', textDecoration: 'none' }}>
+          <div style={{ fontFamily: 'var(--f-serif)', fontSize: '1.25rem', color: '#15161A', marginBottom: '0.5rem' }}>We build it. We train your team. We stay.</div>
+          <p style={{ ...prose, color: 'rgba(21,22,26,0.75)', margin: '0 0 1.25rem' }}>Every implementation includes knowledge transfer and ongoing support. Your team owns it — we just make sure it keeps working.</p>
+          <Link href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--f-body)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', background: 'var(--accent)', borderRadius: 999, color: '#fff', padding: '0.875rem 1.75rem', textDecoration: 'none' }}>
             Book a free strategy call →
           </Link>
         </div>
@@ -138,26 +137,26 @@ export default function WhyAIFailsPage() {
         <p style={prose}>That's a much shorter list than the number of companies that bought the tools.</p>
 
         {/* CTA */}
-        <div style={{ background: '#1a1a18', border: '1px solid rgba(255,255,255,0.07)', padding: '2.5rem', marginTop: '3rem', textAlign: 'center' }}>
-          <h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.75rem', fontWeight: 400, color: '#f7f5f0', marginBottom: '0.75rem' }}>Ready to implement AI that actually works?</h2>
-          <p style={{ ...prose, maxWidth: '42ch', margin: '0 auto 1.75rem', color: 'rgba(247,245,240,0.4)' }}>Book a free 30-minute strategy call. We'll show you exactly where AI moves the needle in your business.</p>
-          <Link href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--sans)', fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: 'var(--coral)', color: '#fff', padding: '1rem 2.5rem', textDecoration: 'none' }}>
+        <div style={{ background: '#ffffff', border: '1px solid rgba(21,22,26,0.10)', borderRadius: 20, padding: '2.5rem', marginTop: '3rem', textAlign: 'center' }}>
+          <h2 style={{ fontFamily: 'var(--f-serif)', fontSize: '1.75rem', fontWeight: 400, color: '#15161A', marginBottom: '0.75rem' }}>Ready to implement AI that actually works?</h2>
+          <p style={{ ...prose, maxWidth: '42ch', margin: '0 auto 1.75rem', color: 'rgba(21,22,26,0.67)' }}>Book a free 30-minute strategy call. We'll show you exactly where AI moves the needle in your business.</p>
+          <Link href="/#contact" style={{ display: 'inline-block', fontFamily: 'var(--f-body)', fontSize: '0.82rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', background: 'var(--accent)', borderRadius: 999, color: '#fff', padding: '1rem 2.5rem', textDecoration: 'none' }}>
             Book a Free Strategy Call →
           </Link>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', marginTop: '0.75rem', letterSpacing: '0.06em' }}>No commitment · 30 minutes · Results-focused</div>
+          <div style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'rgba(21,22,26,0.56)', marginTop: '0.75rem', letterSpacing: '0.04em' }}>No commitment · 30 minutes · Results-focused</div>
         </div>
 
-        <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-          <Link href="/blog" style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', textDecoration: 'none', letterSpacing: '0.1em' }}>← Back to blog</Link>
+        <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(21,22,26,0.10)' }}>
+          <Link href="/blog" style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'var(--accent)', textDecoration: 'none', letterSpacing: '0.04em' }}>← Back to blog</Link>
         </div>
 
       </article>
 
-      <footer style={{ borderTop: '1px solid rgba(255,255,255,0.06)', padding: '2rem clamp(1.5rem,5vw,3rem)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', letterSpacing: '0.1em' }}>© 2026 DoneForYouAI.com · HONNYDO LLC</span>
+      <footer style={{ borderTop: '1px solid rgba(21,22,26,0.10)', padding: '2rem clamp(1.5rem,5vw,3rem)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+        <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'rgba(21,22,26,0.56)', letterSpacing: '0.04em' }}>© 2026 DoneForYouAI.com · HONNYDO LLC</span>
         <div style={{ display: 'flex', gap: '1.5rem' }}>
           {[['Privacy', '/privacy'], ['Terms', '/terms']].map(([label, href]) => (
-            <Link key={label} href={href} style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(247,245,240,0.2)', textDecoration: 'none', letterSpacing: '0.08em' }}>{label}</Link>
+            <Link key={label} href={href} style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', color: 'rgba(21,22,26,0.56)', textDecoration: 'none', letterSpacing: '0.04em' }}>{label}</Link>
           ))}
         </div>
       </footer>

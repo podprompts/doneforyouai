@@ -1,116 +1,103 @@
 'use client'
 
-import { useState } from 'react'
+const icons: Record<string, React.ReactElement> = {
+  '01': <><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H14a3 3 0 0 1 3 3v6.5"/></>,
+  '02': <><path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 10h7"/></>,
+  '03': <><path d="M5 4h10l4 4v12H5z"/><path d="M9 12h6M9 16h6"/></>,
+  '04': <><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 12l6-6"/></>,
+  '05': <><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></>,
+  '06': <><path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/></>,
+}
 
 const services = [
   {
     num: '01',
     name: 'AI Automation & Workflows',
     desc: 'Eliminate repetitive tasks and operational bottlenecks. We map your processes and build AI workflows that run 24/7 without you.',
+    tone: 'accent',
   },
   {
     num: '02',
     name: 'Custom AI Assistants & Chatbots',
     desc: 'Trained on your business, your voice, your knowledge base — built for your customers, your team, or both.',
+    tone: 'light',
   },
   {
     num: '03',
     name: 'AI Content Systems',
     desc: 'Scalable engines for blogs, email, social, and ads. Consistent brand voice, zero burnout, compounding output.',
+    tone: 'light',
   },
   {
     num: '04',
     name: 'AI-Powered Lead Generation',
     desc: 'Prospect research, outreach personalization, automated follow-up sequences. Your pipeline fills while you sleep.',
+    tone: 'light',
   },
   {
     num: '05',
     name: 'Done-For-You AI Tool Stack',
     desc: 'We evaluate, select, configure, and integrate the right AI tools for your team — ready to use from day one.',
+    tone: 'light',
   },
   {
     num: '06',
     name: 'AI Strategy & Prompting Playbook',
     desc: 'A custom roadmap: which tools, which workflows, which prompts will compound over time inside your specific business.',
+    tone: 'dark',
   },
 ]
 
-export default function Services() {
-  const [hovered, setHovered] = useState<number | null>(null)
+function Icon({ num }: { num: string }) {
+  return (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {icons[num]}
+    </svg>
+  )
+}
 
+export default function Services() {
   return (
     <>
       <section id="services" style={{
-        background: '#f5f4f0',
-        color: '#0f0f0e',
-        padding: '0 2.5rem 7rem',
+        background: 'var(--bg)',
+        color: 'var(--text)',
+        padding: '0 2rem 7rem',
       }}>
-        <div style={{
-          display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
-          padding: '5rem 0 3rem',
-          borderBottom: '1px solid rgba(15,15,14,0.1)',
-          flexWrap: 'wrap', gap: '0.5rem',
-        }}>
-          <h2 style={{
-            fontFamily: 'var(--serif)',
-            fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-            fontWeight: 400, lineHeight: 1.1,
-            color: '#0f0f0e',
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{
+            display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between',
+            padding: '1rem 0 2.5rem',
+            flexWrap: 'wrap', gap: '1rem',
           }}>
-            Six ways we put<br />
-            AI to work <em style={{ fontStyle: 'italic', color: 'var(--coral)' }}>for you</em>
-          </h2>
-          <span style={{
-            fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-            color: 'rgba(15,15,14,0.42)', letterSpacing: '0.1em', paddingBottom: '0.25rem',
-          }}>06 Services</span>
-        </div>
+            <h2 style={{
+              fontSize: 'clamp(2.2rem, 4vw, 3.6rem)',
+              lineHeight: 1.04,
+              color: 'var(--text)',
+              maxWidth: '16ch',
+            }}>
+              Six ways we put AI to work <em style={{ color: 'var(--accent)' }}>for you</em>
+            </h2>
+            <span style={{
+              fontFamily: 'var(--f-body)', fontSize: '0.9rem', fontWeight: 600,
+              color: 'var(--text-3)', paddingBottom: '0.5rem',
+            }}>06 Services</span>
+          </div>
 
-        <div className="services-desktop">
-          {services.map((s, i) => (
-            <div
-              key={i}
-              onMouseEnter={() => setHovered(i)}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '60px 1fr 1fr 40px',
-                alignItems: 'center',
-                gap: '2rem',
-                padding: '1.75rem 2.5rem',
-                borderBottom: '1px solid rgba(15,15,14,0.1)',
-                background: hovered === i ? 'rgba(232,82,26,0.06)' : 'transparent',
-                margin: '0 -2.5rem',
-                cursor: 'default',
-                transition: 'background 0.2s',
-              }}
-            >
-              <span style={{
-                fontFamily: 'var(--mono)', fontSize: '0.68rem', fontWeight: 300,
-                color: hovered === i ? 'var(--coral)' : 'rgba(15,15,14,0.35)',
-                letterSpacing: '0.05em',
-                transition: 'color 0.2s',
-              }}>{s.num}</span>
-              <span style={{
-                fontFamily: 'var(--sans)', fontWeight: 600,
-                fontSize: '1.1rem',
-                color: '#0f0f0e',
-                transition: 'color 0.2s',
-              }}>{s.name}</span>
-              <span style={{
-                fontSize: '0.83rem',
-                color: hovered === i ? 'rgba(15,15,14,0.7)' : 'rgba(15,15,14,0.5)',
-                lineHeight: 1.65,
-                transition: 'color 0.2s',
-              }}>{s.desc}</span>
-              <span style={{
-                fontSize: '1rem',
-                color: hovered === i ? 'var(--coral)' : 'rgba(15,15,14,0.2)',
-                transform: hovered === i ? 'translateX(4px)' : 'translateX(0)',
-                transition: 'color 0.2s, transform 0.2s', textAlign: 'right',
-              }}>→</span>
-            </div>
-          ))}
+          <div className="services-desktop svc-bento">
+            {services.map((s) => (
+              <div key={s.num} className={`svc-tile svc-${s.tone} svc-n${s.num}`}>
+                <div className="svc-top">
+                  <span className="svc-icon"><Icon num={s.num} /></span>
+                  <span className="svc-index">{s.num}</span>
+                </div>
+                <div>
+                  <h3 className="svc-title">{s.name}</h3>
+                  <p className="svc-text">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -119,28 +106,89 @@ export default function Services() {
         <div className="services-track">
           {services.map((s, i) => (
             <div key={i} className="svc-card">
+              <span className="svc-icon-m"><Icon num={s.num} /></span>
               <span className="svc-num">{s.num}</span>
               <h3 className="svc-name">{s.name}</h3>
               <p className="svc-desc">{s.desc}</p>
-              <span className="svc-arrow">→</span>
             </div>
           ))}
         </div>
       </div>
 
       <style>{`
+        .svc-bento {
+          display: grid;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          gap: 20px;
+        }
+        .svc-tile {
+          min-height: 300px;
+          padding: 2rem;
+          border-radius: 28px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          gap: 1.5rem;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .svc-tile:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 18px 40px rgba(21, 22, 26, 0.12);
+        }
+        .svc-n01 { grid-column: span 3; }
+        .svc-n02 { grid-column: span 2; }
+        .svc-n03 { grid-column: span 2; }
+        .svc-n04 { grid-column: span 3; }
+        .svc-n05 { grid-column: span 3; }
+        .svc-n06 { grid-column: span 2; }
+
+        .svc-light  { background: var(--surface); border: 1px solid var(--line); color: var(--text); }
+        .svc-accent { background: var(--accent); color: #fff; }
+        .svc-dark   { background: var(--text); color: #fff; }
+
+        .svc-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .svc-icon {
+          display: inline-flex; align-items: center; justify-content: center;
+          width: 56px; height: 56px; border-radius: 16px;
+          background: var(--accent-tint); color: var(--accent);
+        }
+        .svc-accent .svc-icon, .svc-dark .svc-icon { background: rgba(255,255,255,0.16); color: #fff; }
+        .svc-index { font-family: var(--f-body); font-size: 0.9rem; font-weight: 500; opacity: 0.7; }
+
+        .svc-title {
+          font-size: 1.5rem;
+          line-height: 1.15;
+          margin: 0 0 0.65rem;
+        }
+        .svc-n01 .svc-title, .svc-n04 .svc-title, .svc-n05 .svc-title { font-size: 1.75rem; }
+        .svc-text {
+          font-family: var(--f-body);
+          font-size: 1rem;
+          line-height: 1.55;
+          margin: 0;
+          max-width: 32rem;
+          color: var(--text-2);
+        }
+        .svc-accent .svc-text { color: rgba(255,255,255,0.9); }
+        .svc-dark .svc-text   { color: rgba(255,255,255,0.82); }
+
         .services-mobile { display: none; }
+
+        @media (max-width: 900px) {
+          .svc-bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .svc-n01, .svc-n02, .svc-n03, .svc-n04, .svc-n05, .svc-n06 { grid-column: span 1; }
+        }
 
         @media (max-width: 680px) {
           #services { padding: 0 1.25rem 0 !important; }
-          #services > div:first-child { padding: 3rem 0 2rem !important; flex-direction: column !important; align-items: flex-start !important; }
+          #services > div > div:first-child { padding: 2rem 0 1.5rem !important; flex-direction: column !important; align-items: flex-start !important; }
           .services-desktop { display: none !important; }
 
           .services-mobile {
             display: block;
             width: 100vw;
             margin-left: calc(-50vw + 50%);
-            background: #f5f4f0;
+            background: var(--bg);
             padding-bottom: 3rem;
           }
 
@@ -158,29 +206,36 @@ export default function Services() {
           .services-track::-webkit-scrollbar { display: none; }
 
           .svc-card {
-            flex: 0 0 78vw;
+            flex: 0 0 80vw;
             scroll-snap-align: start;
-            border: 1px solid rgba(15,15,14,0.1);
-            background: #ffffff;
-            padding: 1.75rem 1.5rem;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            background: var(--surface);
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
-            min-height: 220px;
+            min-height: 260px;
+            position: relative;
+          }
+          .svc-icon-m {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 48px; height: 48px; border-radius: 14px;
+            background: var(--accent-tint); color: var(--accent);
           }
           .svc-num {
-            font-family: var(--mono); font-size: 0.65rem;
-            font-weight: 300; color: rgba(15,15,14,0.35); letter-spacing: 0.08em;
+            position: absolute; top: 1.5rem; right: 1.5rem;
+            font-family: var(--f-body); font-size: 0.85rem;
+            font-weight: 500; color: var(--text-3);
           }
           .svc-name {
-            font-family: var(--sans); font-size: 1.05rem;
-            font-weight: 600; color: #0f0f0e; line-height: 1.3; margin: 0;
+            font-size: 1.25rem;
+            color: var(--text); line-height: 1.2; margin: 0.5rem 0 0;
           }
           .svc-desc {
-            font-family: var(--sans); font-size: 0.83rem;
-            color: rgba(15,15,14,0.5); line-height: 1.65; flex: 1; margin: 0;
+            font-family: var(--f-body); font-size: 0.95rem;
+            color: var(--text-2); line-height: 1.6; flex: 1; margin: 0;
           }
-          .svc-arrow { font-size: 1rem; color: var(--coral); align-self: flex-end; }
         }
       `}</style>
     </>
