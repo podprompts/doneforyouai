@@ -211,6 +211,7 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
             width: 100%;
           }
           .vs-chrome { display: none; }
+          .vs-caption { display: none; }
           .vs-shell { padding: 6px; border-radius: 18px; }
           .vs-frame { border-radius: 12px; }
           .vs-heading {
