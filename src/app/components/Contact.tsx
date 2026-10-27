@@ -33,7 +33,7 @@ export default function Contact() {
         status:     'new',
         created_at: new Date().toISOString(),
       })
-      if (error) throw error
+      if (error) throw error; fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: form.name, email: form.email, company: form.company, service: form.service, message: form.message }) }).catch(() => {})
       setStatus('success')
       setForm({ name: '', email: '', company: '', message: '', service: '' })
     } catch (e) {

@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     // ── Lead notification to you ──
     await resend.emails.send({
       from: 'DoneForYouAI <hello@doneforyouai.com>',
-      to: 'adriennash@gmail.com',
+      to: 'adrien1@gmail.com',
       subject: `New inquiry from ${name}${company ? ` · ${company}` : ''}`,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
