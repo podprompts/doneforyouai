@@ -165,8 +165,8 @@ export default function Contact() {
 
               {status === 'error' && (
                 <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.9rem', color: '#B42318' }}>
-                  Something went wrong. Email us at{' '}
-                  <span style={{ color: '#B42318', fontWeight: 600 }}>hire@doneforyouai.com</span>
+                  Something went wrong. Please{' '}
+                  <span style={{ color: '#B42318', fontWeight: 600 }}>try again in a moment.</span>
                 </p>
               )}
             </div>

@@ -87,7 +87,7 @@ export default function Footer() {
             Terms
           </a>
           <button onClick={scrollToContact} style={btnStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
-            hire@doneforyouai.com
+            Contact
           </button>
         </div>
       </div>
