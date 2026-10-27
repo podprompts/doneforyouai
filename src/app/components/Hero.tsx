@@ -315,7 +315,7 @@ export default function Hero() {
         @media (max-width: 900px) {
           section {
             grid-template-columns: 1fr !important;
-            padding: 120px 1.5rem 32px 1.5rem !important;
+            padding: 120px 1.5rem 12px 1.5rem !important;
             gap: 2.5rem !important;
             align-items: start !important;
           }

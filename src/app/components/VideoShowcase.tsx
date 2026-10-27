@@ -200,7 +200,7 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           .vs-outer {
             grid-template-columns: 1fr;
             gap: 2rem;
-            padding: 1.5rem 0 4rem;
+            padding: 0.5rem 0 4rem;
           }
           .vs-text { padding: 0 1.25rem; }
         }
