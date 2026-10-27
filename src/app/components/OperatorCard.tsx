@@ -310,7 +310,7 @@ export function ExpertCard({
                 </Link>
               )}
               <div style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.06em', color: 'rgba(247,245,240,0.18)', lineHeight: 1.6 }}>
-                All inquiries handled by<br />the DoneForYouAI team.
+                All inquiries handled by<br />The Done For You AI Team.
               </div>
             </div>
           </div>

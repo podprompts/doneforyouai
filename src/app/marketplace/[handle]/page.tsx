@@ -369,7 +369,7 @@ export default function ExpertProfilePage() {
             </button>
 
             <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', lineHeight: 1.65, marginTop: '1rem', textAlign: 'center' }}>
-              All inquiries are handled by<br />the DoneForYouAI team.
+              All inquiries are handled by<br />The Done For You AI Team.
             </p>
           </div>
 

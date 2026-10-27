@@ -220,8 +220,8 @@ function HeroCarousel() {
 
       {/* Name + tag + dots */}
       <div style={{ flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '0.5rem' }}>
-          <span style={{ fontFamily: 'var(--f-display)', fontSize: '1.1rem', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text)' }}>{p.name}</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
+          <span style={{ fontFamily: 'var(--f-display)', fontSize: '1.1rem', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text)', minWidth: 0 }}>{p.name}</span>
           <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.02em', color: 'var(--accent)', borderRadius: 999, padding: '0.25rem 0.75rem', flexShrink: 0, background: 'var(--accent-tint)' }}>{p.tag}</span>
         </div>
         <div style={{ display: 'flex', gap: '0.3rem' }}>

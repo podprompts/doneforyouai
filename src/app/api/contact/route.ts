@@ -57,7 +57,7 @@ export async function POST(req: Request) {
             <p style="margin:0;line-height:1.7;color:#444;">In the meantime, feel free to reply to this email with any additional details.</p>
           </div>
           <div style="padding:1.5rem 2rem;background:#f0f0f0;font-size:0.8rem;color:#666;text-align:center;">
-            <p style="margin:0;">— The DoneForYouAI team</p>
+            <p style="margin:0;">— The Done For You AI Team</p>
             <p style="margin:0.5rem 0 0;"><a href="https://doneforyouai.com" style="color:#e8521a;text-decoration:none;">doneforyouai.com</a></p>
           </div>
         </div>
