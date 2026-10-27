@@ -110,8 +110,8 @@ export default function WorkPageClient() {
               <div style={{ position: 'absolute', top: 36, left: 12, fontFamily: 'var(--f-body)', fontSize: '0.75rem', fontWeight: 500, color: 'rgba(255,255,255,0.5)', letterSpacing: '0.04em' }}>{String(i + 1).padStart(2, '0')}</div>
             </div>
             <div style={{ padding: '1.1rem 1.1rem 1.25rem' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                <h2 style={{ fontFamily: 'var(--f-serif)', fontSize: '1.3rem', fontWeight: 400, color: 'var(--text)', lineHeight: 1.15 }}>{p.name}</h2>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <h2 style={{ fontFamily: 'var(--f-serif)', fontSize: '1.3rem', fontWeight: 400, color: 'var(--text)', lineHeight: 1.15, minWidth: 0, overflowWrap: 'anywhere' }}>{p.name}</h2>
                 <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.75rem', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text)', border: '1px solid var(--accent-border)', borderRadius: 999, padding: '0.15rem 0.45rem', background: 'rgba(43,75,255,0.06)', whiteSpace: 'nowrap', flexShrink: 0, marginTop: '0.2rem' }}>{p.tag}</span>
               </div>
               <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.82rem', color: 'rgba(15,15,14,0.6)', lineHeight: 1.65, marginBottom: '1rem' }}>{p.description}</p>
