@@ -69,7 +69,8 @@ function HeroCarousel() {
 
   const resetAuto = useCallback(() => {
     if (autoRef.current) clearInterval(autoRef.current)
-    autoRef.current = setInterval(() => { setIndex(i => i + 1); setAnimated(true) }, 3500)
+    const delay = typeof window !== 'undefined' && window.innerWidth <= 900 ? 2200 : 3500
+    autoRef.current = setInterval(() => { setIndex(i => i + 1); setAnimated(true) }, delay)
   }, [])
 
   useEffect(() => {
@@ -314,7 +315,7 @@ export default function Hero() {
         @media (max-width: 900px) {
           section {
             grid-template-columns: 1fr !important;
-            padding: 120px 1.5rem 60px 1.5rem !important;
+            padding: 120px 1.5rem 32px 1.5rem !important;
             gap: 2.5rem !important;
             align-items: start !important;
           }

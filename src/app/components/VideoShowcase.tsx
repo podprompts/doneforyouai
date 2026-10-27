@@ -199,12 +199,13 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
         @media (max-width: 900px) {
           .vs-outer {
             grid-template-columns: 1fr;
-            gap: 2.5rem;
-            padding: 4rem 1.25rem;
+            gap: 2rem;
+            padding: 1.5rem 0 4rem;
           }
+          .vs-text { padding: 0 1.25rem; }
         }
 
-        /* ── MOBILE: stacked, video first ── */
+        /* ── MOBILE: stacked, video first, edge to edge ── */
         @media (max-width: 768px) {
           .vs-video-col {
             order: -1;
@@ -212,8 +213,8 @@ export default function VideoShowcase({ mode = 'embed' }: Props) {
           }
           .vs-chrome { display: none; }
           .vs-caption { display: none; }
-          .vs-shell { padding: 6px; border-radius: 18px; }
-          .vs-frame { border-radius: 12px; }
+          .vs-shell { padding: 0; border-radius: 0; box-shadow: none; }
+          .vs-frame { border-radius: 0; }
           .vs-heading {
             font-size: clamp(1.9rem, 8vw, 2.4rem);
             margin-bottom: 0.75rem;

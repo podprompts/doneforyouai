@@ -35,77 +35,69 @@ function ApplyModal({ onClose }: { onClose: () => void }) {
     }
   }
 
-  const inp: React.CSSProperties = {
-    width: '100%', background: '#1c1c1a', border: '1px solid rgba(255,255,255,0.09)',
-    padding: '0.75rem 1rem', fontFamily: 'var(--sans)', fontSize: '0.85rem',
-    color: '#f7f5f0', outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box',
+  const labelStyle: React.CSSProperties = {
+    fontFamily: 'var(--f-body)', fontSize: '0.8rem', fontWeight: 600,
+    color: 'var(--text)', display: 'block', marginBottom: '0.4rem',
   }
 
   return (
     <div
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
-      style={{ position: 'fixed', inset: 0, background: 'rgba(15,15,14,0.88)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(10px)' }}
+      style={{ position: 'fixed', inset: 0, background: 'rgba(21,22,26,0.55)', zIndex: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', backdropFilter: 'blur(8px)' }}
     >
-      <div style={{ background: '#0f0f0e', border: '1px solid rgba(255,255,255,0.09)', width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto' }}>
-        <div style={{ background: '#1c1c1a', padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.09)', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 28, width: '100%', maxWidth: 560, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 40px 80px rgba(21,22,26,0.25)' }}>
+        <div style={{ padding: '1.75rem 1.75rem 1.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.35rem' }}>Join the network</span>
-            <h3 style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 400, color: '#f7f5f0', margin: 0 }}>Apply as an Expert</h3>
+            <span className="dfy-eyebrow" style={{ color: 'var(--accent)', display: 'block', marginBottom: '0.5rem' }}>Join the network</span>
+            <h3 style={{ fontSize: '1.6rem', color: 'var(--text)', margin: 0, lineHeight: 1.1 }}>Apply as an Expert</h3>
           </div>
-          <button onClick={onClose} style={{ background: 'transparent', border: 'none', color: 'rgba(247,245,240,0.35)', cursor: 'pointer', fontSize: '1.2rem', padding: '0.25rem', lineHeight: 1 }}>✕</button>
+          <button onClick={onClose} aria-label="Close" style={{ background: 'var(--bg)', border: 'none', color: 'var(--text-2)', cursor: 'pointer', fontSize: '1rem', width: 40, height: 40, borderRadius: '50%', lineHeight: 1 }}>✕</button>
         </div>
-        <div style={{ padding: '1.5rem' }}>
+        <div style={{ padding: '0 1.75rem 1.75rem' }}>
           {/* Tier picker */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.75rem' }}>Choose your plan</label>
+            <label style={labelStyle}>Choose your plan</label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
               {TIERS.map(t => (
                 <div key={t.value} onClick={() => setForm(f => ({ ...f, tier: t.value }))}
-                  style={{ border: `1px solid ${form.tier === t.value ? 'var(--coral)' : 'rgba(255,255,255,0.09)'}`, padding: '0.85rem 0.65rem', cursor: 'pointer', background: form.tier === t.value ? 'rgba(232,82,26,0.06)' : 'transparent', transition: 'all 0.15s' }}>
-                  <div style={{ fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, color: '#f7f5f0', marginBottom: '0.2rem' }}>{t.label}</div>
-                  <div style={{ fontFamily: 'var(--mono)', fontSize: '0.68rem', color: 'var(--coral)', marginBottom: '0.5rem' }}>{t.price}</div>
-                  {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--sans)', fontSize: '0.65rem', color: 'rgba(247,245,240,0.35)', lineHeight: 1.5 }}>· {p}</div>)}
+                  style={{ border: `1.5px solid ${form.tier === t.value ? 'var(--accent)' : 'var(--line-2)'}`, borderRadius: 16, padding: '0.9rem 0.7rem', cursor: 'pointer', background: form.tier === t.value ? 'var(--accent-tint)' : '#fff', transition: 'all 0.15s' }}>
+                  <div style={{ fontFamily: 'var(--f-body)', fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.2rem' }}>{t.label}</div>
+                  <div style={{ fontFamily: 'var(--f-body)', fontSize: '0.78rem', fontWeight: 600, color: 'var(--accent)', marginBottom: '0.5rem' }}>{t.price}</div>
+                  {t.perks.map(p => <div key={p} style={{ fontFamily: 'var(--f-body)', fontSize: '0.7rem', color: 'var(--text-3)', lineHeight: 1.5 }}>· {p}</div>)}
                 </div>
               ))}
             </div>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', marginTop: '0.6rem', letterSpacing: '0.04em' }}>Video profile is exclusive to Pro + Video tier.</p>
+            <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.72rem', color: 'var(--text-3)', marginTop: '0.6rem' }}>Video profile is exclusive to Pro + Video tier.</p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
               <div>
-                <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Name *</label>
-                <input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" style={inp}
-                  onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+                <label style={labelStyle}>Name *</label>
+                <input className="dfy-field" type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" />
               </div>
               <div>
-                <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Email *</label>
-                <input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@email.com" style={inp}
-                  onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+                <label style={labelStyle}>Email *</label>
+                <input className="dfy-field" type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="you@email.com" />
               </div>
             </div>
             <div>
-              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Website / LinkedIn</label>
-              <input type="text" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://..." style={inp}
-                onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+              <label style={labelStyle}>Website / LinkedIn</label>
+              <input className="dfy-field" type="text" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} placeholder="https://..." />
             </div>
             <div>
-              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Your AI specialties</label>
-              <input type="text" value={form.skills} onChange={e => setForm(f => ({ ...f, skills: e.target.value }))} placeholder="e.g. Zapier, Claude, Voiceflow..." style={inp}
-                onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+              <label style={labelStyle}>Your AI specialties</label>
+              <input className="dfy-field" type="text" value={form.skills} onChange={e => setForm(f => ({ ...f, skills: e.target.value }))} placeholder="e.g. Zapier, Claude, Voiceflow..." />
             </div>
             <div>
-              <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(247,245,240,0.35)', display: 'block', marginBottom: '0.35rem' }}>Tell us about your work</label>
-              <textarea value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="What kind of AI systems have you built?" rows={4}
-                style={{ ...inp, resize: 'vertical', minHeight: '96px' }}
-                onFocus={e => e.target.style.borderColor = 'var(--coral-border)'} onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.09)'} />
+              <label style={labelStyle}>Tell us about your work</label>
+              <textarea className="dfy-field" value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} placeholder="What kind of AI systems have you built?" rows={4} style={{ resize: 'vertical', minHeight: '96px' }} />
             </div>
-            {error && <p style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: '#f87171', padding: '0.65rem 1rem', border: '1px solid rgba(248,113,113,0.3)', background: 'rgba(248,113,113,0.06)', margin: 0 }}>{error}</p>}
-            <button onClick={handleSubmit} disabled={loading || !form.name || !form.email}
-              style={{ fontFamily: 'var(--sans)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: (!form.name || !form.email || loading) ? 'rgba(232,82,26,0.4)' : 'var(--coral)', color: '#fff', border: 'none', padding: '1rem', cursor: (!form.name || !form.email || loading) ? 'not-allowed' : 'pointer', width: '100%' }}>
+            {error && <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.8rem', color: '#B42318', padding: '0.7rem 1rem', border: '1px solid rgba(180,35,24,0.3)', background: 'rgba(180,35,24,0.06)', borderRadius: 12, margin: 0 }}>{error}</p>}
+            <button className="dfy-btn dfy-btn-primary" onClick={handleSubmit} disabled={loading || !form.name || !form.email} style={{ width: '100%' }}>
               {loading ? 'Redirecting to checkout...' : 'Continue to Payment →'}
             </button>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', color: 'rgba(247,245,240,0.2)', textAlign: 'center', letterSpacing: '0.06em', lineHeight: 1.6, margin: 0 }}>Secure checkout via Stripe · Cancel anytime</p>
+            <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.72rem', color: 'var(--text-3)', textAlign: 'center', lineHeight: 1.6, margin: 0 }}>Secure checkout via Stripe · Cancel anytime</p>
           </div>
         </div>
       </div>
@@ -138,45 +130,43 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ background: '#f5f4f0', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', fontFamily: 'var(--sans)' }}>
+    <div className="dfy-public" style={{ background: 'var(--bg)', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.25rem', fontFamily: 'var(--f-body)' }}>
 
       {applyOpen && <ApplyModal onClose={() => setApplyOpen(false)} />}
 
-      {/* Subtle glow */}
-      <div style={{ position: 'fixed', top: '-20%', left: '50%', transform: 'translateX(-50%)', width: '60vw', height: '60vw', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,82,26,0.05) 0%, transparent 65%)', pointerEvents: 'none' }} />
-
-      <div style={{ width: '100%', maxWidth: 420, position: 'relative', zIndex: 1 }}>
+      <div style={{ width: '100%', maxWidth: 440, position: 'relative', zIndex: 1 }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none', marginBottom: '2.5rem', justifyContent: 'center' }}>
-          <span style={{ width: 8, height: 8, background: 'var(--coral)', borderRadius: '50%', animation: 'pulse-dot 2.5s infinite' }} />
-          <span style={{ fontFamily: 'var(--sans)', fontWeight: 800, fontSize: '0.9rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#0f0f0e' }}>DFYAI</span>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', marginBottom: '2rem', justifyContent: 'center' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: 11, background: 'var(--text)', color: '#fff', fontFamily: 'var(--f-display)', fontWeight: 700, fontSize: '1rem' }}>D</span>
+          <span style={{ fontFamily: 'var(--f-display)', fontWeight: 700, fontSize: '1.2rem', letterSpacing: '-0.02em', color: 'var(--text)' }}>DFYAI</span>
         </Link>
 
         {/* Card */}
-        <div style={{ border: '1px solid rgba(15,15,14,0.12)', background: '#ffffff', borderRadius: '10px', overflow: 'hidden' }}>
+        <div style={{ border: '1px solid var(--line)', background: 'var(--surface)', borderRadius: 28, overflow: 'hidden', boxShadow: '0 30px 60px rgba(21,22,26,0.08)' }}>
 
           {/* Header */}
-          <div style={{ padding: '2rem 2rem 1.5rem', borderBottom: '1px solid rgba(15,15,14,0.08)' }}>
-            <span style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', fontWeight: 300, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--coral)', display: 'block', marginBottom: '0.5rem' }}>Expert Portal</span>
-            <h1 style={{ fontFamily: 'var(--serif)', fontSize: '1.75rem', fontWeight: 400, color: '#0f0f0e', margin: 0 }}>
+          <div style={{ padding: '2rem 2rem 1.25rem' }}>
+            <span className="dfy-eyebrow" style={{ color: 'var(--accent)', display: 'block', marginBottom: '0.6rem' }}>Expert Portal</span>
+            <h1 style={{ fontSize: '1.9rem', lineHeight: 1.1, color: 'var(--text)', margin: 0 }}>
               {sent ? 'Check your inbox.' : 'Sign in to your dashboard.'}
             </h1>
           </div>
 
-          <div style={{ padding: '2rem' }}>
+          <div style={{ padding: '0.5rem 2rem 2rem' }}>
             {sent ? (
               <div style={{ textAlign: 'center' }}>
-                <div style={{ width: 52, height: 52, borderRadius: '50%', border: '1px solid var(--coral-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: 'var(--coral)', fontSize: '1.2rem' }}>✓</div>
-                <p style={{ fontFamily: 'var(--sans)', fontSize: '0.9rem', color: 'rgba(15,15,14,0.6)', lineHeight: 1.75, marginBottom: '1.5rem' }}>
-                  We sent a magic link to <strong style={{ color: '#0f0f0e' }}>{email}</strong>. Click it to log in — no password needed.
+                <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'var(--accent-tint)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', color: 'var(--accent)', fontSize: '1.3rem', fontWeight: 600 }}>✓</div>
+                <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.95rem', color: 'var(--text-2)', lineHeight: 1.7, marginBottom: '1.25rem' }}>
+                  We sent a magic link to <strong style={{ color: 'var(--text)' }}>{email}</strong>. Click it to log in — no password needed.
                 </p>
-                <p style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: 'rgba(15,15,14,0.3)', letterSpacing: '0.06em', lineHeight: 1.6 }}>
+                <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.8rem', color: 'var(--text-3)', lineHeight: 1.6 }}>
                   Link expires in 1 hour. Check your spam folder if you don't see it.
                 </p>
                 <button
+                  className="dfy-btn dfy-btn-ghost"
                   onClick={() => { setSent(false); setEmail('') }}
-                  style={{ marginTop: '1.5rem', fontFamily: 'var(--mono)', fontSize: '0.62rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', background: 'transparent', border: '1px solid rgba(15,15,14,0.18)', color: 'rgba(15,15,14,0.5)', padding: '0.6rem 1.25rem', cursor: 'pointer' }}
+                  style={{ marginTop: '1.5rem', minHeight: 44 }}
                 >
                   Use a different email
                 </button>
@@ -184,35 +174,35 @@ export default function LoginPage() {
             ) : (
               <>
                 <div style={{ marginBottom: '1.25rem' }}>
-                  <label style={{ fontFamily: 'var(--mono)', fontSize: '0.58rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(15,15,14,0.45)', display: 'block', marginBottom: '0.5rem' }}>Email address</label>
+                  <label className="dfy-label" htmlFor="login-email">Email address</label>
                   <input
+                    id="login-email"
+                    className="dfy-field"
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') handleSubmit() }}
                     placeholder="you@email.com"
                     autoFocus
-                    style={{ width: '100%', background: '#f5f4f0', border: '1px solid rgba(15,15,14,0.15)', padding: '0.85rem 1rem', fontFamily: 'var(--sans)', fontSize: '0.9rem', color: '#0f0f0e', outline: 'none', transition: 'border-color 0.2s', boxSizing: 'border-box', borderRadius: '6px' }}
-                    onFocus={e => e.target.style.borderColor = 'var(--coral)'}
-                    onBlur={e => e.target.style.borderColor = 'rgba(15,15,14,0.15)'}
                   />
                 </div>
 
                 {error && (
-                  <p style={{ fontFamily: 'var(--mono)', fontSize: '0.62rem', color: '#e53e3e', padding: '0.65rem 1rem', border: '1px solid rgba(229,62,62,0.3)', background: 'rgba(229,62,62,0.06)', marginBottom: '1rem', borderRadius: '4px' }}>
+                  <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.85rem', color: '#B42318', padding: '0.7rem 1rem', border: '1px solid rgba(180,35,24,0.3)', background: 'rgba(180,35,24,0.06)', marginBottom: '1rem', borderRadius: 12 }}>
                     {error}
                   </p>
                 )}
 
                 <button
+                  className="dfy-btn dfy-btn-primary"
                   onClick={handleSubmit}
                   disabled={loading || !email}
-                  style={{ width: '100%', fontFamily: 'var(--sans)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', background: (!email || loading) ? 'rgba(232,82,26,0.5)' : 'var(--coral)', color: '#fff', border: 'none', padding: '1rem', cursor: (!email || loading) ? 'not-allowed' : 'pointer', transition: 'background 0.15s', marginBottom: '1.25rem', borderRadius: '6px' }}
+                  style={{ width: '100%', marginBottom: '1.25rem' }}
                 >
                   {loading ? 'Sending...' : 'Send Magic Link →'}
                 </button>
 
-                <p style={{ fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(15,15,14,0.3)', textAlign: 'center', letterSpacing: '0.06em', lineHeight: 1.65 }}>
+                <p style={{ fontFamily: 'var(--f-body)', fontSize: '0.85rem', color: 'var(--text-3)', textAlign: 'center', lineHeight: 1.6, margin: 0 }}>
                   No password needed. We'll email you a secure link.
                 </p>
               </>
@@ -220,16 +210,15 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* "Apply to join" → opens modal instead of going to /marketplace */}
-        <p style={{ textAlign: 'center', marginTop: '1.5rem', fontFamily: 'var(--mono)', fontSize: '0.6rem', color: 'rgba(15,15,14,0.4)', letterSpacing: '0.08em' }}>
+        {/* "Apply to join" opens modal instead of going to /marketplace */}
+        <p style={{ textAlign: 'center', marginTop: '1.5rem', fontFamily: 'var(--f-body)', fontSize: '0.92rem', color: 'var(--text-2)' }}>
           Not an expert yet?{' '}
           <button
             onClick={() => setApplyOpen(true)}
-            style={{ color: 'var(--coral)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--mono)', fontSize: '0.6rem', letterSpacing: '0.08em', padding: 0, textDecoration: 'none' }}
+            style={{ color: 'var(--accent)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--f-body)', fontSize: '0.92rem', fontWeight: 600, padding: 0 }}
           >Apply to join →</button>
         </p>
       </div>
     </div>
   )
 }
-
