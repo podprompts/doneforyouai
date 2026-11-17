@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,600;0,700;0,800;0,900;1,800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 *, *::before, *::after {
@@ -267,4 +268,127 @@ body {
 @media (max-width: 680px) {
   .dfy-container { padding-left: 1.25rem; padding-right: 1.25rem; }
   .dfy-btn { min-height: 48px; padding: 0 22px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MONOLITH THEME — paper + ink, hard shadows, orange accent.
+   Cosmetic override of the public-site design system.
+   To revert: git revert this commit.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:            #F4F4F1;
+  --bg-2:          #E9E9E4;
+  --surface:       #FFFFFF;
+  --text:          #0A0A0A;
+  --text-2:        #3B3B38;
+  --text-3:        #55554F;
+  --line:          #0A0A0A;
+  --line-2:        #0A0A0A;
+  --accent:        #FF4A1C;
+  --accent-hover:  #E03A0E;
+  --accent-tint:   #FFE9E2;
+  --accent-dim:    rgba(255, 74, 28, 0.10);
+  --accent-border: #0A0A0A;
+  --f-display:     'Archivo', system-ui, sans-serif;
+  --f-body:        'Archivo', system-ui, sans-serif;
+  --f-serif:       'Archivo', system-ui, sans-serif;
+  --f-mono:        'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.dfy-public { font-family: var(--f-body); }
+
+.dfy-public h1,
+.dfy-public h2,
+.dfy-public h3 {
+  font-family: var(--f-display) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.05em !important;
+  text-transform: uppercase;
+  line-height: 0.98 !important;
+}
+.dfy-public h3 { font-weight: 800 !important; letter-spacing: -0.035em !important; }
+
+.dfy-public em {
+  font-family: var(--f-display) !important;
+  font-style: normal !important;
+  font-weight: 900 !important;
+  font-size: 1em;
+  color: var(--accent);
+}
+
+/* square everything except true circles */
+.dfy-public [style*="border-radius"]:not([style*="50%"]) { border-radius: 0 !important; }
+
+.dfy-eyebrow {
+  font-family: var(--f-mono);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text);
+}
+
+.dfy-btn {
+  min-height: 54px;
+  border-radius: 0;
+  border: 3px solid #0A0A0A;
+  font-weight: 800;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s, color 0.15s;
+}
+.dfy-btn:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 #0A0A0A; }
+.dfy-btn-primary { background: #0A0A0A; color: #F4F4F1; }
+.dfy-btn-primary:hover { background: #0A0A0A; box-shadow: 6px 6px 0 var(--accent); }
+.dfy-btn-ghost { background: transparent; color: #0A0A0A; border-color: #0A0A0A; }
+.dfy-btn-ghost:hover { background: #F4F4F1; color: #0A0A0A; }
+.dfy-btn-light { background: var(--accent); color: #0A0A0A; border-color: #0A0A0A; }
+.dfy-btn[disabled]:hover { box-shadow: none; transform: none; }
+
+.dfy-card {
+  background: var(--surface);
+  border: 3px solid #0A0A0A;
+  border-radius: 0;
+  box-shadow: 8px 8px 0 #0A0A0A;
+}
+.dfy-card-hover:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 12px 12px 0 var(--accent);
+}
+
+.dfy-pill {
+  border-radius: 0;
+  border: 2px solid #0A0A0A;
+  font-weight: 600;
+}
+.dfy-pill:hover {
+  border-color: #0A0A0A;
+  background: var(--accent);
+  box-shadow: 4px 4px 0 #0A0A0A;
+}
+
+.dfy-field {
+  border-radius: 0;
+  border: 3px solid #0A0A0A;
+  background: #F4F4F1;
+}
+.dfy-field:focus {
+  border-color: #0A0A0A;
+  box-shadow: 5px 5px 0 var(--accent);
+}
+.dfy-field::placeholder { color: rgba(10, 10, 10, 0.45); }
+
+.dfy-label {
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dfy-public ::selection { background: var(--accent); color: #0A0A0A; }
+
+@media (max-width: 680px) {
+  .dfy-btn { min-height: 50px; }
+  .dfy-card { box-shadow: 5px 5px 0 #0A0A0A; }
+  .dfy-public h1 { overflow-wrap: anywhere; }
 }
