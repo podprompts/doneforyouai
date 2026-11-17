@@ -15,6 +15,7 @@ const projects = [
   { id: 8,  name: 'HomeServiceAgents.com',     url: 'homeserviceagents.com',    href: 'https://homeserviceagents.com',    tag: 'AI + Home Services',   screenshot: '/screenshots/homeserviceagents.png',    light: true  },
   { id: 9,  name: 'FreeAIReceptionist.com',    url: 'freeaireceptionist.com',   href: 'https://freeaireceptionist.com',   tag: 'Voice AI',             screenshot: '/screenshots/freeaireceptionist.png',   light: true  },
   { id: 10, name: 'HireAIReceptionist.com',    url: 'hireaireceptionist.com',   href: 'https://hireaireceptionist.com',   tag: 'Business Automation',  screenshot: '/screenshots/hireaireceptionist.webp',   light: false },
+  { id: 11, name: 'SameDayHelpers.com',      url: 'samedayhelpers.com',       href: 'https://samedayhelpers.com',       tag: 'Local Services',       screenshot: '/screenshots/samedayhelpers.jpg',       light: true  },
 ]
 
 const CLONES = 3
