@@ -23,7 +23,7 @@ export default function CTA() {
         }}>
           Stop experimenting.{' '}
           Start{' '}
-          <em style={{ color: '#BFC9FF' }}>executing.</em>
+          <em style={{ color: '#FF4A1C' }}>executing.</em>
         </h2>
 
         <p style={{

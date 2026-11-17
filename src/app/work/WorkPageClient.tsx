@@ -133,7 +133,7 @@ export default function WorkPageClient() {
         <div style={{ position: 'relative', zIndex: 1 }}>
           <span style={{ fontFamily: 'var(--f-body)', fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#C9CCD8', display: 'block', marginBottom: '1.5rem' }}>Want something built?</span>
           <h2 style={{ fontFamily: 'var(--f-serif)', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 400, lineHeight: 1.1, color: '#ffffff', marginBottom: '1.5rem' }}>
-            Your business.<br /><em style={{ fontStyle: 'italic', color: '#BFC9FF' }}>Powered by AI.</em>
+            Your business.<br /><em style={{ fontStyle: 'italic', color: '#FF4A1C' }}>Powered by AI.</em>
           </h2>
           <a href="/#contact" style={{ display: 'inline-flex', alignItems: 'center', fontFamily: 'var(--f-body)', fontSize: '1rem', fontWeight: 600, background: '#ffffff', color: 'var(--text)', minHeight: 52, padding: '0 2rem', borderRadius: 999, textDecoration: 'none' }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}

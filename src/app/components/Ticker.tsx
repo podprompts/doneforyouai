@@ -69,7 +69,7 @@ export default function Ticker() {
         }
 
         .ticker-dot {
-          color: #8FA0FF;
+          color: #FF4A1C;
           font-size: 0.6rem;
         }
 
