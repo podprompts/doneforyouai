@@ -415,3 +415,27 @@ body {
   }
   .aud-pill:hover { box-shadow: none; transform: none; }
 }
+
+/* Ready to start? banner: centered and fitted on mobile (desktop unchanged) */
+@media (max-width: 680px) {
+  .cta-section { padding: 0 1rem 4rem !important; }
+  .cta-card { padding: 3rem 1.25rem !important; }
+  .cta-h2 {
+    max-width: none !important;
+    font-size: 1.8rem !important;
+    margin: 0.75rem auto 1.25rem !important;
+    overflow-wrap: anywhere;
+  }
+  .cta-btn {
+    display: flex;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+    padding: 14px 18px;
+    min-height: 56px;
+    font-size: 0.9rem;
+    line-height: 1.15;
+    white-space: normal;
+    text-align: center;
+  }
+}

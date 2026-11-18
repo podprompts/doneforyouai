@@ -2,11 +2,11 @@
 
 export default function CTA() {
   return (
-    <section style={{
+    <section className="cta-section" style={{
       background: 'var(--bg)',
       padding: '0 2rem 7rem',
     }}>
-      <div style={{
+      <div className="cta-card" style={{
         maxWidth: 1200, margin: '0 auto', boxSizing: 'border-box',
         background: 'var(--text)',
         borderRadius: 36,
@@ -15,7 +15,7 @@ export default function CTA() {
       }}>
         <span className="dfy-eyebrow" style={{ color: '#C9CCD8', marginBottom: '1.25rem' }}>Ready to start?</span>
 
-        <h2 style={{
+        <h2 className="cta-h2" style={{
           fontSize: 'clamp(2.4rem, 5vw, 4.5rem)',
           lineHeight: 1.04,
           color: '#ffffff',
@@ -36,7 +36,7 @@ export default function CTA() {
         </p>
 
         <button
-          className="dfy-btn dfy-btn-light"
+          className="dfy-btn dfy-btn-light cta-btn"
           onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
         >
           Book Your Free Strategy Call
