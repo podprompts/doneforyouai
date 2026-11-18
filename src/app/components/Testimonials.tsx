@@ -6,6 +6,7 @@ const testimonials = [
     name: 'Sarah M.',
     role: 'Founder, boutique marketing agency',
     initials: 'SM',
+    photo: '/testimonials/sarah.jpg',
     avBg: '#EDF0FF', avFg: '#2B4BFF',
   },
   {
@@ -13,6 +14,7 @@ const testimonials = [
     name: 'James T.',
     role: 'E-commerce brand owner',
     initials: 'JT',
+    photo: '/testimonials/james.jpg',
     avBg: '#E3F3EC', avFg: '#0B6B4D',
   },
   {
@@ -20,6 +22,7 @@ const testimonials = [
     name: 'Priya K.',
     role: 'VP of Sales, B2B SaaS company',
     initials: 'PK',
+    photo: '/testimonials/priya.jpg',
     avBg: '#F5E6DC', avFg: '#8A3D12',
   },
 ]
@@ -70,9 +73,9 @@ export default function Testimonials() {
                   <span style={{
                     display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                     width: 48, height: 48, borderRadius: '50%',
-                    background: t.avBg, color: t.avFg,
+                    backgroundColor: t.avBg, backgroundImage: `url(${t.photo})`, backgroundSize: 'cover', backgroundPosition: 'center top', color: t.avFg,
                     fontFamily: 'var(--f-body)', fontSize: '0.95rem', fontWeight: 600, flexShrink: 0,
-                  }}>{t.initials}</span>
+                  }} role="img" aria-label={t.name}></span>
                   <span>
                     <strong style={{
                       display: 'block', fontFamily: 'var(--f-body)', fontWeight: 600,
@@ -99,7 +102,7 @@ export default function Testimonials() {
               <span className="testi-quote">&ldquo;</span>
               <p className="testi-text">{t.quote}</p>
               <div className="testi-who">
-                <span className="testi-av" style={{ background: t.avBg, color: t.avFg }}>{t.initials}</span>
+                <span className="testi-av" style={{ backgroundColor: t.avBg, backgroundImage: `url(${t.photo})`, backgroundSize: 'cover', backgroundPosition: 'center top' }} role="img" aria-label={t.name}></span>
                 <span>
                   <strong className="testi-name">{t.name}</strong>
                   <span className="testi-role">{t.role}</span>
