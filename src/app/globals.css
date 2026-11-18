@@ -393,15 +393,23 @@ body {
   .dfy-public h1 { overflow-wrap: anywhere; }
 }
 
-/* Who we work with: compact chips on mobile (desktop unchanged) */
+/* Who we work with: connected tiles on mobile (desktop unchanged) */
 @media (max-width: 680px) {
+  .aud-wrap {
+    gap: 0 !important;
+    justify-content: stretch !important;
+    margin-right: 2px;
+    padding-bottom: 2px;
+  }
   .aud-pill {
-    min-height: 38px;
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 46px;
     padding: 0 14px;
     font-size: 0.82rem;
     border-width: 2px;
+    margin: 0 -2px -2px 0;
     box-shadow: none;
   }
   .aud-pill:hover { box-shadow: none; transform: none; }
-  .aud-wrap { gap: 8px !important; }
 }
