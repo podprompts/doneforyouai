@@ -186,7 +186,7 @@ function HeroCarousel() {
                   >
                     <div style={{
                       borderRadius: '20px', overflow: 'hidden',
-                      border: isActive ? '1.5px solid rgba(43,75,255,0.45)' : '1px solid var(--line)',
+                      border: '1px solid var(--line)',
                       boxShadow: isActive ? '0 24px 50px rgba(21,22,26,0.14)' : '0 2px 12px rgba(21,22,26,0.05)',
                       transition: 'box-shadow 0.4s, border-color 0.4s',
                       height: '100%', display: 'flex', flexDirection: 'column',
