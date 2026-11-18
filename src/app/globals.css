@@ -393,13 +393,15 @@ body {
   .dfy-public h1 { overflow-wrap: anywhere; }
 }
 
-/* Who we work with: connected tiles on mobile (desktop unchanged) */
+/* Who we work with: connected tiles on mobile, flush on both edges (desktop unchanged) */
 @media (max-width: 680px) {
   .aud-wrap {
     gap: 0 !important;
     justify-content: stretch !important;
-    margin-right: 2px;
-    padding-bottom: 2px;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-top: 2px solid #0A0A0A;
+    border-left: 2px solid #0A0A0A;
   }
   .aud-pill {
     flex: 1 1 auto;
@@ -407,8 +409,8 @@ body {
     min-height: 46px;
     padding: 0 14px;
     font-size: 0.82rem;
-    border-width: 2px;
-    margin: 0 -2px -2px 0;
+    border-width: 0 2px 2px 0;
+    margin: 0;
     box-shadow: none;
   }
   .aud-pill:hover { box-shadow: none; transform: none; }
