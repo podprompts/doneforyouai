@@ -38,7 +38,7 @@ export default function Ticker() {
           display: inline-flex;
           flex-wrap: nowrap;
           will-change: transform;
-          animation: ticker-scroll 40s linear infinite;
+          animation: ticker-scroll 20s linear infinite;
           transform: translate3d(0, 0, 0);
           backface-visibility: hidden;
           -webkit-backface-visibility: hidden;
