@@ -392,3 +392,16 @@ body {
   .dfy-card { box-shadow: 5px 5px 0 #0A0A0A; }
   .dfy-public h1 { overflow-wrap: anywhere; }
 }
+
+/* Who we work with: compact chips on mobile (desktop unchanged) */
+@media (max-width: 680px) {
+  .aud-pill {
+    min-height: 38px;
+    padding: 0 14px;
+    font-size: 0.82rem;
+    border-width: 2px;
+    box-shadow: none;
+  }
+  .aud-pill:hover { box-shadow: none; transform: none; }
+  .aud-wrap { gap: 8px !important; }
+}

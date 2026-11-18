@@ -30,9 +30,9 @@ export default function Audience() {
             <em style={{ color: 'var(--accent)' }}>forward with AI.</em>
           </h2>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px' }}>
+        <div className="aud-wrap" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px' }}>
           {audiences.map((a) => (
-            <span key={a.label} className="dfy-pill">{a.label}</span>
+            <span key={a.label} className="dfy-pill aud-pill">{a.label}</span>
           ))}
         </div>
       </div>
